@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bpkpuwnv5gy7d"]
 
-[ext_resource type="Script" uid="uid://dgdhtb4e05cdh" path="res://gui/version_widget.gd" id="1_xartf"]
+[ext_resource type="Script" uid="uid://di50wr47a3ek" path="res://gui/version_widget.gd" id="1_xartf"]
 
 [node name="VersionWidget" type="Control"]
 layout_mode = 3
