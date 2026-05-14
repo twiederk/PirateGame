@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dhptvycu3kb8x"]
 
-[ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://proc_gen_world.gd" id="1_bdevv"]
-[ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://data/tileset.tres" id="2_5e5w1"]
-[ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://Characters/player.tscn" id="3_eowgc"]
+[ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/proc_gen_world.gd" id="1_p51ow"]
+[ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://data/tileset.tres" id="2_btogb"]
+[ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://Characters/player.tscn" id="3_wx8f2"]
 
 [sub_resource type="Gradient" id="Gradient_y5bgd"]
 interpolation_mode = 1
@@ -29,7 +29,7 @@ noise = SubResource("FastNoiseLite_awwj8")
 
 [node name="proc_gen_world" type="Node2D" unique_id=639576338]
 y_sort_enabled = true
-script = ExtResource("1_bdevv")
+script = ExtResource("1_p51ow")
 noise_texture = SubResource("NoiseTexture2D_8ve5r")
 tree_noise_texture = SubResource("NoiseTexture2D_0a6k0")
 
@@ -39,30 +39,30 @@ y_sort_enabled = true
 [node name="water_layer" type="TileMapLayer" parent="TileMap" unique_id=1452408615]
 z_index = -1
 use_parent_material = true
-tile_set = ExtResource("2_5e5w1")
+tile_set = ExtResource("2_btogb")
 
 [node name="ground_layer" type="TileMapLayer" parent="TileMap" unique_id=1207211925]
 z_index = -1
 use_parent_material = true
-tile_set = ExtResource("2_5e5w1")
+tile_set = ExtResource("2_btogb")
 
 [node name="ground2_layer" type="TileMapLayer" parent="TileMap" unique_id=834222849]
 z_index = -1
 use_parent_material = true
-tile_set = ExtResource("2_5e5w1")
+tile_set = ExtResource("2_btogb")
 
 [node name="cliff_layer" type="TileMapLayer" parent="TileMap" unique_id=2013653554]
 y_sort_enabled = true
 use_parent_material = true
-tile_set = ExtResource("2_5e5w1")
+tile_set = ExtResource("2_btogb")
 y_sort_origin = 16
 
 [node name="environment_layer" type="TileMapLayer" parent="TileMap" unique_id=908692093]
 y_sort_enabled = true
 use_parent_material = true
-tile_set = ExtResource("2_5e5w1")
+tile_set = ExtResource("2_btogb")
 
-[node name="Player" parent="." unique_id=755367759 instance=ExtResource("3_eowgc")]
+[node name="Player" parent="." unique_id=755367759 instance=ExtResource("3_wx8f2")]
 SPEED = 300.0
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
