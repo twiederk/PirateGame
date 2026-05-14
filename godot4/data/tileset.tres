@@ -1846,6 +1846,7 @@ texture = ExtResource("1_05qrb")
 15:6/0 = 0
 15:6/0/texture_origin = Vector2i(0, 22)
 15:6/0/y_sort_origin = 6
+15:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12.74523, -6.691246, -19.436478, -19.436476, -19.436478, -38.55432, 0.63726044, -47.475983, 20.073738, -40.147476, 21.348259, -12.745232, 11.789337, -5.7353554, 10.791523, 7.014492, -11.690817, 8.633219)
 
 [resource]
 physics_layer_0/collision_layer = 1
