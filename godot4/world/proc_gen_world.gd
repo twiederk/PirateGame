@@ -1,3 +1,4 @@
+class_name ProcGenWorld
 extends Node2D
 
 @onready var tile_map = $TileMap
@@ -39,9 +40,12 @@ func _ready():
 	generate_world()
 	
 func generate_world():
-	var noise_val
-	var tree_noise_val 
+	var noise_val: float
+	var tree_noise_val: float
+	
+	@warning_ignore("integer_division")
 	for x in range(-width/2, width/2):
+		@warning_ignore("integer_division")
 		for y in range(-height/2, height/2):
 			noise_val = noise.get_noise_2d(x,y)
 			tree_noise_val = tree_noise.get_noise_2d(x,y)

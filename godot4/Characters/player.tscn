@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://nt74txyyhp2d"]
+[gd_scene format=3 uid="uid://nt74txyyhp2d"]
 
 [ext_resource type="Script" uid="uid://cl0fj8x8snn2q" path="res://Characters/player.gd" id="1_eovys"]
 [ext_resource type="Texture2D" uid="uid://cg66nflhxk3as" path="res://Characters/new_character_spritesheet.png" id="2_eovys"]
@@ -558,28 +558,26 @@ graph_offset = Vector2(78, 28)
 [sub_resource type="CircleShape2D" id="CircleShape2D_eovys"]
 radius = 12.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=2021988774]
 y_sort_enabled = true
 script = ExtResource("1_eovys")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=364959174]
 position = Vector2(0, -10)
 texture = ExtResource("2_eovys")
 hframes = 4
 vframes = 9
 frame = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=497658591]
 position = Vector2(0, -1)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_yni73")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_r8onw")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2073460611]
+libraries/ = SubResource("AnimationLibrary_r8onw")
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=263780185]
 tree_root = SubResource("AnimationNodeStateMachine_pxaul")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/is_chopping = false
@@ -587,11 +585,11 @@ parameters/conditions/is_idle = false
 parameters/conditions/is_moving = false
 parameters/chop/blend_position = Vector2(-0.377672, 0.356)
 parameters/idle/blend_position = Vector2(0.0896287, 0.386877)
-parameters/walk/blend_position = false
+parameters/walk/blend_position = Vector2(0, 0)
 
-[node name="ToolInteractArea" type="Area2D" parent="."]
+[node name="ToolInteractArea" type="Area2D" parent="." unique_id=387776183]
 script = ExtResource("3_vb825")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ToolInteractArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToolInteractArea" unique_id=1014615758]
 shape = SubResource("CircleShape2D_eovys")
 disabled = true
