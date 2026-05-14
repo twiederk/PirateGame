@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/proc_gen_world.gd" id="1_p51ow"]
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://data/tileset.tres" id="2_btogb"]
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://Characters/player.tscn" id="3_wx8f2"]
+[ext_resource type="PackedScene" path="res://gui/version_widget.tscn" id="4_btogb"]
 
 [sub_resource type="Gradient" id="Gradient_y5bgd"]
 interpolation_mode = 1
@@ -67,3 +68,7 @@ SPEED = 300.0
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
 position = Vector2(0, -6)
+
+[node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
+
+[node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("4_btogb")]

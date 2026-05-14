@@ -34,12 +34,15 @@ var random_grass_atlas_arr = [Vector2i(1,0),Vector2i(2,0),Vector2i(3,0),Vector2i
 @onready var camera_2d = $Player/Camera2D
 
 
-func _ready():
+func _ready() -> void:
+	if not OS.has_feature("editor"):
+		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
 	generate_world()
-	
-func generate_world():
+
+
+func generate_world() -> void:
 	var noise_val: float
 	var tree_noise_val: float
 	
