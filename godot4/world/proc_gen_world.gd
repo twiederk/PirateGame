@@ -16,8 +16,8 @@ var noise : Noise
 var tree_noise : Noise
 
 var water_tile_atlas = Vector2i(0,1)
-var tree_atlas = Vector2i(12,2)
-var tree_atlas2 = Vector2i(15,6)
+var palm_tree_atlas = Vector2i(12,2)
+var tree_atlas = Vector2i(15,6)
 
 var sand_arr = []
 var grass_arr = []
@@ -88,7 +88,7 @@ func _generate_world() -> void:
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
 	if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
-		environment_layer.set_cell(curr_pos, 0, tree_atlas2)
+		environment_layer.set_cell(curr_pos, 0, tree_atlas)
 
 
 func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
@@ -97,7 +97,7 @@ func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector
 		sand_arr.append(curr_pos)
 		if noise_val < 0.18:
 			if tree_noise_val > 0.92:
-				environment_layer.set_cell(curr_pos, 0,tree_atlas)	
+				environment_layer.set_cell(curr_pos, 0,palm_tree_atlas)	
 
 
 func _generate_seed() -> void:
