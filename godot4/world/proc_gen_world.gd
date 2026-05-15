@@ -7,8 +7,6 @@ extends Node2D
 @export var seed_value: int = 0
 
 
-const TILE_SIZE: int = 16
-
 var width : int = 300
 var height : int =  300
 
@@ -41,15 +39,14 @@ var random_grass_tile_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vec
 func _ready() -> void:
 	if not OS.has_feature("editor"):
 		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
-	
-	@warning_ignore("integer_division")
-	player.global_position = Vector2(width / 2, height / 2) * TILE_SIZE
 
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
-
-	#_setup_limits_and_borders()
 	_generate_world()
+	_setup_limits_and_borders()
+
+	@warning_ignore("integer_division")
+	player.global_position = Vector2i(width / 2, height / 2) * water_layer.tile_set.tile_size
 
 
 func _setup_limits_and_borders() -> void:
@@ -59,6 +56,7 @@ func _setup_limits_and_borders() -> void:
 	var south_limit = (tile_map_used_rect.position.y + tile_map_used_rect.size.y) * tile_size.y
 	var west_limit = tile_map_used_rect.position.x * tile_size.x
 	var east_limit = (tile_map_used_rect.position.x + tile_map_used_rect.size.x) * tile_size.x
+
 	
 	map_borders.set_borders(north_limit, south_limit, west_limit, east_limit)
 	_camera_limits(north_limit, south_limit, west_limit, east_limit)
