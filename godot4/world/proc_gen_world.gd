@@ -57,38 +57,42 @@ func _generate_world() -> void:
 	
 	for x in range(width):
 		for y in range(height):
+			var position: Vector2i = Vector2i(x, y)
 			noise_val = noise.get_noise_2d(x,y)
 			tree_noise_val = tree_noise.get_noise_2d(x,y)
 			
 			#setting cliffs
 			if noise_val > 0.6:
-				cliff_arr.append(Vector2(x,y))
+				cliff_arr.append(position)
 			
 			#setting all grass tiles
 			if noise_val > 0.2:
-				grass_arr.append(Vector2(x,y))
+				grass_arr.append(position)
 				if noise_val > 0.3:
 					#random grass
-					ground_2_layer.set_cell(Vector2(x,y), 0,random_grass_atlas_arr.pick_random())
+					ground_2_layer.set_cell(position, 0, random_grass_atlas_arr.pick_random())
 			
 			#setting trees where there are no cliffs
-			if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
-				environment_layer.set_cell( Vector2(x,y), 0,tree_atlas2)
+			_place_trees(tree_noise_val, noise_val, position)
 		
 			# setting sand and palm trees between water and grass
 			if noise_val > 0:
-				sand_arr.append(Vector2(x,y))
+				sand_arr.append(position)
 				if noise_val < 0.18:
 					if tree_noise_val > 0.92:
-						environment_layer.set_cell(Vector2(x,y), 0,tree_atlas)
-				
+						environment_layer.set_cell(position, 0,tree_atlas)
 			
-				
-			water_layer.set_cell(Vector2(x,y), 0,water_tile_atlas)
+			water_layer.set_cell(position, 0, water_tile_atlas)
 
-	ground_layer.set_cells_terrain_connect(sand_arr, 3,0)
-	ground_layer.set_cells_terrain_connect(grass_arr, 1,0)
-	cliff_layer.set_cells_terrain_connect(cliff_arr, 4,0)
+	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
+	ground_layer.set_cells_terrain_connect(grass_arr, 1, 0)
+	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
+
+
+func _place_trees(tree_noise_val: float, noise_val: float, position: Vector2i) -> void:
+	if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
+		environment_layer.set_cell(position, 0, tree_atlas2)
+
 
 
 func _generate_seed() -> void:
