@@ -15,16 +15,16 @@ var height : int =  300
 var noise : Noise
 var tree_noise : Noise
 
-var water_tile_atlas = Vector2i(0,1)
-var palm_tree_atlas = Vector2i(12,2)
-var tree_atlas = Vector2i(15,6)
+var water_tile = Vector2i(0,1)
+var palm_tree_tile = Vector2i(12,2)
+var tree_tile = Vector2i(15,6)
 
 var sand_arr = []
 var grass_arr = []
 var dirt_arr = []
 var cliff_arr = []
 
-var random_grass_atlas_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+var random_grass_tile_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 
 @onready var tile_map = $TileMap
@@ -70,7 +70,7 @@ func _generate_world() -> void:
 				grass_arr.append(curr_pos)
 				if noise_val > 0.3:
 					#random grass
-					ground_2_layer.set_cell(curr_pos, 0, random_grass_atlas_arr.pick_random())
+					ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 			
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			
@@ -78,7 +78,7 @@ func _generate_world() -> void:
 		
 
 			
-			water_layer.set_cell(curr_pos, 0, water_tile_atlas)
+			water_layer.set_cell(curr_pos, 0, water_tile)
 
 	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
 	ground_layer.set_cells_terrain_connect(grass_arr, 1, 0)
@@ -88,7 +88,7 @@ func _generate_world() -> void:
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
 	if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
-		environment_layer.set_cell(curr_pos, 0, tree_atlas)
+		environment_layer.set_cell(curr_pos, 0, tree_tile)
 
 
 func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
@@ -97,7 +97,7 @@ func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector
 		sand_arr.append(curr_pos)
 		if noise_val < 0.18:
 			if tree_noise_val > 0.92:
-				environment_layer.set_cell(curr_pos, 0,palm_tree_atlas)	
+				environment_layer.set_cell(curr_pos, 0,palm_tree_tile)	
 
 
 func _generate_seed() -> void:
