@@ -10,31 +10,30 @@ extends Node2D
 var width : int = 300
 var height : int =  300
 
-
 var noise : Noise
 var tree_noise : Noise
 
-
-var water_tile_atlas = Vector2i(0,1)
-var tree_atlas = Vector2i(12,2)
-var tree_atlas2 = Vector2i(15,6)
-
+var water_tile = Vector2i(0,1)
+var random_palm_tree_array = [Vector2i(12, 2), Vector2i(15,2) ]
+var tree_tile = Vector2i(15,6)
 
 var sand_arr = []
 var grass_arr = []
 var dirt_arr = []
 var cliff_arr = []
 
-var random_grass_atlas_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+var random_grass_tile_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 
 @onready var tile_map = $TileMap
-@onready var camera_2d = $Player/Camera2D
+@onready var player: CharacterBody2D = $Player
 @onready var water_layer: TileMapLayer = $TileMap/water_layer
 @onready var ground_layer: TileMapLayer = $TileMap/ground_layer
 @onready var ground_2_layer: TileMapLayer = $TileMap/ground2_layer
 @onready var cliff_layer: TileMapLayer = $TileMap/cliff_layer
 @onready var environment_layer: TileMapLayer = $TileMap/environment_layer
+@onready var camera: Camera2D = $Player/Camera2D
+@onready var map_borders: MapBorders = $MapBorders
 
 
 func _ready() -> void:
@@ -43,8 +42,24 @@ func _ready() -> void:
 
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
-
 	_generate_world()
+	_setup_limits_and_borders()
+
+	@warning_ignore("integer_division")
+	player.global_position = Vector2i(width / 2, height / 2) * water_layer.tile_set.tile_size
+
+
+func _setup_limits_and_borders() -> void:
+	var tile_map_used_rect = water_layer.get_used_rect()
+	var tile_size = water_layer.tile_set.tile_size
+	var north_limit = tile_map_used_rect.position.y * tile_size.y
+	var south_limit = (tile_map_used_rect.position.y + tile_map_used_rect.size.y) * tile_size.y
+	var west_limit = tile_map_used_rect.position.x * tile_size.x
+	var east_limit = (tile_map_used_rect.position.x + tile_map_used_rect.size.x) * tile_size.x
+
+	
+	map_borders.set_borders(north_limit, south_limit, west_limit, east_limit)
+	_camera_limits(north_limit, south_limit, west_limit, east_limit)
 
 
 func _generate_world() -> void:
@@ -52,42 +67,45 @@ func _generate_world() -> void:
 	var tree_noise_val: float
 	_generate_seed()
 	
-	@warning_ignore("integer_division")
-	for x in range(-width/2, width/2):
-		@warning_ignore("integer_division")
-		for y in range(-height/2, height/2):
+	for x in range(width):
+		for y in range(height):
+			var curr_pos: Vector2i = Vector2i(x, y)
 			noise_val = noise.get_noise_2d(x,y)
 			tree_noise_val = tree_noise.get_noise_2d(x,y)
 			
 			#setting cliffs
 			if noise_val > 0.6:
-				cliff_arr.append(Vector2(x,y))
+				cliff_arr.append(curr_pos)
 			
 			#setting all grass tiles
 			if noise_val > 0.2:
-				grass_arr.append(Vector2(x,y))
+				grass_arr.append(curr_pos)
 				if noise_val > 0.3:
 					#random grass
-					ground_2_layer.set_cell(Vector2(x,y), 0,random_grass_atlas_arr.pick_random())
+					ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 			
-			#setting trees where there are no cliffs
-			if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
-				environment_layer.set_cell( Vector2(x,y), 0,tree_atlas2)
-		
-			# setting sand and palm trees between water and grass
-			if noise_val > 0:
-				sand_arr.append(Vector2(x,y))
-				if noise_val < 0.18:
-					if tree_noise_val > 0.92:
-						environment_layer.set_cell(Vector2(x,y), 0,tree_atlas)
-				
-			
-				
-			water_layer.set_cell(Vector2(x,y), 0,water_tile_atlas)
+			_place_trees(tree_noise_val, noise_val, curr_pos)
+			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
+			water_layer.set_cell(curr_pos, 0, water_tile)
 
-	ground_layer.set_cells_terrain_connect(sand_arr, 3,0)
-	ground_layer.set_cells_terrain_connect(grass_arr, 1,0)
-	cliff_layer.set_cells_terrain_connect(cliff_arr, 4,0)
+	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
+	ground_layer.set_cells_terrain_connect(grass_arr, 1, 0)
+	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
+
+
+func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
+	#setting trees where there are no cliffs
+	if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
+		environment_layer.set_cell(curr_pos, 0, tree_tile)
+
+
+func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
+	# setting sand and palm trees between water and grass
+	if noise_val > 0:
+		sand_arr.append(curr_pos)
+		if noise_val < 0.18:
+			if tree_noise_val > 0.92:
+				environment_layer.set_cell(curr_pos, 0, random_palm_tree_array.pick_random())
 
 
 func _generate_seed() -> void:
@@ -98,14 +116,26 @@ func _generate_seed() -> void:
 
 
 func _input(_event):
+	_camera_zoom()
+	
+	
+func _camera_zoom():
 	if Input.is_action_just_pressed("zoom_in"):
-		var zoom_val =camera_2d.zoom.x + 0.1
+		var zoom_val =camera.zoom.x + 0.1
+		camera.zoom = Vector2(zoom_val, zoom_val)
 		
-		camera_2d.zoom = Vector2(zoom_val, zoom_val)
 	elif Input.is_action_just_pressed("zoom_out"):
-		var zoom_val =camera_2d.zoom.x - 0.1
+		var zoom_val =camera.zoom.x - 0.1
 		if zoom_val == 0:
-			zoom_val =camera_2d.zoom.x - 0.2
-		camera_2d.zoom = Vector2(zoom_val, zoom_val)
+			zoom_val = camera.zoom.x - 0.2
+		camera.zoom = Vector2(zoom_val, zoom_val)
+	
 	elif Input.is_action_just_pressed("quit"):
 		get_tree().quit(0)
+
+
+func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
+	camera.set_limit(SIDE_LEFT, int(west_limit))
+	camera.set_limit(SIDE_RIGHT, int(east_limit))
+	camera.set_limit(SIDE_TOP, int(north_limit))
+	camera.set_limit(SIDE_BOTTOM, int(south_limit))
