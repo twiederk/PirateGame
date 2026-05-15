@@ -6,19 +6,17 @@ extends Node2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var seed_value: int = 0
 
+const TILE_SIZE: int = 16
 
 var width : int = 300
 var height : int =  300
 
-
 var noise : Noise
 var tree_noise : Noise
-
 
 var water_tile_atlas = Vector2i(0,1)
 var tree_atlas = Vector2i(12,2)
 var tree_atlas2 = Vector2i(15,6)
-
 
 var sand_arr = []
 var grass_arr = []
@@ -30,6 +28,7 @@ var random_grass_atlas_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Ve
 
 @onready var tile_map = $TileMap
 @onready var camera_2d = $Player/Camera2D
+@onready var player: CharacterBody2D = $Player
 @onready var water_layer: TileMapLayer = $TileMap/water_layer
 @onready var ground_layer: TileMapLayer = $TileMap/ground_layer
 @onready var ground_2_layer: TileMapLayer = $TileMap/ground2_layer
@@ -40,6 +39,8 @@ var random_grass_atlas_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Ve
 func _ready() -> void:
 	if not OS.has_feature("editor"):
 		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
+		
+	player.global_position = Vector2(width / 2, height / 2) * TILE_SIZE
 
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
@@ -52,10 +53,8 @@ func _generate_world() -> void:
 	var tree_noise_val: float
 	_generate_seed()
 	
-	@warning_ignore("integer_division")
-	for x in range(-width/2, width/2):
-		@warning_ignore("integer_division")
-		for y in range(-height/2, height/2):
+	for x in range(width):
+		for y in range(height):
 			noise_val = noise.get_noise_2d(x,y)
 			tree_noise_val = tree_noise.get_noise_2d(x,y)
 			

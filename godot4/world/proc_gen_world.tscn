@@ -64,6 +64,7 @@ use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("3_wx8f2")]
+position = Vector2(736, 410)
 SPEED = 300.0
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
