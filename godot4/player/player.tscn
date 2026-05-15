@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://cg66nflhxk3as" path="res://player/player_spritesheet.png" id="2_eovys"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yni73"]
-radius = 1.0
-height = 6.0
+radius = 5.0
+height = 20.0
 
 [sub_resource type="Animation" id="Animation_mqw7g"]
 length = 0.001
@@ -458,8 +458,7 @@ vframes = 9
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=497658591]
-position = Vector2(0, -1)
-rotation = 1.5708
+position = Vector2(-1, -10)
 shape = SubResource("CapsuleShape2D_yni73")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2073460611]
