@@ -16,7 +16,7 @@ var noise : Noise
 var tree_noise : Noise
 
 var water_tile = Vector2i(0,1)
-var palm_tree_tile = Vector2i(12,2)
+var random_palm_tree_array = [Vector2i(12, 2), Vector2i(15,2) ]
 var tree_tile = Vector2i(15,6)
 
 var sand_arr = []
@@ -97,7 +97,7 @@ func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector
 		sand_arr.append(curr_pos)
 		if noise_val < 0.18:
 			if tree_noise_val > 0.92:
-				environment_layer.set_cell(curr_pos, 0,palm_tree_tile)	
+				environment_layer.set_cell(curr_pos, 0, random_palm_tree_array.pick_random())
 
 
 func _generate_seed() -> void:
