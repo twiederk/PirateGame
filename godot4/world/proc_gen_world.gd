@@ -28,13 +28,14 @@ var random_grass_tile_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vec
 
 
 @onready var tile_map = $TileMap
-@onready var camera_2d = $Player/Camera2D
 @onready var player: CharacterBody2D = $Player
 @onready var water_layer: TileMapLayer = $TileMap/water_layer
 @onready var ground_layer: TileMapLayer = $TileMap/ground_layer
 @onready var ground_2_layer: TileMapLayer = $TileMap/ground2_layer
 @onready var cliff_layer: TileMapLayer = $TileMap/cliff_layer
 @onready var environment_layer: TileMapLayer = $TileMap/environment_layer
+@onready var camera: Camera2D = $Player/Camera2D
+@onready var map_borders: MapBorders = $MapBorders
 
 
 func _ready() -> void:
@@ -47,7 +48,20 @@ func _ready() -> void:
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
 
+	#_setup_limits_and_borders()
 	_generate_world()
+
+
+func _setup_limits_and_borders() -> void:
+	var tile_map_used_rect = water_layer.get_used_rect()
+	var tile_size = water_layer.tile_set.tile_size
+	var north_limit = tile_map_used_rect.position.y * tile_size.y
+	var south_limit = (tile_map_used_rect.position.y + tile_map_used_rect.size.y) * tile_size.y
+	var west_limit = tile_map_used_rect.position.x * tile_size.x
+	var east_limit = (tile_map_used_rect.position.x + tile_map_used_rect.size.x) * tile_size.x
+	
+	map_borders.set_borders(north_limit, south_limit, west_limit, east_limit)
+	_camera_limits(north_limit, south_limit, west_limit, east_limit)
 
 
 func _generate_world() -> void:
@@ -104,15 +118,26 @@ func _generate_seed() -> void:
 
 
 func _input(_event):
+	_camera_zoom()
+	
+	
+func _camera_zoom():
 	if Input.is_action_just_pressed("zoom_in"):
-		var zoom_val =camera_2d.zoom.x + 0.1
-		camera_2d.zoom = Vector2(zoom_val, zoom_val)
+		var zoom_val =camera.zoom.x + 0.1
+		camera.zoom = Vector2(zoom_val, zoom_val)
 		
 	elif Input.is_action_just_pressed("zoom_out"):
-		var zoom_val =camera_2d.zoom.x - 0.1
+		var zoom_val =camera.zoom.x - 0.1
 		if zoom_val == 0:
-			zoom_val =camera_2d.zoom.x - 0.2
-		camera_2d.zoom = Vector2(zoom_val, zoom_val)
+			zoom_val = camera.zoom.x - 0.2
+		camera.zoom = Vector2(zoom_val, zoom_val)
 	
 	elif Input.is_action_just_pressed("quit"):
 		get_tree().quit(0)
+
+
+func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
+	camera.set_limit(SIDE_LEFT, int(west_limit))
+	camera.set_limit(SIDE_RIGHT, int(east_limit))
+	camera.set_limit(SIDE_TOP, int(north_limit))
+	camera.set_limit(SIDE_BOTTOM, int(south_limit))

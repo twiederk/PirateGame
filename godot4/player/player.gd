@@ -14,7 +14,7 @@ func _ready():
 
 
 func _process(_delta):
-	update_animation_parameters()
+	_update_animation_parameters()
 
 
 func _physics_process(_delta):
@@ -26,7 +26,7 @@ func _physics_process(_delta):
 	move_and_slide()
 
 
-func update_animation_parameters():
+func _update_animation_parameters():
 	if(velocity == Vector2.ZERO):
 		animation_tree["parameters/conditions/is_idle"] = true
 		animation_tree["parameters/conditions/is_moving"] = false
@@ -38,6 +38,3 @@ func update_animation_parameters():
 	if direction != Vector2.ZERO:
 		animation_tree["parameters/idle/blend_position"] = direction
 		animation_tree["parameters/walk/blend_position"] = direction
-
-	
-	
