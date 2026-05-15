@@ -73,11 +73,7 @@ func _generate_world() -> void:
 					ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 			
 			_place_trees(tree_noise_val, noise_val, curr_pos)
-			
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
-		
-
-			
 			water_layer.set_cell(curr_pos, 0, water_tile)
 
 	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
@@ -110,12 +106,13 @@ func _generate_seed() -> void:
 func _input(_event):
 	if Input.is_action_just_pressed("zoom_in"):
 		var zoom_val =camera_2d.zoom.x + 0.1
-		
 		camera_2d.zoom = Vector2(zoom_val, zoom_val)
+		
 	elif Input.is_action_just_pressed("zoom_out"):
 		var zoom_val =camera_2d.zoom.x - 0.1
 		if zoom_val == 0:
 			zoom_val =camera_2d.zoom.x - 0.2
 		camera_2d.zoom = Vector2(zoom_val, zoom_val)
+	
 	elif Input.is_action_just_pressed("quit"):
 		get_tree().quit(0)
