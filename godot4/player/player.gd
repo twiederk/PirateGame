@@ -44,3 +44,16 @@ func _update_animation_parameters():
 	if direction != Vector2.ZERO:
 		animation_tree["parameters/idle/blend_position"] = direction
 		animation_tree["parameters/walk/blend_position"] = direction
+
+
+func enter_exit_boat():
+	player_sprite.visible = !player_sprite.visible
+	boat_sprite.visible = !boat_sprite.visible
+	if current_state == STATE.ON_LAND:
+		set_collision_mask_value(2, false)
+		set_collision_mask_value(3, true)
+		current_state = STATE.IN_BOAT
+	else:
+		set_collision_mask_value(2, true)
+		set_collision_mask_value(3, false)
+		current_state = STATE.ON_LAND

@@ -131,8 +131,9 @@ func _generate_seed() -> void:
 	tree_noise.seed = seed_value
 
 
-func _input(_event):
+func _input(_event) -> void:
 	_camera_zoom()
+	_boat_enter_exit()
 	
 	
 func _camera_zoom():
@@ -149,6 +150,10 @@ func _camera_zoom():
 	elif Input.is_action_just_pressed("quit"):
 		get_tree().quit(0)
 
+
+func _boat_enter_exit() -> void:
+	if Input.is_action_just_pressed("enter_exit_boat"):
+		player.enter_exit_boat()
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
 	camera.set_limit(SIDE_LEFT, int(west_limit))
