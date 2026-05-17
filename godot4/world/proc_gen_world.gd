@@ -133,7 +133,7 @@ func _generate_seed() -> void:
 
 func _input(_event) -> void:
 	_camera_zoom()
-	_boat_enter_exit()
+	_board_ship()
 	
 	
 func _camera_zoom():
@@ -151,18 +151,14 @@ func _camera_zoom():
 		get_tree().quit(0)
 
 
-func _boat_enter_exit() -> void:
-	if Input.is_action_just_pressed("enter_exit_boat") and _is_coast():
-		player.enter_exit_boat()
+func _board_ship() -> void:
+	if Input.is_action_just_pressed("board_ship") and _is_coast():
+		player.board_ship()
 
 
 func _is_coast() -> bool:
-	print("is_coast")
-	print("player.position", player.position)
 	var player_position_to_tile = ground_layer.local_to_map(player.position)
-	print("player_position_to_tile: ", player_position_to_tile)
 	var tile_data : TileData = ground_layer.get_cell_tile_data(player_position_to_tile)
-	print("tile_data: ", tile_data)
 	if tile_data:
 		return tile_data.get_custom_data("coast")
 	else:

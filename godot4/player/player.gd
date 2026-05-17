@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 @export var SPEED : float = 150.0
 
-enum STATE { ON_LAND, IN_BOAT }
+enum STATE { ON_LAND, ON_SHIP }
 
 var current_state = STATE.ON_LAND
 
@@ -12,7 +12,7 @@ var direction : Vector2 = Vector2.ZERO
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
 @onready var player_sprite: Sprite2D = $Sprite2D
-@onready var boat_sprite: Sprite2D = $BoatSprite2D
+@onready var ship_sprite: Sprite2D = $ShipSprite2D
 
 
 func _ready():
@@ -46,13 +46,13 @@ func _update_animation_parameters():
 		animation_tree["parameters/walk/blend_position"] = direction
 
 
-func enter_exit_boat():
+func board_ship():
 	player_sprite.visible = !player_sprite.visible
-	boat_sprite.visible = !boat_sprite.visible
+	ship_sprite.visible = !ship_sprite.visible
 	if current_state == STATE.ON_LAND:
 		set_collision_mask_value(2, false)
 		set_collision_mask_value(3, true)
-		current_state = STATE.IN_BOAT
+		current_state = STATE.ON_SHIP
 	else:
 		set_collision_mask_value(2, true)
 		set_collision_mask_value(3, false)

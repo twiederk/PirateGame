@@ -459,7 +459,7 @@ hframes = 4
 vframes = 9
 frame = 1
 
-[node name="BoatSprite2D" type="Sprite2D" parent="." unique_id=905868460]
+[node name="ShipSprite2D" type="Sprite2D" parent="." unique_id=905868460]
 visible = false
 texture = ExtResource("3_g1dw6")
 
