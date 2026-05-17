@@ -42,11 +42,11 @@ func _ready() -> void:
 
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
-	_generate_world()
+	var starting_pos = _generate_world()
 	_setup_limits_and_borders()
 
 	@warning_ignore("integer_division")
-	player.global_position = Vector2i(width / 2, height / 2) * water_layer.tile_set.tile_size
+	player.global_position = starting_pos * water_layer.tile_set.tile_size
 
 
 func _setup_limits_and_borders() -> void:
@@ -62,7 +62,7 @@ func _setup_limits_and_borders() -> void:
 	_camera_limits(north_limit, south_limit, west_limit, east_limit)
 
 
-func _generate_world() -> void:
+func _generate_world() -> Vector2i:
 	var noise_val: float
 	var tree_noise_val: float
 	_generate_seed()
@@ -83,6 +83,8 @@ func _generate_world() -> void:
 	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
 	ground_layer.set_cells_terrain_connect(grass_arr, 1, 0)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
+	
+	return grass_arr.pick_random()
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
