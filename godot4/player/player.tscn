@@ -448,6 +448,7 @@ graph_offset = Vector2(78, 28)
 
 [node name="Player" type="CharacterBody2D" unique_id=2021988774]
 y_sort_enabled = true
+collision_mask = 10
 script = ExtResource("1_eovys")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=364959174]
