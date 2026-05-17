@@ -3,10 +3,16 @@ extends CharacterBody2D
 
 @export var SPEED : float = 150.0
 
+enum STATE { ON_LAND, IN_BOAT }
+
+var current_state = STATE.ON_LAND
+
 var direction : Vector2 = Vector2.ZERO
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
+@onready var player_sprite: Sprite2D = $Sprite2D
+@onready var boat_sprite: Sprite2D = $BoatSprite2D
 
 
 func _ready():
