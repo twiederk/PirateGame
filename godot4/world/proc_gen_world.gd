@@ -131,8 +131,9 @@ func _generate_seed() -> void:
 	tree_noise.seed = seed_value
 
 
-func _input(_event):
+func _input(_event) -> void:
 	_camera_zoom()
+	_board_ship()
 	
 	
 func _camera_zoom():
@@ -148,6 +149,20 @@ func _camera_zoom():
 	
 	elif Input.is_action_just_pressed("quit"):
 		get_tree().quit(0)
+
+
+func _board_ship() -> void:
+	if Input.is_action_just_pressed("board_ship") and _is_coast():
+		player.board_ship()
+
+
+func _is_coast() -> bool:
+	var player_position_to_tile = ground_layer.local_to_map(player.position)
+	var tile_data : TileData = ground_layer.get_cell_tile_data(player_position_to_tile)
+	if tile_data:
+		return tile_data.get_custom_data("coast")
+	else:
+		return false
 
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
