@@ -76,10 +76,10 @@ func _generate_world() -> Vector2i:
 			_place_sand(noise_val, curr_pos)
 			_place_grass(noise_val, curr_pos)
 			_place_cliffs(noise_val, curr_pos)
+			_place_water(noise_val, curr_pos)
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
-			water_layer.set_cell(curr_pos, 0, water_tile)
-
+			
 	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
 	ground_layer.set_cells_terrain_connect(grass_arr, 1, 0)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
@@ -100,11 +100,15 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 			ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 
 
-
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
 		#setting cliffs
 		if noise_val > 0.6:
 			cliff_arr.append(curr_pos)
+
+
+func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
+	if noise_val <= 0:
+		water_layer.set_cell(curr_pos, 0, water_tile)
 
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
