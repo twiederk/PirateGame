@@ -17,12 +17,12 @@ var water_tile = Vector2i(0,1)
 var random_palm_tree_array = [Vector2i(12, 2), Vector2i(15,2) ]
 var tree_tile = Vector2i(15,6)
 
-var sand_arr = []
-var grass_arr = []
-var dirt_arr = []
-var cliff_arr = []
+var sand_arr: Array[Vector2i] = []
+var grass_arr: Array[Vector2i] = []
+var dirt_arr: Array[Vector2i] = []
+var cliff_arr: Array[Vector2i] = []
 
-var random_grass_tile_arr = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 
 @onready var tile_map = $TileMap
@@ -73,16 +73,17 @@ func _generate_world() -> void:
 			noise_val = noise.get_noise_2d(x,y)
 			tree_noise_val = tree_noise.get_noise_2d(x,y)
 			
-			#setting cliffs
-			if noise_val > 0.6:
-				cliff_arr.append(curr_pos)
-			
+			_place_sand(noise_val, sand_arr, curr_pos)
+				
 			#setting all grass tiles
 			if noise_val > 0.2:
 				grass_arr.append(curr_pos)
 				if noise_val > 0.3:
 					#random grass
 					ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
+			_place_cliffs(noise_val, cliff_arr, curr_pos)
+			
+
 			
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
@@ -93,6 +94,17 @@ func _generate_world() -> void:
 	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
 
 
+func _place_sand(noise_val: float, sand_arr: Array[Vector2i], curr_pos: Vector2i) -> void:
+	if noise_val > 0:
+		sand_arr.append(curr_pos)
+
+
+func _place_cliffs(noise_val: float, cliff_arr: Array[Vector2i], curr_pos: Vector2i) -> void:
+		#setting cliffs
+		if noise_val > 0.6:
+			cliff_arr.append(curr_pos)
+
+
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
 	if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
@@ -100,12 +112,10 @@ func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -
 
 
 func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
-	# setting sand and palm trees between water and grass
-	if noise_val > 0:
-		sand_arr.append(curr_pos)
-		if noise_val < 0.18:
-			if tree_noise_val > 0.92:
-				environment_layer.set_cell(curr_pos, 0, random_palm_tree_array.pick_random())
+	# setting palm trees on sand, between water and grass
+	if (noise_val > 0.0) and (noise_val < 0.18):
+		if tree_noise_val > 0.92:
+			environment_layer.set_cell(curr_pos, 0, random_palm_tree_array.pick_random())
 
 
 func _generate_seed() -> void:
