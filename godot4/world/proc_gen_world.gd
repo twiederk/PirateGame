@@ -152,8 +152,22 @@ func _camera_zoom():
 
 
 func _boat_enter_exit() -> void:
-	if Input.is_action_just_pressed("enter_exit_boat"):
+	if Input.is_action_just_pressed("enter_exit_boat") and _is_coast():
 		player.enter_exit_boat()
+
+
+func _is_coast() -> bool:
+	print("is_coast")
+	print("player.position", player.position)
+	var player_position_to_tile = ground_layer.local_to_map(player.position)
+	print("player_position_to_tile: ", player_position_to_tile)
+	var tile_data : TileData = ground_layer.get_cell_tile_data(player_position_to_tile)
+	print("tile_data: ", tile_data)
+	if tile_data:
+		return tile_data.get_custom_data("coast")
+	else:
+		return false
+
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
 	camera.set_limit(SIDE_LEFT, int(west_limit))
