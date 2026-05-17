@@ -11,7 +11,7 @@ var direction : Vector2 = Vector2.ZERO
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
-@onready var player_sprite: Sprite2D = $Sprite2D
+@onready var wanderer_sprite: Sprite2D = $WandererSprite2D
 @onready var ship_sprite: Sprite2D = $ShipSprite2D
 
 
@@ -47,7 +47,7 @@ func _update_animation_parameters():
 
 
 func board_ship():
-	player_sprite.visible = !player_sprite.visible
+	wanderer_sprite.visible = !wanderer_sprite.visible
 	ship_sprite.visible = !ship_sprite.visible
 	if current_state == STATE.ON_LAND:
 		set_collision_mask_value(2, false)
