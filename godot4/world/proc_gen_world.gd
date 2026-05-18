@@ -141,13 +141,15 @@ func _input(_event) -> void:
 	
 func _camera_zoom() -> void:
 	if Input.is_action_just_pressed("zoom_in"):
-		var zoom_val =camera.zoom.x + 0.1
+		var zoom_val = camera.zoom.x + 0.1
+		if zoom_val > 2.0:
+			zoom_val = 2.0
 		camera.zoom = Vector2(zoom_val, zoom_val)
 		zoom_widget.set_zoom(camera.zoom)
 	elif Input.is_action_just_pressed("zoom_out"):
-		var zoom_val =camera.zoom.x - 0.1
-		if zoom_val == 0:
-			zoom_val = camera.zoom.x - 0.2
+		var zoom_val = camera.zoom.x - 0.1
+		if zoom_val < 0.5:
+			zoom_val = 0.5
 		camera.zoom = Vector2(zoom_val, zoom_val)
 		zoom_widget.set_zoom(camera.zoom)	
 
