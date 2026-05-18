@@ -34,6 +34,7 @@ var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Ve
 @onready var environment_layer: TileMapLayer = $TileMap/environment_layer
 @onready var camera: Camera2D = $Player/Camera2D
 @onready var map_borders: MapBorders = $MapBorders
+@onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
 
 
 func _ready() -> void:
@@ -42,6 +43,7 @@ func _ready() -> void:
 
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
+	zoom_widget.set_zoom(camera.zoom)
 	var starting_pos = _generate_world()
 	_setup_limits_and_borders()
 
@@ -134,20 +136,24 @@ func _generate_seed() -> void:
 func _input(_event) -> void:
 	_camera_zoom()
 	_board_ship()
+	_quit_game()
 	
 	
-func _camera_zoom():
+func _camera_zoom() -> void:
 	if Input.is_action_just_pressed("zoom_in"):
 		var zoom_val =camera.zoom.x + 0.1
 		camera.zoom = Vector2(zoom_val, zoom_val)
-		
+		zoom_widget.set_zoom(camera.zoom)
 	elif Input.is_action_just_pressed("zoom_out"):
 		var zoom_val =camera.zoom.x - 0.1
 		if zoom_val == 0:
 			zoom_val = camera.zoom.x - 0.2
 		camera.zoom = Vector2(zoom_val, zoom_val)
-	
-	elif Input.is_action_just_pressed("quit"):
+		zoom_widget.set_zoom(camera.zoom)	
+
+
+func _quit_game() -> void:
+	if Input.is_action_just_pressed("quit"):
 		get_tree().quit(0)
 
 
