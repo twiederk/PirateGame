@@ -45,6 +45,19 @@ func test_player_buys_fish_in_habor():
 	trading_system.buy("fish", 5)
 	
 	# assert
-	assert_eq(trading_system.cities.A.market.fish.stock, 45, "Stock is reduced in habor")
+	assert_eq(trading_system.cities.A.market.fish.stock, 45, "Fish is removed from stock of habor")
 	assert_eq(trading_system.player.gold, 75, "Gold is reduced from player")
 	assert_eq(trading_system.player.inventory.fish, 5, "Fish is put in inventory of player")
+
+
+func test_player_sells_fish_in_habor():
+	# arrange
+	trading_system.player.inventory.fish = 5
+	
+	# act
+	trading_system.sell("fish", 5)
+	
+	# assert
+	assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is added to stock of habor")
+	assert_eq(trading_system.player.gold, 125, "Gold is added to player")
+	assert_eq(trading_system.player.inventory.fish, 0, "Fish is removed from inventory of player")

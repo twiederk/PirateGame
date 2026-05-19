@@ -79,3 +79,18 @@ func buy(good_id: String, amount: int):
 	player.gold -= total_cost
 	player.inventory[good_id] += amount
 	cities[city]["market"][good_id]["stock"] -= amount
+
+
+
+func sell(good_id: String, amount: int):
+	var city = player.current_city
+	var price = get_price(city, good_id)
+
+	if player.inventory[good_id] < amount:
+		return
+
+	var total_gain = price * amount
+
+	player.gold += total_gain
+	player.inventory[good_id] -= amount
+	cities[city]["market"][good_id]["stock"] += amount
