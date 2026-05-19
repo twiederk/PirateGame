@@ -44,4 +44,5 @@ func _on_sell_fish_button_pressed():
 
 func _on_travel_button_pressed():
 	trading_system.travel("B")
+	city = trading_system.cities[player.current_city]
 	_update_gui()
