@@ -8,9 +8,11 @@ func before_each():
 
 
 func test_price_in_habor_for_fish():
+	# arrange
+	var city = trading_system.cities.A
 	
 	# act
-	var price = trading_system.get_price("A", "fish")
+	var price = trading_system.get_price(city, "fish")
 	
 	# assert
 	assert_eq(price, 5, "Price should not fall below min price")

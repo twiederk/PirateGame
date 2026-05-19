@@ -40,9 +40,9 @@ var player = {
 }
 
 
-func get_price(city_id: String, good_id: String) -> int:
+func get_price(city: Dictionary, good_id: String) -> int:
 	var base = goods[good_id]["base_price"]
-	var stock = cities[city_id]["market"][good_id]["stock"]
+	var stock = city["market"][good_id]["stock"]
 
 	# Simple rule:
 	# low stock → expensive, high stock → cheap
@@ -65,7 +65,7 @@ func has_space(amount: int) -> bool:
 	
 	
 func buy(good_id: String, amount: int):
-	var city = player.current_city
+	var city = cities[player.current_city]
 	var price = get_price(city, good_id)
 	var total_cost = price * amount
 
@@ -75,17 +75,17 @@ func buy(good_id: String, amount: int):
 	if not has_space(amount):
 		return
 
-	if cities[city]["market"][good_id]["stock"] < amount:
+	if city["market"][good_id]["stock"] < amount:
 		return
 
 	# apply transaction
 	player.gold -= total_cost
 	player.inventory[good_id] += amount
-	cities[city]["market"][good_id]["stock"] -= amount
+	city["market"][good_id]["stock"] -= amount
 
 
 func sell(good_id: String, amount: int):
-	var city = player.current_city
+	var city = cities[player.current_city]
 	var price = get_price(city, good_id)
 
 	if player.inventory[good_id] < amount:
@@ -95,7 +95,7 @@ func sell(good_id: String, amount: int):
 
 	player.gold += total_gain
 	player.inventory[good_id] -= amount
-	cities[city]["market"][good_id]["stock"] += amount
+	city["market"][good_id]["stock"] += amount
 
 
 func update_market(city_id: String):

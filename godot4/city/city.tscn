@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://b5rdq1cvlg4uu"]
+
+[ext_resource type="Script" uid="uid://cb01lexuy1va7" path="res://city/city.gd" id="1_2f1qc"]
+
+[node name="City" type="Control" unique_id=502314466]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2f1qc")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=76314715]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1511360140]
+layout_mode = 2
+
+[node name="CityName" type="Label" parent="CenterContainer/VBoxContainer" unique_id=646220943]
+layout_mode = 2
+text = "City Name"
+
+[node name="PlayerGold" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1057245146]
+layout_mode = 2
+text = "Player Gold"
+
+[node name="CityGoodFish" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=790509194]
+layout_mode = 2
+
+[node name="CityFish" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=2003425170]
+layout_mode = 2
+text = "Fish"
+
+[node name="CityFishAmount" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=496338392]
+layout_mode = 2
+text = "Fish Amount"
+
+[node name="CityFishPrice" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=1227950657]
+layout_mode = 2
+text = "Fish Price"
+
+[node name="BuyFishButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=1699722158]
+layout_mode = 2
+text = "+1"
+
+[node name="SellFishButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=899117417]
+layout_mode = 2
+text = "-1"
+
+[node name="CityGoodGrain" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1663138012]
+layout_mode = 2
+
+[node name="CityGrain" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=825812239]
+layout_mode = 2
+text = "Grain"
+
+[node name="CityGrainAmount" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=1160540225]
+layout_mode = 2
+text = "Grain  Amount"
+
+[node name="CityGrainPrice" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=171630655]
+layout_mode = 2
+text = "Grain Price"
+
+[node name="BuyGrainButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=140520984]
+layout_mode = 2
+text = "+1"
+
+[node name="SellGrainButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=1661638333]
+layout_mode = 2
+text = "-1"
+
+[node name="TravelButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2075163696]
+layout_mode = 2
+text = "Travel"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CityGoodFish/BuyFishButton" to="." method="_on_buy_fish_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CityGoodFish/SellFishButton" to="." method="_on_sell_fish_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/TravelButton" to="." method="_on_travel_button_pressed"]
