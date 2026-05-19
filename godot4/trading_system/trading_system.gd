@@ -48,3 +48,34 @@ func get_price(city_id: String, good_id: String) -> int:
 	var max_price = base * 3
 
 	return clampi(price, min_price, max_price)
+	
+
+func get_used_capacity() -> int:
+	var total = 0
+	for g in player.inventory:
+		total += player.inventory[g]
+	return total
+
+
+func has_space(amount: int) -> bool:
+	return get_used_capacity() + amount <= player.cargo_capacity
+	
+	
+func buy(good_id: String, amount: int):
+	var city = player.current_city
+	var price = get_price(city, good_id)
+	var total_cost = price * amount
+
+	if player.gold < total_cost:
+		return
+
+	if not has_space(amount):
+		return
+
+	if cities[city]["market"][good_id]["stock"] < amount:
+		return
+
+	# apply transaction
+	player.gold -= total_cost
+	player.inventory[good_id] += amount
+	cities[city]["market"][good_id]["stock"] -= amount
