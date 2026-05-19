@@ -1,9 +1,11 @@
 class_name TradingSystem
 
+
 var goods = {
 	"fish": { "base_price": 10 },
 	"grain": { "base_price": 15 }
 }
+
 
 var cities = {
 	"A": {
@@ -25,6 +27,7 @@ var cities = {
 		}
 	}
 }
+
 
 var player = {
 	"gold": 100,
@@ -48,7 +51,7 @@ func get_price(city_id: String, good_id: String) -> int:
 	var max_price = base * 3
 
 	return clampi(price, min_price, max_price)
-	
+
 
 func get_used_capacity() -> int:
 	var total = 0
@@ -81,7 +84,6 @@ func buy(good_id: String, amount: int):
 	cities[city]["market"][good_id]["stock"] -= amount
 
 
-
 func sell(good_id: String, amount: int):
 	var city = player.current_city
 	var price = get_price(city, good_id)
@@ -94,3 +96,15 @@ func sell(good_id: String, amount: int):
 	player.gold += total_gain
 	player.inventory[good_id] -= amount
 	cities[city]["market"][good_id]["stock"] += amount
+
+
+func update_market(city_id: String):
+	var city = cities[city_id]
+
+	for good_id in city.market:
+		if good_id in city.produces:
+			city.market[good_id]["stock"] += 5
+		if good_id in city.consumes:
+			city.market[good_id]["stock"] -= 3
+
+		city.market[good_id]["stock"] = max(1, city.market[good_id]["stock"])
