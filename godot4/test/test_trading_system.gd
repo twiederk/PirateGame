@@ -7,10 +7,10 @@ func before_each():
 	trading_system = TradingSystem.new()
 
 
-func test_execute():
+func test_price_in_habor_for_fish():
 	
 	# act
-	var price = trading_system.get_price()
+	var price = trading_system.get_price("A", "fish")
 	
 	# assert
-	assert_eq(price, 1, "Price should always be 1")
+	assert_eq(price, 5, "Price should not fall below min price")
