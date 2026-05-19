@@ -71,3 +71,15 @@ func test_update_market_of_habor():
 	assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is produced in habor")
 	assert_eq(trading_system.cities.A.market.grain.stock, 7, "Grain is consumed in habor")
 	
+
+func test_travel():
+	# act
+	trading_system.travel("B")
+	
+	# assert
+	assert_eq("B", trading_system.player.current_city, "Player travelled to farm")
+	assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is produced in habor")
+	assert_eq(trading_system.cities.A.market.grain.stock, 7, "Grain is consumed in habor")
+	assert_eq(trading_system.cities.B.market.fish.stock, 7, "Fish is consumed in farm")
+	assert_eq(trading_system.cities.B.market.grain.stock, 55, "Grain is produced in farm")
+	

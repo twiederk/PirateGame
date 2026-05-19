@@ -108,3 +108,11 @@ func update_market(city_id: String):
 			city.market[good_id]["stock"] -= 3
 
 		city.market[good_id]["stock"] = max(1, city.market[good_id]["stock"])
+
+
+func travel(to_city: String):
+	player.current_city = to_city
+
+	# simulate production/consumption once
+	update_market("A")
+	update_market("B")
