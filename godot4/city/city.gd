@@ -17,7 +17,11 @@ var city: Dictionary = trading_system.cities[player.current_city]
 
 func _ready():
 	_update_gui()
-	
+
+
+func _process(delta: float):
+	trading_system.advance_time(delta)
+
 
 func _update_gui() -> void:
 	city_name.text = city.name

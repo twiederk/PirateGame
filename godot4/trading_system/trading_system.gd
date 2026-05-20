@@ -13,8 +13,8 @@ var cities = {
 		"produces": ["fish"],
 		"consumes": ["grain"],
 		"market": {
-			"fish": { "stock": 50 },
-			"grain": { "stock": 10 }
+			"fish": { "stock": 50, "cached_stock": 50, "last_update": 0 },
+			"grain": { "stock": 10, "cached_stock": 10, "last_update": 0 }
 		}
 	},
 	"B": {
@@ -22,8 +22,8 @@ var cities = {
 		"produces": ["grain"],
 		"consumes": ["fish"],
 		"market": {
-			"fish": { "stock": 10 },
-			"grain": { "stock": 50 }
+			"fish": { "stock": 10, "cached_stock": 10, "last_update": 0 },
+			"grain": { "stock": 50, "cached_stock": 50, "last_update": 0 }
 		}
 	}
 }
@@ -39,18 +39,30 @@ var player = {
 	"current_city": "A"
 }
 
+var current_game_time = 0.0
+var price_update_interval = 60.0 # Preis aktualisiert sich alle 60 Sekunden
 
+# Berechnet Preis basierend auf GECACHTEM Stock
 func get_price(city: Dictionary, good_id: String) -> int:
 	var base = goods[good_id]["base_price"]
-	var stock = city["market"][good_id]["stock"]
-
-	# Simple rule:
-	# low stock → expensive, high stock → cheap
-	var price = base * (20.0 / max(stock, 1))
+	var cached_stock = city["market"][good_id]["cached_stock"]
+	
+	# Preis basiert auf gecachtem Stock, nicht echtem Stock
+	var price = base * (20.0 / max(cached_stock, 1))
 	var min_price = base * 0.5
 	var max_price = base * 3
-
 	return clampi(price, min_price, max_price)
+
+
+func should_update_prices(city: Dictionary, good_id: String) -> bool:
+	var last_update = city["market"][good_id]["last_update"]
+	return current_game_time - last_update >= price_update_interval
+
+
+func update_cached_stock(city: Dictionary, good_id: String):
+	# Aktualisiere gecachten Stock zum echten Stock
+	city["market"][good_id]["cached_stock"] = city["market"][good_id]["stock"]
+	city["market"][good_id]["last_update"] = current_game_time
 
 
 func get_used_capacity() -> int:
@@ -100,19 +112,33 @@ func sell(good_id: String, amount: int):
 
 func update_market(city_id: String):
 	var city = cities[city_id]
-
 	for good_id in city.market:
+		# Aktualisiere gecachte Preise wenn Zeit abgelaufen
+		if should_update_prices(city, good_id):
+			update_cached_stock(city, good_id)
+		
+		# Update echter Stock basierend auf Produktion/Verbrauch
 		if good_id in city.produces:
 			city.market[good_id]["stock"] += 5
 		if good_id in city.consumes:
 			city.market[good_id]["stock"] -= 3
-
+		
 		city.market[good_id]["stock"] = max(1, city.market[good_id]["stock"])
 
 
 func travel(to_city: String):
 	player.current_city = to_city
-
-	# simulate production/consumption once
+	current_game_time += 10.0 # Reise dauert 10 Sekunden
+	# Beim Stadtwechsel: Sofort Preise aktualisieren
+	for good_id in cities[to_city].market:
+		update_cached_stock(cities[to_city], good_id)
+	# simulate production/consumption
 	update_market("A")
 	update_market("B")
+
+
+
+
+func advance_time(delta: float):
+	# Rufe diese Funktion jedes Frame auf
+	current_game_time += delta
