@@ -34,56 +34,66 @@ text = "Player Gold"
 layout_mode = 2
 text = "Player Weight"
 
-[node name="CityGoodFish" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=790509194]
+[node name="Heading" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=790509194]
 layout_mode = 2
 
-[node name="CityFish" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=2003425170]
+[node name="Name" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=2003425170]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Handelsware"
+
+[node name="Price" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=1227950657]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Preis"
+
+[node name="PlayerStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=496338392]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Eigener
+Bestand"
+
+[node name="CityStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=1938835319]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Stadt
+Bestand"
+
+[node name="GoodRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=912500846]
+layout_mode = 2
+
+[node name="GoodName" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=1585043961]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Fisch"
 
-[node name="CityFishAmount" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=496338392]
-layout_mode = 2
-text = "Fish Amount"
-
-[node name="CityFishPrice" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=1227950657]
+[node name="GoodPrice" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=638732090]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "Fish Price"
 
-[node name="BuyFishButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=1699722158]
+[node name="PlayerAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=1965829623]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "+1"
+text = "Fish Amount"
 
-[node name="SellFishButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=899117417]
+[node name="CityAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=858156583]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "-1"
+text = "Fish Amount"
 
-[node name="CityGoodGrain" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1663138012]
+[node name="BuyButton" type="Button" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=521605812]
 layout_mode = 2
+text = "Kaufen"
 
-[node name="CityGrain" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=825812239]
+[node name="SellButton" type="Button" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=776894961]
 layout_mode = 2
-text = "Korn"
-
-[node name="CityGrainAmount" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=1160540225]
-layout_mode = 2
-text = "Grain  Amount"
-
-[node name="CityGrainPrice" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=171630655]
-layout_mode = 2
-text = "Grain Price"
-
-[node name="BuyGrainButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=140520984]
-layout_mode = 2
-text = "+1"
-
-[node name="SellGrainButton" type="Button" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=1661638333]
-layout_mode = 2
-text = "-1"
+text = "Verkaufen"
 
 [node name="TravelButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2075163696]
 layout_mode = 2
 text = "Travel"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CityGoodFish/BuyFishButton" to="." method="_on_buy_fish_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CityGoodFish/SellFishButton" to="." method="_on_sell_fish_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/GoodRow/BuyButton" to="." method="_on_buy_fish_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/GoodRow/SellButton" to="." method="_on_sell_fish_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TravelButton" to="." method="_on_travel_button_pressed"]
