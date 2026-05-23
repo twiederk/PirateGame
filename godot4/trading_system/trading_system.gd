@@ -10,6 +10,7 @@ var goods = {
 var cities = {
 	"A": {
 		"name": "Harbor",
+		"background_color": Color.BLUE,
 		"produces": ["fish"],
 		"consumes": ["grain"],
 		"market": {
@@ -19,6 +20,7 @@ var cities = {
 	},
 	"B": {
 		"name": "Farm",
+		"background_color": Color.DARK_GOLDENROD,
 		"produces": ["grain"],
 		"consumes": ["fish"],
 		"market": {

@@ -9,6 +9,7 @@ var city: Dictionary = trading_system.cities[player.current_city]
 @onready var city_name = $CenterContainer/VBoxContainer/CityName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
 @onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
+@onready var background = $Background
 
 @onready var good_name = $CenterContainer/VBoxContainer/GoodRow/GoodName
 @onready var good_price = $CenterContainer/VBoxContainer/GoodRow/GoodPrice
@@ -29,6 +30,7 @@ func _process(delta: float):
 
 func _update_gui() -> void:
 	city_name.text = city.name
+	background.self_modulate = city.background_color
 	player_gold.text = "Gold: " + str(player.gold)
 	player_weight.text = "Laderaum: " + str(trading_system.get_used_capacity()) + " / " + str(player.cargo_capacity)
 	

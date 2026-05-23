@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cb01lexuy1va7" path="res://city/city.gd" id="1_2f1qc"]
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_2f1qc"]
+
 [node name="City" type="Control" unique_id=502314466]
 layout_mode = 3
 anchors_preset = 15
@@ -10,6 +12,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2f1qc")
+
+[node name="Background" type="TextureRect" parent="." unique_id=2078317982]
+self_modulate = Color(0, 0, 0, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_2f1qc")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=76314715]
 layout_mode = 1
