@@ -8,6 +8,7 @@ var city: Dictionary = trading_system.cities[player.current_city]
 
 @onready var city_name = $CenterContainer/VBoxContainer/CityName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
+@onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
 @onready var city_fish_amount = $CenterContainer/VBoxContainer/CityGoodFish/CityFishAmount
 @onready var city_fish_price = $CenterContainer/VBoxContainer/CityGoodFish/CityFishPrice
 @onready var city_grain_amount = $CenterContainer/VBoxContainer/CityGoodGrain/CityGrainAmount
@@ -26,6 +27,7 @@ func _process(delta: float):
 func _update_gui() -> void:
 	city_name.text = city.name
 	player_gold.text = "Gold: " + str(player.gold)
+	player_weight.text = "Laderaum: " + str(trading_system.get_used_capacity()) + " / " + str(player.cargo_capacity)
 	city_fish_amount.text = str(city.market.fish.stock)
 	city_fish_price.text = str(trading_system.get_price(city, "fish")) + "$"
 	city_grain_amount.text = str(city.market.grain.stock)
@@ -35,6 +37,7 @@ func _update_gui() -> void:
 func _on_buy_fish_button_pressed():
 	trading_system.buy("fish", 1)
 	player_gold.text = "Gold: " + str(player.gold)
+	player_weight.text = "Laderaum: " + str(trading_system.get_used_capacity()) + " / " + str(player.cargo_capacity)
 	city_fish_amount.text = str(city.market.fish.stock)
 	city_fish_price.text = str(trading_system.get_price(city, "fish")) + "$"
 
@@ -42,6 +45,7 @@ func _on_buy_fish_button_pressed():
 func _on_sell_fish_button_pressed():
 	trading_system.sell("fish", 1)
 	player_gold.text = "Gold: " + str(player.gold)
+	player_weight.text = "Laderaum: " + str(trading_system.get_used_capacity()) + " / " + str(player.cargo_capacity)
 	city_fish_amount.text = str(city.market.fish.stock)
 	city_fish_price.text = str(trading_system.get_price(city, "fish")) + "$"
 

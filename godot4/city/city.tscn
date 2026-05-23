@@ -30,12 +30,16 @@ text = "City Name"
 layout_mode = 2
 text = "Player Gold"
 
+[node name="PlayerWeight" type="Label" parent="CenterContainer/VBoxContainer" unique_id=984305985]
+layout_mode = 2
+text = "Player Weight"
+
 [node name="CityGoodFish" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=790509194]
 layout_mode = 2
 
 [node name="CityFish" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=2003425170]
 layout_mode = 2
-text = "Fish"
+text = "Fisch"
 
 [node name="CityFishAmount" type="Label" parent="CenterContainer/VBoxContainer/CityGoodFish" unique_id=496338392]
 layout_mode = 2
@@ -58,7 +62,7 @@ layout_mode = 2
 
 [node name="CityGrain" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=825812239]
 layout_mode = 2
-text = "Grain"
+text = "Korn"
 
 [node name="CityGrainAmount" type="Label" parent="CenterContainer/VBoxContainer/CityGoodGrain" unique_id=1160540225]
 layout_mode = 2
