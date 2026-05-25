@@ -52,5 +52,8 @@ tile_set = ExtResource("2_btogb")
 
 [node name="Towns" type="Node2D" parent="." unique_id=803467509]
 
-[node name="TownTile" parent="Towns" unique_id=269579701 instance=ExtResource("7_qlqlx")]
+[node name="TownTile1" parent="Towns" unique_id=269579701 instance=ExtResource("7_qlqlx")]
 position = Vector2(504, 1208)
+
+[node name="TownTile2" parent="Towns" unique_id=134508897 instance=ExtResource("7_qlqlx")]
+position = Vector2(344, 1208)
