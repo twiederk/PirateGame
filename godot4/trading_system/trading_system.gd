@@ -7,29 +7,6 @@ var goods = {
 }
 
 
-var cities = {
-	"A": {
-		"name": "Harbor",
-		"background_color": Color.BLUE,
-		"produces": ["fish"],
-		"consumes": ["grain"],
-		"market": {
-			"fish": { "stock": 50, "cached_stock": 50, "last_update": 0 },
-			"grain": { "stock": 10, "cached_stock": 10, "last_update": 0 }
-		}
-	},
-	"B": {
-		"name": "Farm",
-		"background_color": Color.DARK_GOLDENROD,
-		"produces": ["grain"],
-		"consumes": ["fish"],
-		"market": {
-			"fish": { "stock": 10, "cached_stock": 10, "last_update": 0 },
-			"grain": { "stock": 50, "cached_stock": 50, "last_update": 0 }
-		}
-	}
-}
-
 
 var player = {
 	"gold": 100,
