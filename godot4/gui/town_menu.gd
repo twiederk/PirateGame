@@ -18,7 +18,7 @@ var town: Dictionary = trading_system.cities[player.current_city]
 @onready var good_name = $CenterContainer/VBoxContainer/GoodRow/GoodName
 @onready var good_price = $CenterContainer/VBoxContainer/GoodRow/GoodPrice
 @onready var player_amount = $CenterContainer/VBoxContainer/GoodRow/PlayerAmount
-@onready var city_amount = $CenterContainer/VBoxContainer/GoodRow/CityAmount
+@onready var town_amount = $CenterContainer/VBoxContainer/GoodRow/TownAmount
 @onready var buy_button = $CenterContainer/VBoxContainer/GoodRow/BuyButton
 @onready var sell_button = $CenterContainer/VBoxContainer/GoodRow/SellButton
 
@@ -41,7 +41,7 @@ func _update_gui() -> void:
 	good_name.text = "Fisch"
 	good_price.text = str(trading_system.get_price(town, "fish")) + "$"
 	player_amount.text = str(player.inventory.fish)
-	city_amount.text = str(town.market.fish.stock)
+	town_amount.text = str(town.market.fish.stock)
 
 func _on_buy_fish_button_pressed():
 	trading_system.buy("fish", 1)
@@ -58,6 +58,6 @@ func _on_travel_button_pressed():
 		#trading_system.travel("B")
 	#else:
 		#trading_system.travel("A")
-	#city = trading_system.cities[player.current_city]
-	#_update_gui()
+	#town = trading_system.cities[player.current_city]
+	_update_gui()
 	town_left.emit()
