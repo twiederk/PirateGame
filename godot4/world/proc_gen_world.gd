@@ -7,8 +7,8 @@ extends Node2D
 @export var seed_value: int = 0
 
 
-var width : int = 300
-var height : int =  300
+var width : int = 100
+var height : int =  100
 
 var noise : Noise
 var tree_noise : Noise
