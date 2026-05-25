@@ -35,6 +35,7 @@ var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Ve
 @onready var camera: Camera2D = $Player/Camera2D
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
+@onready var city = $gui/City
 
 
 func _ready() -> void:
@@ -185,3 +186,15 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 	camera.set_limit(SIDE_RIGHT, int(east_limit))
 	camera.set_limit(SIDE_TOP, int(north_limit))
 	camera.set_limit(SIDE_BOTTOM, int(south_limit))
+
+
+func _on_city_tile_city_entered():
+	tile_map.hide()
+	player.hide()
+	city.show()
+
+
+func _on_city_city_left():
+	tile_map.show()
+	player.show()
+	city.hide()

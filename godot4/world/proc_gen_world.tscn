@@ -4,6 +4,7 @@
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="3_wx8f2"]
 [ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="4_btogb"]
+[ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://city/city.tscn" id="5_6c8px"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="5_nx8yj"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="5_wx8f2"]
 [ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/city_tile.tscn" id="7_qlqlx"]
@@ -67,6 +68,9 @@ y_sort_enabled = true
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
+[node name="CityTile" parent="TileMap" unique_id=831812660 instance=ExtResource("7_qlqlx")]
+position = Vector2(504, 1208)
+
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("3_wx8f2")]
 position = Vector2(736, 410)
 SPEED = 300.0
@@ -74,13 +78,16 @@ SPEED = 300.0
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
 position = Vector2(0, -6)
 
-[node name="CityTile" parent="." unique_id=831812660 instance=ExtResource("7_qlqlx")]
-position = Vector2(504, 1208)
-
 [node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
+
+[node name="City" parent="gui" unique_id=502314466 instance=ExtResource("5_6c8px")]
+visible = false
 
 [node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("4_btogb")]
 
 [node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("5_nx8yj")]
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("5_wx8f2")]
+
+[connection signal="city_entered" from="TileMap/CityTile" to="." method="_on_city_tile_city_entered"]
+[connection signal="city_left" from="gui/City" to="." method="_on_city_city_left"]

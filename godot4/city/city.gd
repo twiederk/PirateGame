@@ -1,6 +1,10 @@
 class_name City
 extends Control
 
+
+signal city_left
+
+
 var trading_system: TradingSystem = TradingSystem.new()
 
 var player: Dictionary = trading_system.player
@@ -50,9 +54,10 @@ func _on_sell_fish_button_pressed():
 
 
 func _on_travel_button_pressed():
-	if trading_system.player.current_city == "A":
-		trading_system.travel("B")
-	else:
-		trading_system.travel("A")
-	city = trading_system.cities[player.current_city]
-	_update_gui()
+	#if trading_system.player.current_city == "A":
+		#trading_system.travel("B")
+	#else:
+		#trading_system.travel("A")
+	#city = trading_system.cities[player.current_city]
+	#_update_gui()
+	city_left.emit()

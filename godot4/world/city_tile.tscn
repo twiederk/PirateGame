@@ -1,11 +1,21 @@
 [gd_scene format=3 uid="uid://baxxgmcrsalyx"]
 
 [ext_resource type="Texture2D" uid="uid://b7xcipud8gli" path="res://world/world.png" id="1_eevg3"]
+[ext_resource type="Script" uid="uid://vpeeg5213bi4" path="res://world/city_tile.gd" id="1_pwnmr"]
 
-[node name="CityTile" type="Node2D" unique_id=831812660]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5v6rl"]
+size = Vector2(32, 32)
+
+[node name="CityTile" type="Area2D" unique_id=269579701]
+script = ExtResource("1_pwnmr")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=490735252]
 texture = ExtResource("1_eevg3")
 hframes = 10
 vframes = 12
 frame = 96
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1195498840]
+shape = SubResource("RectangleShape2D_5v6rl")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
