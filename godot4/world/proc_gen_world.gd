@@ -188,7 +188,7 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 	camera.set_limit(SIDE_BOTTOM, int(south_limit))
 
 
-func _on_city_tile_town_entered():
+func _on_town_tile_town_entered():
 	tile_map.hide()
 	player.hide()
 	city.show()
