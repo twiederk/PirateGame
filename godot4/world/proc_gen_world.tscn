@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="4_btogb"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="5_nx8yj"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="5_wx8f2"]
+[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/city_tile.tscn" id="7_qlqlx"]
 
 [sub_resource type="Gradient" id="Gradient_y5bgd"]
 interpolation_mode = 1
@@ -72,6 +73,9 @@ SPEED = 300.0
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
 position = Vector2(0, -6)
+
+[node name="CityTile" parent="." unique_id=831812660 instance=ExtResource("7_qlqlx")]
+position = Vector2(504, 1208)
 
 [node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
 

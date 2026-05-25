@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://baxxgmcrsalyx"]
+
+[ext_resource type="Texture2D" uid="uid://b7xcipud8gli" path="res://world/world.png" id="1_eevg3"]
+
+[node name="CityTile" type="Node2D" unique_id=831812660]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=490735252]
+texture = ExtResource("1_eevg3")
+hframes = 10
+vframes = 12
+frame = 96
