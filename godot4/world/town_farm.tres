@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1_f2cn8")
-name = "Habor"
-background_color = Color(0, 0, 1, 1)
-produces = Array[String](["fish"])
-consumes = Array[String](["grain"])
-stock = 50
+name = "Farm"
+background_color = Color(0.30828562, 0.3673456, 0.01934423, 1)
+produces = Array[String](["grain"])
+consumes = Array[String](["fish"])
+stock = 10
 metadata/_custom_type_script = "uid://cld1u8ymg8ifj"
