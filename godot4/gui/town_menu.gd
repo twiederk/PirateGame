@@ -35,15 +35,15 @@ func _update_gui() -> void:
 	good_name.text = "Fisch"
 	good_price.text = str(trading_system.get_price(_town, "fish")) + "$"
 	player_amount.text = str(player.inventory.fish)
-	town_amount.text = str(_town.market.fish.stock)
+	town_amount.text = str(_town.get_stock("fish"))
 
 func _on_buy_fish_button_pressed():
-	trading_system.buy("fish", 1)
+	trading_system.buy(_town, "fish", 1)
 	_update_gui()
 
 
 func _on_sell_fish_button_pressed():
-	trading_system.sell("fish", 1)
+	trading_system.sell(_town, "fish", 1)
 	_update_gui()
 
 

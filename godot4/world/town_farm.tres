@@ -8,4 +8,5 @@ name = "Habor"
 background_color = Color(0, 0, 1, 1)
 produces = Array[String](["fish"])
 consumes = Array[String](["grain"])
+stock = 50
 metadata/_custom_type_script = "uid://cld1u8ymg8ifj"

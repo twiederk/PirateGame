@@ -78,9 +78,8 @@ func has_space(amount: int) -> bool:
 	return get_used_capacity() + amount <= player.cargo_capacity
 	
 	
-func buy(good_id: String, amount: int):
-	var city = cities[player.current_city]
-	var price = get_price(city, good_id)
+func buy(town: TownTile, good_id: String, amount: int):
+	var price = get_price(town, good_id)
 	var total_cost = price * amount
 
 	if player.gold < total_cost:
@@ -89,18 +88,17 @@ func buy(good_id: String, amount: int):
 	if not has_space(amount):
 		return
 
-	if city["market"][good_id]["stock"] < amount:
+	if town.get_stock("fish") < amount:
 		return
 
 	# apply transaction
 	player.gold -= total_cost
 	player.inventory[good_id] += amount
-	city["market"][good_id]["stock"] -= amount
+	town.set_stock(town.get_stock("fish") - amount)
 
 
-func sell(good_id: String, amount: int):
-	var city = cities[player.current_city]
-	var price = get_price(city, good_id)
+func sell(town: TownTile, good_id: String, amount: int):
+	var price = get_price(town, good_id)
 
 	if player.inventory[good_id] < amount:
 		return
@@ -109,7 +107,7 @@ func sell(good_id: String, amount: int):
 
 	player.gold += total_gain
 	player.inventory[good_id] -= amount
-	city["market"][good_id]["stock"] += amount
+	town.set_stock(town.get_stock("fish") + amount)
 
 
 func update_market(city_id: String):

@@ -5,4 +5,4 @@ extends Resource
 @export var background_color: Color
 @export var produces: Array[String]
 @export var consumes: Array[String]
-@export var market: Dictionary
+@export var stock: int
