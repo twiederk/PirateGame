@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://city/city.tscn" id="5_6c8px"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="5_nx8yj"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="5_wx8f2"]
-[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/city_tile.tscn" id="7_qlqlx"]
+[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="7_qlqlx"]
 
 [sub_resource type="Gradient" id="Gradient_y5bgd"]
 interpolation_mode = 1
