@@ -194,7 +194,7 @@ func _on_city_tile_town_entered():
 	city.show()
 
 
-func _on_city_town_left():
+func _on_town_menu_town_left():
 	tile_map.show()
 	player.show()
 	city.hide()
