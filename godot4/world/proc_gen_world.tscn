@@ -4,9 +4,15 @@
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
 [ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="7_qlqlx"]
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_p51ow"]
+
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p51ow"]
+noise = SubResource("FastNoiseLite_p51ow")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_btogb"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_btogb"]
+noise = SubResource("FastNoiseLite_btogb")
 
 [node name="ProcGenWorld" type="Node2D" unique_id=572580707]
 y_sort_enabled = true
