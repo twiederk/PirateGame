@@ -1,8 +1,8 @@
-class_name City
+class_name TownMenu
 extends Control
 
 
-signal city_left
+signal town_left
 
 
 var trading_system: TradingSystem = TradingSystem.new()
@@ -60,4 +60,4 @@ func _on_travel_button_pressed():
 		#trading_system.travel("A")
 	#city = trading_system.cities[player.current_city]
 	#_update_gui()
-	city_left.emit()
+	town_left.emit()
