@@ -1,4 +1,4 @@
-class_name CityTile
+class_name TownTile
 extends Area2D
 
 
