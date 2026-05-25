@@ -4,9 +4,16 @@
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
 [ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="7_qlqlx"]
 
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p51ow"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_btogb"]
+
 [node name="ProcGenWorld" type="Node2D" unique_id=572580707]
 y_sort_enabled = true
 script = ExtResource("1_p51ow")
+noise_texture = SubResource("NoiseTexture2D_p51ow")
+tree_noise_texture = SubResource("NoiseTexture2D_btogb")
+seed_value = -57
 
 [node name="water_layer" type="TileMapLayer" parent="." unique_id=553333346]
 z_index = -1
