@@ -36,7 +36,7 @@ func _physics_process(_delta):
 
 
 func _update_animation_parameters():
-	if(velocity == Vector2.ZERO):
+	if velocity == Vector2.ZERO:
 		animation_tree["parameters/conditions/is_idle"] = true
 		animation_tree["parameters/conditions/is_moving"] = false
 	else:
