@@ -32,7 +32,6 @@ var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Ve
 
 
 func _ready() -> void:
-	print("ProcGenWorld._ready()")
 	noise = noise_texture.noise
 	tree_noise = tree_noise_texture.noise
 

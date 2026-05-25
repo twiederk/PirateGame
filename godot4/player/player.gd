@@ -62,7 +62,7 @@ func board_ship():
 		current_state = STATE.ON_LAND
 
 
-func _on_town_tile_town_entered() -> void:
+func _on_town_tile_town_entered(town: TownTile) -> void:
 	current_state = STATE.IN_TOWN
 
 
