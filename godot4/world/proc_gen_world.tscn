@@ -35,7 +35,7 @@ y_sort_enabled = true
 script = ExtResource("1_p51ow")
 noise_texture = SubResource("NoiseTexture2D_8ve5r")
 tree_noise_texture = SubResource("NoiseTexture2D_0a6k0")
-seed_value = 1
+seed_value = -57
 
 [node name="TileMap" type="Node2D" parent="." unique_id=1456979477]
 y_sort_enabled = true

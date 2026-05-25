@@ -12,7 +12,6 @@ var height : int =  300
 
 var noise : Noise
 var tree_noise : Noise
-var rng := RandomNumberGenerator.new()
 
 var water_tile = Vector2i(0,1)
 var random_palm_tree_array = [Vector2i(12, 2), Vector2i(15,2) ]
@@ -89,7 +88,7 @@ func _generate_world() -> Vector2i:
 
 	if grass_arr.is_empty():
 		return Vector2i.ZERO
-	return grass_arr[rng.randi_range(0, grass_arr.size() - 1)]
+	return grass_arr.pick_random()
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
@@ -102,7 +101,7 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 		grass_arr.append(curr_pos)
 		if noise_val > 0.3:
 			#random grass
-			ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr[rng.randi_range(0, random_grass_tile_arr.size() - 1)])
+			ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
@@ -126,13 +125,13 @@ func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector
 	# setting palm trees on sand, between water and grass
 	if (noise_val > 0.0) and (noise_val < 0.18):
 		if tree_noise_val > 0.92:
-			environment_layer.set_cell(curr_pos, 0, random_palm_tree_array[rng.randi_range(0, random_palm_tree_array.size() - 1)])
+			environment_layer.set_cell(curr_pos, 0, random_palm_tree_array.pick_random())
 
 
 func _generate_seed() -> void:
 	if seed_value == 0:
 		seed_value = randi()
-	rng.seed = seed_value
+	seed(seed_value)
 	noise.seed = seed_value
 	tree_noise.seed = seed_value
 
