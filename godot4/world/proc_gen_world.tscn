@@ -80,7 +80,7 @@ position = Vector2(0, -6)
 
 [node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
 
-[node name="City" parent="gui" unique_id=502314466 instance=ExtResource("5_6c8px")]
+[node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_6c8px")]
 visible = false
 
 [node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("4_btogb")]
@@ -90,4 +90,4 @@ visible = false
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("5_wx8f2")]
 
 [connection signal="town_entered" from="TileMap/TownTile" to="." method="_on_town_tile_town_entered"]
-[connection signal="town_left" from="gui/City" to="." method="_on_town_menu_town_left"]
+[connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
