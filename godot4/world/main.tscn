@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://dhptvycu3kb8x"]
 
 [ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/main.gd" id="1_04q08"]
-[ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_vrojb"]
-[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="3_qnd6n"]
+[ext_resource type="PackedScene" uid="uid://blu6n1yghidqx" path="res://world/proc_gen_world.tscn" id="2_gu74f"]
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
 [ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="6_tp5tb"]
@@ -39,39 +38,7 @@ noise_texture = SubResource("NoiseTexture2D_8ve5r")
 tree_noise_texture = SubResource("NoiseTexture2D_0a6k0")
 seed_value = -57
 
-[node name="TileMap" type="Node2D" parent="." unique_id=1456979477]
-y_sort_enabled = true
-
-[node name="water_layer" type="TileMapLayer" parent="TileMap" unique_id=1452408615]
-z_index = -1
-use_parent_material = true
-tile_set = ExtResource("2_vrojb")
-
-[node name="ground_layer" type="TileMapLayer" parent="TileMap" unique_id=1207211925]
-z_index = -1
-use_parent_material = true
-tile_set = ExtResource("2_vrojb")
-
-[node name="ground2_layer" type="TileMapLayer" parent="TileMap" unique_id=834222849]
-z_index = -1
-use_parent_material = true
-tile_set = ExtResource("2_vrojb")
-
-[node name="cliff_layer" type="TileMapLayer" parent="TileMap" unique_id=2013653554]
-y_sort_enabled = true
-use_parent_material = true
-tile_set = ExtResource("2_vrojb")
-y_sort_origin = 16
-
-[node name="environment_layer" type="TileMapLayer" parent="TileMap" unique_id=908692093]
-y_sort_enabled = true
-use_parent_material = true
-tile_set = ExtResource("2_vrojb")
-
-[node name="Towns" type="Node2D" parent="TileMap" unique_id=669584381]
-
-[node name="TownTile" parent="TileMap/Towns" unique_id=831812660 instance=ExtResource("3_qnd6n")]
-position = Vector2(504, 1208)
+[node name="TileMap" parent="." unique_id=572580707 instance=ExtResource("2_gu74f")]
 
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
 position = Vector2(736, 410)
