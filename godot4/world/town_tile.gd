@@ -2,8 +2,8 @@ class_name CityTile
 extends Area2D
 
 
-signal city_entered
+signal town_entered
 
 
 func _on_body_entered(_body):
-	city_entered.emit()
+	town_entered.emit()
