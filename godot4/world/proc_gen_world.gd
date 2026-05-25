@@ -36,6 +36,7 @@ var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Ve
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
 @onready var town_menu = $gui/TownMenu
+@onready var towns: Node2D = $TileMap/Towns
 
 
 func _ready() -> void:
@@ -46,6 +47,7 @@ func _ready() -> void:
 	tree_noise = tree_noise_texture.noise
 	zoom_widget.set_zoom(camera.zoom)
 	var starting_pos = _generate_world()
+	_generate_towns()
 	_setup_limits_and_borders()
 
 	@warning_ignore("integer_division")
@@ -136,6 +138,13 @@ func _generate_seed() -> void:
 	noise.seed = seed_value
 	tree_noise.seed = seed_value
 
+
+func _generate_towns() -> void:
+	for town in towns.get_children():
+		if town.has_signal("town_entered"):
+			town.town_entered.connect(_on_town_tile_town_entered)
+			town.town_entered.connect(player._on_town_tile_town_entered)
+		
 
 func _input(_event) -> void:
 	_camera_zoom()
