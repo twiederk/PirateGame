@@ -1,0 +1,2 @@
+class_name ProcGenWorld
+extends Node2D

@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://blu6n1yghidqx"]
 
+[ext_resource type="Script" uid="uid://dqyqpn2l6q80t" path="res://world/proc_gen_world.gd" id="1_p51ow"]
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
 [ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="7_qlqlx"]
 
-[node name="TileMap" type="Node2D" unique_id=572580707]
+[node name="ProcGenWorld" type="Node2D" unique_id=572580707]
 y_sort_enabled = true
+script = ExtResource("1_p51ow")
 
 [node name="water_layer" type="TileMapLayer" parent="." unique_id=553333346]
 z_index = -1
