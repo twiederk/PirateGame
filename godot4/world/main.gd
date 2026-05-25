@@ -2,15 +2,12 @@ class_name Main
 extends Node2D
 
 
-
-
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
-@onready var towns: Node2D = $ProcGenWorld/Towns
 @onready var player: CharacterBody2D = $Player
 @onready var camera: Camera2D = $Player/Camera2D
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
-@onready var town_menu = $gui/TownMenu
+@onready var town_menu: TownMenu = $gui/TownMenu
 
 
 func _ready() -> void:
@@ -39,7 +36,7 @@ func _setup_limits_and_borders() -> void:
 
 
 func _generate_towns() -> void:
-	for town in towns.get_children():
+	for town in proc_gen_world.get_towns():
 		if town.has_signal("town_entered"):
 			town.town_entered.connect(_on_town_tile_town_entered)
 			town.town_entered.connect(player._on_town_tile_town_entered)
@@ -82,7 +79,6 @@ func _board_ship() -> void:
 
 func _is_coast() -> bool:
 	return proc_gen_world.is_coast(player.position)
-
 
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:

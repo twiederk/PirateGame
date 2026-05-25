@@ -28,6 +28,7 @@ var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Ve
 @onready var ground_2_layer: TileMapLayer = $ground2_layer
 @onready var cliff_layer: TileMapLayer = $cliff_layer
 @onready var environment_layer: TileMapLayer = $environment_layer
+@onready var towns: Node2D = $Towns
 
 
 func _ready() -> void:
@@ -123,3 +124,6 @@ func is_coast(player_position: Vector2) -> bool:
 		return tile_data.get_custom_data("coast")
 	else:
 		return false
+
+func get_towns() -> Array:
+	return towns.get_children()
