@@ -1,4 +1,4 @@
-class_name ProcGenWorld
+class_name Main
 extends Node2D
 
 

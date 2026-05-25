@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://dhptvycu3kb8x"]
 
-[ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/proc_gen_world.gd" id="1_p51ow"]
-[ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
-[ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="3_wx8f2"]
-[ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="4_btogb"]
-[ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_6c8px"]
-[ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="5_nx8yj"]
-[ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="5_wx8f2"]
-[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="7_qlqlx"]
+[ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/main.gd" id="1_04q08"]
+[ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_vrojb"]
+[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="3_qnd6n"]
+[ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
+[ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
+[ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="6_tp5tb"]
+[ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
+[ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
 
 [sub_resource type="Gradient" id="Gradient_y5bgd"]
 interpolation_mode = 1
@@ -32,9 +32,9 @@ fractal_octaves = 1
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0a6k0"]
 noise = SubResource("FastNoiseLite_awwj8")
 
-[node name="proc_gen_world" type="Node2D" unique_id=639576338]
+[node name="Main" type="Node2D" unique_id=639576338]
 y_sort_enabled = true
-script = ExtResource("1_p51ow")
+script = ExtResource("1_04q08")
 noise_texture = SubResource("NoiseTexture2D_8ve5r")
 tree_noise_texture = SubResource("NoiseTexture2D_0a6k0")
 seed_value = -57
@@ -45,35 +45,35 @@ y_sort_enabled = true
 [node name="water_layer" type="TileMapLayer" parent="TileMap" unique_id=1452408615]
 z_index = -1
 use_parent_material = true
-tile_set = ExtResource("2_btogb")
+tile_set = ExtResource("2_vrojb")
 
 [node name="ground_layer" type="TileMapLayer" parent="TileMap" unique_id=1207211925]
 z_index = -1
 use_parent_material = true
-tile_set = ExtResource("2_btogb")
+tile_set = ExtResource("2_vrojb")
 
 [node name="ground2_layer" type="TileMapLayer" parent="TileMap" unique_id=834222849]
 z_index = -1
 use_parent_material = true
-tile_set = ExtResource("2_btogb")
+tile_set = ExtResource("2_vrojb")
 
 [node name="cliff_layer" type="TileMapLayer" parent="TileMap" unique_id=2013653554]
 y_sort_enabled = true
 use_parent_material = true
-tile_set = ExtResource("2_btogb")
+tile_set = ExtResource("2_vrojb")
 y_sort_origin = 16
 
 [node name="environment_layer" type="TileMapLayer" parent="TileMap" unique_id=908692093]
 y_sort_enabled = true
 use_parent_material = true
-tile_set = ExtResource("2_btogb")
+tile_set = ExtResource("2_vrojb")
 
 [node name="Towns" type="Node2D" parent="TileMap" unique_id=669584381]
 
-[node name="TownTile" parent="TileMap/Towns" unique_id=831812660 instance=ExtResource("7_qlqlx")]
+[node name="TownTile" parent="TileMap/Towns" unique_id=831812660 instance=ExtResource("3_qnd6n")]
 position = Vector2(504, 1208)
 
-[node name="Player" parent="." unique_id=755367759 instance=ExtResource("3_wx8f2")]
+[node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
 position = Vector2(736, 410)
 SPEED = 300.0
 
@@ -82,14 +82,14 @@ position = Vector2(0, -6)
 
 [node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
 
-[node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_6c8px")]
+[node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_vid1e")]
 visible = false
 
-[node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("4_btogb")]
+[node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("6_tp5tb")]
 
-[node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("5_nx8yj")]
+[node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
 
-[node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("5_wx8f2")]
+[node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
 [connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
 [connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_menu_town_left"]
