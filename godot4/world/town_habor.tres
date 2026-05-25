@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TownResource" format=3 uid="uid://bbipqeb2uqom4"]
+
+[ext_resource type="Script" uid="uid://cld1u8ymg8ifj" path="res://world/town_resource.gd" id="1_ny4qs"]
+
+[resource]
+script = ExtResource("1_ny4qs")
+name = "Habor"
+background_color = Color(0, 0, 1, 1)
+produces = Array[String](["fish"])
+consumes = Array[String](["grain"])
+metadata/_custom_type_script = "uid://cld1u8ymg8ifj"

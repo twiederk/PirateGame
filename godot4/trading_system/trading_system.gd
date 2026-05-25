@@ -45,9 +45,9 @@ var current_game_time = 0.0
 var price_update_interval = 60.0 # Preis aktualisiert sich alle 60 Sekunden
 
 # Berechnet Preis basierend auf GECACHTEM Stock
-func get_price(city: Dictionary, good_id: String) -> int:
+func get_price(town: TownTile, good_id: String) -> int:
 	var base = goods[good_id]["base_price"]
-	var cached_stock = city["market"][good_id]["cached_stock"]
+	var cached_stock = town.get_cached_stock(good_id)
 	
 	# Preis basiert auf gecachtem Stock, nicht echtem Stock
 	var price = base * (20.0 / max(cached_stock, 1))

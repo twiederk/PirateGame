@@ -4,11 +4,10 @@ extends Control
 
 signal town_left
 
-
 var trading_system: TradingSystem = TradingSystem.new()
 
 var player: Dictionary = trading_system.player
-var town: Dictionary = trading_system.cities[player.current_city]
+var _town: TownTile
 
 @onready var town_name = $CenterContainer/VBoxContainer/TownName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
@@ -23,25 +22,20 @@ var town: Dictionary = trading_system.cities[player.current_city]
 @onready var sell_button = $CenterContainer/VBoxContainer/GoodRow/SellButton
 
 
-
-func _ready():
-	_update_gui()
-
-
 func _process(delta: float):
 	trading_system.advance_time(delta)
 
 
 func _update_gui() -> void:
-	town_name.text = town.name
-	background.self_modulate = town.background_color
+	town_name.text = _town.name
+	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + str(player.gold)
 	player_weight.text = "Laderaum: " + str(trading_system.get_used_capacity()) + " / " + str(player.cargo_capacity)
 	
 	good_name.text = "Fisch"
-	good_price.text = str(trading_system.get_price(town, "fish")) + "$"
+	good_price.text = str(trading_system.get_price(_town, "fish")) + "$"
 	player_amount.text = str(player.inventory.fish)
-	town_amount.text = str(town.market.fish.stock)
+	town_amount.text = str(_town.market.fish.stock)
 
 func _on_buy_fish_button_pressed():
 	trading_system.buy("fish", 1)
@@ -61,3 +55,9 @@ func _on_travel_button_pressed():
 	#town = trading_system.cities[player.current_city]
 	_update_gui()
 	town_left.emit()
+
+
+func set_town(town: TownTile) -> void:
+	_town = town
+	_update_gui()
+	

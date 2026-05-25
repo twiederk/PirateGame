@@ -88,9 +88,10 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 	camera.set_limit(SIDE_BOTTOM, int(south_limit))
 
 
-func _on_town_tile_town_entered():
+func _on_town_tile_town_entered(town: TownTile):
 	proc_gen_world.hide()
 	player.hide()
+	town_menu.set_town(town)
 	town_menu.show()
 
 
