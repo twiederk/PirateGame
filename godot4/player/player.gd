@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 @export var SPEED : float = 150.0
 
-enum STATE { ON_LAND, ON_SHIP }
+enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
 var current_state = STATE.ON_LAND
 
@@ -24,6 +24,9 @@ func _process(_delta):
 
 
 func _physics_process(_delta):
+	if current_state == STATE.IN_TOWN:
+		return
+
 	direction = Input.get_vector("left", "right","up","down").normalized()
 	if direction:
 		velocity = direction * SPEED
@@ -57,3 +60,11 @@ func board_ship():
 		set_collision_mask_value(2, true)
 		set_collision_mask_value(3, false)
 		current_state = STATE.ON_LAND
+
+
+func _on_town_tile_town_entered() -> void:
+	current_state = STATE.IN_TOWN
+
+
+func _on_town_menu_town_left() -> void:
+	current_state = STATE.ON_LAND

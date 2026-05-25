@@ -90,4 +90,6 @@ visible = false
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("5_wx8f2")]
 
 [connection signal="town_entered" from="TileMap/TownTile" to="." method="_on_town_tile_town_entered"]
+[connection signal="town_entered" from="TileMap/TownTile" to="Player" method="_on_town_tile_town_entered"]
 [connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
+[connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_menu_town_left"]
