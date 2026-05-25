@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b5rdq1cvlg4uu"]
 
-[ext_resource type="Script" uid="uid://cb01lexuy1va7" path="res://city/city.gd" id="1_2f1qc"]
+[ext_resource type="Script" uid="uid://cb01lexuy1va7" path="res://gui/town_menu.gd" id="1_2f1qc"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_2f1qc"]
 
