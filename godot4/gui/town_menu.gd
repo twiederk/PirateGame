@@ -48,11 +48,7 @@ func _on_sell_fish_button_pressed():
 
 
 func _on_travel_button_pressed():
-	#if trading_system.player.current_city == "A":
-		#trading_system.travel("B")
-	#else:
-		#trading_system.travel("A")
-	#town = trading_system.cities[player.current_city]
+	trading_system.travel(_town)
 	_update_gui()
 	town_left.emit()
 

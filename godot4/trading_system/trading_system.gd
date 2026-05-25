@@ -83,24 +83,23 @@ func sell(town: TownTile, good_id: String, amount: int):
 
 func update_market(town: TownTile):
 	# Aktualisiere gecachte Preise wenn Zeit abgelaufen
-	if should_update_prices(town):
-		town.update_cached_stock(current_game_time)
+	#if should_update_prices(town):
+	town.update_cached_stock(current_game_time)
 	
 	# Update echter Stock basierend auf Produktion/Verbrauch
-	if "fish" in town.produces:
+	if "fish" in town.town_resource.produces:
 		town.set_stock(town.get_stock() + 5)
-	if "fish" in town.consumes:
+	if "fish" in town.town_resource.consumes:
 		town.set_stock(town.get_stock() - 3)
 	town.set_stock(max(1, town.get_stock()))
 
 
-func travel(towns: Array[TownTile]):
+func travel(town: TownTile):
 	current_game_time += 10.0 # Reise dauert 10 Sekunden
 	# Beim Stadtwechsel: Sofort Preise aktualisieren
-	for town in towns:
-		town.update_cached_stock(current_game_time)
-		# simulate production/consumption
-		update_market(town)
+	town.update_cached_stock(current_game_time)
+	# simulate production/consumption
+	update_market(town)
 
 
 func advance_time(delta: float):
