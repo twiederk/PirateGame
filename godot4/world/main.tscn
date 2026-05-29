@@ -32,5 +32,9 @@ visible = false
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
+[node name="SimulationTimer" type="Timer" parent="." unique_id=615003683]
+wait_time = 3.0
+
 [connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
 [connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_menu_town_left"]
+[connection signal="timeout" from="SimulationTimer" to="." method="_on_simulation_timer_timeout"]

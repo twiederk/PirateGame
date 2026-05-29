@@ -19,7 +19,7 @@ var player = {
 }
 
 var current_game_time = 0.0
-var price_update_interval = 60.0 # Preis aktualisiert sich alle 60 Sekunden
+var price_update_interval = 5.0
 
 
 func get_price(town: TownTile, good_id: String) -> int:
@@ -80,13 +80,14 @@ func sell(town: TownTile, good_id: String, amount: int):
 	town.set_stock(town.get_stock() + amount)
 
 
-func simulation(towns: Array[TownTile]) -> void:
+func simulation(towns: Array) -> void:
+	print("TradingSystem.simulation")
 	for town in towns:
 		update_market(town)
 
 
 func update_market(town: TownTile):
-	# Aktualisiere gecachte Preise wenn Zeit abgelaufen
+	print("TradingSystem.update_market: " + town.name)
 	if should_update_prices(town):
 		town.update_cached_stock(current_game_time)
 	

@@ -2,12 +2,16 @@ class_name Main
 extends Node2D
 
 
+var trading_system: TradingSystem = TradingSystem.new()
+
+
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
 @onready var player: CharacterBody2D = $Player
 @onready var camera: Camera2D = $Player/Camera2D
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
 @onready var town_menu: TownMenu = $gui/TownMenu
+@onready var simulation_timer = $SimulationTimer
 
 
 func _ready() -> void:
@@ -20,7 +24,12 @@ func _ready() -> void:
 	_setup_limits_and_borders()
 
 	player.global_position = starting_pos
+	simulation_timer.start()
 
+
+func _process(delta: float):
+	trading_system.advance_time(delta)
+	
 
 func _setup_limits_and_borders() -> void:
 	var tile_map_used_rect = proc_gen_world.get_used_rect()
@@ -90,7 +99,7 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 func _on_town_tile_town_entered(town: TownTile):
 	proc_gen_world.hide()
 	player.hide()
-	town_menu.set_town(town)
+	town_menu.init(town, trading_system.player, trading_system)
 	town_menu.show()
 
 
@@ -98,3 +107,7 @@ func _on_town_menu_town_left():
 	proc_gen_world.show()
 	player.show()
 	town_menu.hide()
+
+
+func _on_simulation_timer_timeout():
+	trading_system.simulation(proc_gen_world.get_towns())
