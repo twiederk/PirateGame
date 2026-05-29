@@ -48,8 +48,6 @@ func _on_sell_fish_button_pressed():
 
 
 func _on_travel_button_pressed():
-	trading_system.travel(_town)
-	_update_gui()
 	town_left.emit()
 
 

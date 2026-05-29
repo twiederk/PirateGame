@@ -22,7 +22,8 @@ func _on_body_entered(_body):
 
 func get_background_color() -> Color:
 	return town_resource.background_color
-	
+
+
 func get_cached_stock() -> int:
 	return _cached_stock
 	
@@ -36,6 +37,5 @@ func set_stock(amount: int) -> void:
 
 
 func update_cached_stock(current_game_time: float) -> void:
-	# Aktualisiere gecachten Stock zum echten Stock
 	_cached_stock = _stock
 	_last_update = current_game_time

@@ -21,7 +21,7 @@ var player = {
 var current_game_time = 0.0
 var price_update_interval = 60.0 # Preis aktualisiert sich alle 60 Sekunden
 
-# Berechnet Preis basierend auf GECACHTEM Stock
+
 func get_price(town: TownTile, good_id: String) -> int:
 	var base = goods[good_id]["base_price"]
 	var cached_stock = town.get_cached_stock()
@@ -62,7 +62,6 @@ func buy(town: TownTile, good_id: String, amount: int):
 	if town.get_stock() < amount:
 		return
 
-	# apply transaction
 	player.gold -= total_cost
 	player.inventory[good_id] += amount
 	town.set_stock(town.get_stock() - amount)
@@ -81,10 +80,15 @@ func sell(town: TownTile, good_id: String, amount: int):
 	town.set_stock(town.get_stock() + amount)
 
 
+func simulation(towns: Array[TownTile]) -> void:
+	for town in towns:
+		update_market(town)
+
+
 func update_market(town: TownTile):
 	# Aktualisiere gecachte Preise wenn Zeit abgelaufen
-	#if should_update_prices(town):
-	town.update_cached_stock(current_game_time)
+	if should_update_prices(town):
+		town.update_cached_stock(current_game_time)
 	
 	# Update echter Stock basierend auf Produktion/Verbrauch
 	if "fish" in town.town_resource.produces:
@@ -94,14 +98,5 @@ func update_market(town: TownTile):
 	town.set_stock(max(1, town.get_stock()))
 
 
-func travel(town: TownTile):
-	current_game_time += 10.0 # Reise dauert 10 Sekunden
-	# Beim Stadtwechsel: Sofort Preise aktualisieren
-	town.update_cached_stock(current_game_time)
-	# simulate production/consumption
-	update_market(town)
-
-
 func advance_time(delta: float):
-	# Rufe diese Funktion jedes Frame auf
 	current_game_time += delta
