@@ -1,81 +1,63 @@
-[gd_scene format=3 uid="uid://dhptvycu3kb8x"]
+[gd_scene format=3 uid="uid://blu6n1yghidqx"]
 
-[ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/proc_gen_world.gd" id="1_p51ow"]
+[ext_resource type="Script" uid="uid://dqyqpn2l6q80t" path="res://world/proc_gen_world.gd" id="1_p51ow"]
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
-[ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="3_wx8f2"]
-[ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="4_btogb"]
-[ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="5_nx8yj"]
-[ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="5_wx8f2"]
+[ext_resource type="Resource" uid="uid://bbipqeb2uqom4" path="res://world/town_habor.tres" id="4_btogb"]
+[ext_resource type="Resource" uid="uid://cr0a7pjdmhqd7" path="res://world/town_farm.tres" id="5_wx8f2"]
+[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town.tscn" id="7_qlqlx"]
 
-[sub_resource type="Gradient" id="Gradient_y5bgd"]
-interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.5)
-colors = PackedColorArray(0.217716, 0.414628, 0.55, 1, 0.169919, 0.396875, 0.148271, 1)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_p51ow"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_b7j00"]
-cellular_distance_function = 3
-cellular_jitter = -4.105
-cellular_return_type = 3
-metadata/_preview_in_3d_space_ = true
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p51ow"]
+noise = SubResource("FastNoiseLite_p51ow")
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8ve5r"]
-noise = SubResource("FastNoiseLite_b7j00")
-color_ramp = SubResource("Gradient_y5bgd")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_awwj8"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_btogb"]
 noise_type = 0
 frequency = 0.3513
 fractal_octaves = 1
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0a6k0"]
-noise = SubResource("FastNoiseLite_awwj8")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_btogb"]
+noise = SubResource("FastNoiseLite_btogb")
 
-[node name="proc_gen_world" type="Node2D" unique_id=639576338]
+[node name="ProcGenWorld" type="Node2D" unique_id=572580707]
 y_sort_enabled = true
 script = ExtResource("1_p51ow")
-noise_texture = SubResource("NoiseTexture2D_8ve5r")
-tree_noise_texture = SubResource("NoiseTexture2D_0a6k0")
+noise_texture = SubResource("NoiseTexture2D_p51ow")
+tree_noise_texture = SubResource("NoiseTexture2D_btogb")
+seed_value = -57
 
-[node name="TileMap" type="Node2D" parent="." unique_id=1456979477]
-y_sort_enabled = true
-
-[node name="water_layer" type="TileMapLayer" parent="TileMap" unique_id=1452408615]
+[node name="water_layer" type="TileMapLayer" parent="." unique_id=553333346]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="ground_layer" type="TileMapLayer" parent="TileMap" unique_id=1207211925]
+[node name="ground_layer" type="TileMapLayer" parent="." unique_id=198396820]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="ground2_layer" type="TileMapLayer" parent="TileMap" unique_id=834222849]
+[node name="ground2_layer" type="TileMapLayer" parent="." unique_id=1429979287]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="cliff_layer" type="TileMapLayer" parent="TileMap" unique_id=2013653554]
+[node name="cliff_layer" type="TileMapLayer" parent="." unique_id=496936506]
 y_sort_enabled = true
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 y_sort_origin = 16
 
-[node name="environment_layer" type="TileMapLayer" parent="TileMap" unique_id=908692093]
+[node name="environment_layer" type="TileMapLayer" parent="." unique_id=2078148654]
 y_sort_enabled = true
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="Player" parent="." unique_id=755367759 instance=ExtResource("3_wx8f2")]
-position = Vector2(736, 410)
-SPEED = 300.0
+[node name="Towns" type="Node2D" parent="." unique_id=803467509]
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
-position = Vector2(0, -6)
+[node name="TownHabor" parent="Towns" unique_id=269579701 instance=ExtResource("7_qlqlx")]
+position = Vector2(504, 1208)
+town_resource = ExtResource("4_btogb")
 
-[node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
-
-[node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("4_btogb")]
-
-[node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("5_nx8yj")]
-
-[node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("5_wx8f2")]
+[node name="TownFarm" parent="Towns" unique_id=134508897 instance=ExtResource("7_qlqlx")]
+position = Vector2(344, 1208)
+town_resource = ExtResource("5_wx8f2")

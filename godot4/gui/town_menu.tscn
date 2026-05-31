@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://b5rdq1cvlg4uu"]
+
+[ext_resource type="Script" uid="uid://cb01lexuy1va7" path="res://gui/town_menu.gd" id="1_2f1qc"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_2f1qc"]
+
+[node name="City" type="Control" unique_id=502314466]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2f1qc")
+
+[node name="Background" type="TextureRect" parent="." unique_id=2078317982]
+self_modulate = Color(0, 0, 0, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_2f1qc")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=76314715]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1511360140]
+layout_mode = 2
+
+[node name="TownName" type="Label" parent="CenterContainer/VBoxContainer" unique_id=646220943]
+layout_mode = 2
+text = "City Name"
+
+[node name="PlayerGold" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1057245146]
+layout_mode = 2
+text = "Player Gold"
+
+[node name="PlayerWeight" type="Label" parent="CenterContainer/VBoxContainer" unique_id=984305985]
+layout_mode = 2
+text = "Player Weight"
+
+[node name="Heading" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=790509194]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=2003425170]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Handelsware"
+
+[node name="Price" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=1227950657]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Preis"
+
+[node name="PlayerStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=496338392]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Ladung"
+
+[node name="TownStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=1938835319]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Stadt"
+
+[node name="GoodRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=912500846]
+layout_mode = 2
+
+[node name="GoodName" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=1585043961]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Fisch"
+
+[node name="GoodPrice" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=638732090]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "5"
+
+[node name="PlayerAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=1965829623]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "0"
+
+[node name="TownAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=858156583]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "50"
+
+[node name="BuyButton" type="Button" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=521605812]
+layout_mode = 2
+text = "Kaufen"
+
+[node name="SellButton" type="Button" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=776894961]
+layout_mode = 2
+text = "Verkaufen"
+
+[node name="TravelButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2075163696]
+layout_mode = 2
+text = "Stadt verlassen"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/GoodRow/BuyButton" to="." method="_on_buy_fish_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/GoodRow/SellButton" to="." method="_on_sell_fish_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/TravelButton" to="." method="_on_travel_button_pressed"]

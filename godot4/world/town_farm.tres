@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TownResource" format=3 uid="uid://cr0a7pjdmhqd7"]
+
+[ext_resource type="Script" uid="uid://cld1u8ymg8ifj" path="res://world/town_resource.gd" id="1_f2cn8"]
+
+[resource]
+script = ExtResource("1_f2cn8")
+name = "Farm"
+background_color = Color(0.30828562, 0.3673456, 0.01934423, 1)
+produces = Array[String](["grain"])
+consumes = Array[String](["fish"])
+stock = 10
+metadata/_custom_type_script = "uid://cld1u8ymg8ifj"

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dhptvycu3kb8x"]
+
+[ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/main.gd" id="1_04q08"]
+[ext_resource type="PackedScene" uid="uid://blu6n1yghidqx" path="res://world/proc_gen_world.tscn" id="2_gu74f"]
+[ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
+[ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
+[ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="6_tp5tb"]
+[ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
+[ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
+[ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
+
+[node name="Main" type="Node2D" unique_id=639576338]
+y_sort_enabled = true
+script = ExtResource("1_04q08")
+
+[node name="ProcGenWorld" parent="." unique_id=572580707 instance=ExtResource("2_gu74f")]
+
+[node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
+position = Vector2(736, 410)
+SPEED = 300.0
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
+position = Vector2(0, -6)
+
+[node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
+
+[node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_vid1e")]
+visible = false
+
+[node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("6_tp5tb")]
+
+[node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
+
+[node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
+
+[node name="TradingSystem" parent="." unique_id=1145605249 instance=ExtResource("8_04q08")]
+
+[connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
+[connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_menu_town_left"]

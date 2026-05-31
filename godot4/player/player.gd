@@ -3,11 +3,17 @@ extends CharacterBody2D
 
 @export var SPEED : float = 150.0
 
-enum STATE { ON_LAND, ON_SHIP }
-
+enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
+
+var gold : int = 100
+var cargo_capacity : int = 20
+var inventory: Dictionary = {
+		"fish": 0,
+		"grain": 0
+	}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
@@ -24,6 +30,9 @@ func _process(_delta):
 
 
 func _physics_process(_delta):
+	if current_state == STATE.IN_TOWN:
+		return
+
 	direction = Input.get_vector("left", "right","up","down").normalized()
 	if direction:
 		velocity = direction * SPEED
@@ -33,7 +42,7 @@ func _physics_process(_delta):
 
 
 func _update_animation_parameters():
-	if(velocity == Vector2.ZERO):
+	if velocity == Vector2.ZERO:
 		animation_tree["parameters/conditions/is_idle"] = true
 		animation_tree["parameters/conditions/is_moving"] = false
 	else:
@@ -57,3 +66,15 @@ func board_ship():
 		set_collision_mask_value(2, true)
 		set_collision_mask_value(3, false)
 		current_state = STATE.ON_LAND
+
+
+func _on_town_tile_town_entered(town: Town) -> void:
+	current_state = STATE.IN_TOWN
+
+
+func _on_town_menu_town_left() -> void:
+	current_state = STATE.ON_LAND
+
+
+func in_town() -> bool:
+	return current_state == STATE.IN_TOWN
