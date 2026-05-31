@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
 [ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="6_tp5tb"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
+[ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
 
 [node name="Main" type="Node2D" unique_id=639576338]
@@ -32,9 +33,7 @@ visible = false
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
-[node name="SimulationTimer" type="Timer" parent="." unique_id=615003683]
-wait_time = 60.0
+[node name="TradingSystem" parent="." unique_id=1145605249 instance=ExtResource("8_04q08")]
 
 [connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
 [connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_menu_town_left"]
-[connection signal="timeout" from="SimulationTimer" to="." method="_on_simulation_timer_timeout"]

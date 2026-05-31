@@ -2,16 +2,13 @@ class_name Main
 extends Node2D
 
 
-var trading_system: TradingSystem = TradingSystem.new()
-
-
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
 @onready var player: CharacterBody2D = $Player
 @onready var camera: Camera2D = $Player/Camera2D
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
 @onready var town_menu: TownMenu = $gui/TownMenu
-@onready var simulation_timer = $SimulationTimer
+@onready var trading_system = $TradingSystem
 
 
 func _ready() -> void:
@@ -20,16 +17,14 @@ func _ready() -> void:
 
 	zoom_widget.set_zoom(camera.zoom)
 	var starting_pos = proc_gen_world.generate_world()
-	_generate_towns()
+	var towns = proc_gen_world.generate_towns()
+	_connect_signals(towns)
 	_setup_limits_and_borders()
+	
+	trading_system.init(towns)
 
 	player.global_position = starting_pos
-	simulation_timer.start()
 
-
-func _process(delta: float):
-	trading_system.advance_time(delta)
-	
 
 func _setup_limits_and_borders() -> void:
 	var tile_map_used_rect = proc_gen_world.get_used_rect()
@@ -43,12 +38,11 @@ func _setup_limits_and_borders() -> void:
 	_camera_limits(north_limit, south_limit, west_limit, east_limit)
 
 
-func _generate_towns() -> void:
-	for town in proc_gen_world.get_towns():
-		if town.has_signal("town_entered"):
-			town.town_entered.connect(_on_town_tile_town_entered)
-			town.town_entered.connect(player._on_town_tile_town_entered)
-		
+func _connect_signals(towns: Array[TownTile]) -> void:
+	for town in towns:
+		town.town_entered.connect(_on_town_tile_town_entered)
+		town.town_entered.connect(player._on_town_tile_town_entered)
+
 
 func _input(_event) -> void:
 	_camera_zoom()
@@ -107,7 +101,3 @@ func _on_town_menu_town_left():
 	proc_gen_world.show()
 	player.show()
 	town_menu.hide()
-
-
-func _on_simulation_timer_timeout():
-	trading_system.simulation(proc_gen_world.get_towns())

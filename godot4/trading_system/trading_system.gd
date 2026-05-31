@@ -1,11 +1,19 @@
 class_name TradingSystem
+extends Node
 
+
+const SIMULATION_STEP: float = 3.0
+
+var current_game_time: float = 0.0
+var price_update_interval: float = 5.0
+var accumulator: float = 0.0
+
+var _towns: Array[TownTile]
 
 var goods = {
 	"fish": { "base_price": 10 },
 	"grain": { "base_price": 15 }
 }
-
 
 
 var player = {
@@ -18,9 +26,18 @@ var player = {
 	"current_city": "A"
 }
 
-var current_game_time = 0.0
-var price_update_interval = 5.0
 
+func _process(delta):
+	advance_time(delta)
+	accumulator += delta
+	while accumulator >= SIMULATION_STEP:
+		simulation()
+		accumulator -= SIMULATION_STEP
+
+
+func init(towns: Array[TownTile]):
+	_towns = towns
+	
 
 func get_price(town: TownTile, good_id: String) -> int:
 	var base = goods[good_id]["base_price"]
@@ -80,9 +97,9 @@ func sell(town: TownTile, good_id: String, amount: int):
 	town.set_stock(town.get_stock() + amount)
 
 
-func simulation(towns: Array) -> void:
+func simulation() -> void:
 	print("TradingSystem.simulation")
-	for town in towns:
+	for town in _towns:
 		update_market(town)
 
 

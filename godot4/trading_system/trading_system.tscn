@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://0m7pc11fvg2u"]
+
+[ext_resource type="Script" uid="uid://csbs0a6xn1cxa" path="res://trading_system/trading_system.gd" id="1_5pp4w"]
+
+[node name="TradingSystem" type="Node" unique_id=1145605249]
+script = ExtResource("1_5pp4w")
