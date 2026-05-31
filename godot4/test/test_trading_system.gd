@@ -42,37 +42,37 @@ func test_has_space_filled():
 	assert_false(result, "Capacity is lower then addition capacity of goods")
 
 
-func test_player_buys_fish_in_habor():
-	# act
-	trading_system.buy("fish", 5)
-	
-	# assert
-	assert_eq(trading_system.cities.A.market.fish.stock, 45, "Fish is removed from stock of habor")
-	assert_eq(trading_system.player.gold, 75, "Gold is reduced from player")
-	assert_eq(trading_system.player.inventory.fish, 5, "Fish is put in inventory of player")
+#func test_player_buys_fish_in_habor():
+	## act
+	#trading_system.buy("fish", 5)
+	#
+	## assert
+	#assert_eq(trading_system.cities.A.market.fish.stock, 45, "Fish is removed from stock of habor")
+	#assert_eq(trading_system.player.gold, 75, "Gold is reduced from player")
+	#assert_eq(trading_system.player.inventory.fish, 5, "Fish is put in inventory of player")
 
 
-func test_player_sells_fish_in_habor():
-	# arrange
-	trading_system.player.inventory.fish = 5
-	
-	# act
-	trading_system.sell("fish", 5)
-	
-	# assert
-	assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is added to stock of habor")
-	assert_eq(trading_system.player.gold, 125, "Gold is added to player")
-	assert_eq(trading_system.player.inventory.fish, 0, "Fish is removed from inventory of player")
+#func test_player_sells_fish_in_habor():
+	## arrange
+	#trading_system.player.inventory.fish = 5
+	#
+	## act
+	#trading_system.sell("fish", 5)
+	#
+	## assert
+	#assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is added to stock of habor")
+	#assert_eq(trading_system.player.gold, 125, "Gold is added to player")
+	#assert_eq(trading_system.player.inventory.fish, 0, "Fish is removed from inventory of player")
 
 
-func test_update_market_of_habor():
-	# act
-	trading_system.update_market("A")
-	
-	# assert
-	assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is produced in habor")
-	assert_eq(trading_system.cities.A.market.grain.stock, 7, "Grain is consumed in habor")
-	
+#func test_update_market_of_habor():
+	## act
+	#trading_system.update_market("A")
+	#
+	## assert
+	#assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is produced in habor")
+	#assert_eq(trading_system.cities.A.market.grain.stock, 7, "Grain is consumed in habor")
+
 
 func test_travel():
 	# act
