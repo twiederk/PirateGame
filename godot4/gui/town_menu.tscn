@@ -62,14 +62,12 @@ text = "Preis"
 [node name="PlayerStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=496338392]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "Eigener
-Bestand"
+text = "Ladung"
 
 [node name="TownStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=1938835319]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "Stadt
-Bestand"
+text = "Stadt"
 
 [node name="GoodRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=912500846]
 layout_mode = 2
@@ -82,17 +80,17 @@ text = "Fisch"
 [node name="GoodPrice" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=638732090]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-text = "Fish Price"
+text = "5"
 
 [node name="PlayerAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=1965829623]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "Fish Amount"
+text = "0"
 
 [node name="TownAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=858156583]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "Fish Amount"
+text = "50"
 
 [node name="BuyButton" type="Button" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=521605812]
 layout_mode = 2

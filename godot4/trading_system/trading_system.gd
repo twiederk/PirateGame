@@ -38,13 +38,11 @@ func advance_time(delta: float):
 	current_game_time += delta
 
 func simulation() -> void:
-	print("TradingSystem.simulation")
 	for town in _towns:
 		update_market(town)
 
 
 func update_market(town: Town):
-	print("TradingSystem.update_market")
 	if should_update_prices(town):
 		town.update_cached_stock(current_game_time)
 	
@@ -54,7 +52,6 @@ func update_market(town: Town):
 	if "fish" in town.town_resource.consumes:
 		town.set_stock(town.get_stock() - 3)
 	town.set_stock(max(1, town.get_stock()))
-	print(town._to_string())
 
 
 func get_price(town: Town, good_id: String) -> int:

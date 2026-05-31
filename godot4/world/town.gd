@@ -39,20 +39,3 @@ func set_stock(amount: int) -> void:
 func update_cached_stock(current_game_time: float) -> void:
 	_cached_stock = _stock
 	_last_update = current_game_time
-
-
-func _to_string() -> String:
-	if town_resource == null:
-		return "Town{name=%s, stock=%d, cached_stock=%d, last_update=%.2f, town_resource=null}" % [name, _stock, _cached_stock, _last_update]
-
-	return "Town{name=%s, stock=%d, cached_stock=%d, last_update=%.2f, town_resource={name=%s, background_color=%s, produces=%s, consumes=%s, stock=%d}}" % [
-		name,
-		_stock,
-		_cached_stock,
-		_last_update,
-		town_resource.name,
-		str(town_resource.background_color),
-		str(town_resource.produces),
-		str(town_resource.consumes),
-		town_resource.stock
-	]
