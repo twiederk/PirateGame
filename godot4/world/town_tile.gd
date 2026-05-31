@@ -37,7 +37,6 @@ func set_stock(amount: int) -> void:
 
 
 func update_cached_stock(current_game_time: float) -> void:
-	print("TownTile.update_cached_stock")
 	_cached_stock = _stock
 	_last_update = current_game_time
 
