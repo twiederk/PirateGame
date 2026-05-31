@@ -2,10 +2,10 @@ class_name TradingSystem
 extends Node
 
 
-const SIMULATION_STEP: float = 10.0
+const SIMULATION_STEP: float = 5.0
 
 var current_game_time: float = 0.0
-var price_update_interval: float = 5.0
+var price_update_interval: float = 2.5
 var accumulator: float = 0.0
 
 var _towns: Array[TownTile]
@@ -104,7 +104,7 @@ func simulation() -> void:
 
 
 func update_market(town: TownTile):
-	print("TradingSystem.update_market: " + town.name)
+	print("TradingSystem.update_market")
 	if should_update_prices(town):
 		town.update_cached_stock(current_game_time)
 	
@@ -114,6 +114,7 @@ func update_market(town: TownTile):
 	if "fish" in town.town_resource.consumes:
 		town.set_stock(town.get_stock() - 3)
 	town.set_stock(max(1, town.get_stock()))
+	print(town._to_string())
 
 
 func advance_time(delta: float):
