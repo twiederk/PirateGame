@@ -2,7 +2,7 @@ class_name TradingSystem
 extends Node
 
 
-const SIMULATION_STEP: float = 3.0
+const SIMULATION_STEP: float = 10.0
 
 var current_game_time: float = 0.0
 var price_update_interval: float = 5.0
