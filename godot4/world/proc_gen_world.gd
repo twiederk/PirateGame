@@ -130,4 +130,6 @@ func generate_towns() -> Array[TownTile]:
 
 
 func get_towns() -> Array[TownTile]:
-	return towns.get_children().map(func(town): return town as TownTile)
+	var typed: Array[TownTile] = []
+	typed.assign(towns.get_children())
+	return typed
