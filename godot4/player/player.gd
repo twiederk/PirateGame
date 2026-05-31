@@ -74,3 +74,7 @@ func _on_town_tile_town_entered(town: Town) -> void:
 
 func _on_town_menu_town_left() -> void:
 	current_state = STATE.ON_LAND
+
+
+func in_town() -> bool:
+	return current_state == STATE.IN_TOWN

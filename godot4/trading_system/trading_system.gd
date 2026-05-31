@@ -19,6 +19,9 @@ var goods = {
 
 
 func _process(delta):
+	if _player.in_town():
+		return
+
 	advance_time(delta)
 	accumulator += delta
 	while accumulator >= SIMULATION_STEP:
@@ -29,7 +32,30 @@ func _process(delta):
 func init(player: Player, towns: Array[Town]):
 	_player = player
 	_towns = towns
+
+
+func advance_time(delta: float):
+	current_game_time += delta
+
+func simulation() -> void:
+	print("TradingSystem.simulation")
+	for town in _towns:
+		update_market(town)
+
+
+func update_market(town: Town):
+	print("TradingSystem.update_market")
+	if should_update_prices(town):
+		town.update_cached_stock(current_game_time)
 	
+	# Update echter Stock basierend auf Produktion/Verbrauch
+	if "fish" in town.town_resource.produces:
+		town.set_stock(town.get_stock() + 5)
+	if "fish" in town.town_resource.consumes:
+		town.set_stock(town.get_stock() - 3)
+	town.set_stock(max(1, town.get_stock()))
+	print(town._to_string())
+
 
 func get_price(town: Town, good_id: String) -> int:
 	var base = goods[good_id]["base_price"]
@@ -87,27 +113,3 @@ func sell(town: Town, good_id: String, amount: int):
 	_player.gold += total_gain
 	_player.inventory[good_id] -= amount
 	town.set_stock(town.get_stock() + amount)
-
-
-func simulation() -> void:
-	print("TradingSystem.simulation")
-	for town in _towns:
-		update_market(town)
-
-
-func update_market(town: Town):
-	print("TradingSystem.update_market")
-	if should_update_prices(town):
-		town.update_cached_stock(current_game_time)
-	
-	# Update echter Stock basierend auf Produktion/Verbrauch
-	if "fish" in town.town_resource.produces:
-		town.set_stock(town.get_stock() + 5)
-	if "fish" in town.town_resource.consumes:
-		town.set_stock(town.get_stock() - 3)
-	town.set_stock(max(1, town.get_stock()))
-	print(town._to_string())
-
-
-func advance_time(delta: float):
-	current_game_time += delta
