@@ -125,11 +125,11 @@ func is_coast(player_position: Vector2) -> bool:
 		return false
 
 
-func generate_towns() -> Array[TownTile]:
+func generate_towns() -> Array[Town]:
 	return get_towns()
 
 
-func get_towns() -> Array[TownTile]:
-	var typed: Array[TownTile] = []
+func get_towns() -> Array[Town]:
+	var typed: Array[Town] = []
 	typed.assign(towns.get_children())
 	return typed

@@ -8,7 +8,7 @@ var current_game_time: float = 0.0
 var price_update_interval: float = 2.5
 var accumulator: float = 0.0
 
-var _towns: Array[TownTile]
+var _towns: Array[Town]
 
 var goods = {
 	"fish": { "base_price": 10 },
@@ -35,11 +35,11 @@ func _process(delta):
 		accumulator -= SIMULATION_STEP
 
 
-func init(towns: Array[TownTile]):
+func init(towns: Array[Town]):
 	_towns = towns
 	
 
-func get_price(town: TownTile, good_id: String) -> int:
+func get_price(town: Town, good_id: String) -> int:
 	var base = goods[good_id]["base_price"]
 	var cached_stock = town.get_cached_stock()
 	
@@ -50,7 +50,7 @@ func get_price(town: TownTile, good_id: String) -> int:
 	return clampi(price, min_price, max_price)
 
 
-func should_update_prices(town: TownTile) -> bool:
+func should_update_prices(town: Town) -> bool:
 	var last_update = town._last_update
 	return current_game_time - last_update >= price_update_interval
 
@@ -66,7 +66,7 @@ func has_space(amount: int) -> bool:
 	return get_used_capacity() + amount <= player.cargo_capacity
 	
 	
-func buy(town: TownTile, good_id: String, amount: int):
+func buy(town: Town, good_id: String, amount: int):
 	var price = get_price(town, good_id)
 	var total_cost = price * amount
 
@@ -84,7 +84,7 @@ func buy(town: TownTile, good_id: String, amount: int):
 	town.set_stock(town.get_stock() - amount)
 
 
-func sell(town: TownTile, good_id: String, amount: int):
+func sell(town: Town, good_id: String, amount: int):
 	var price = get_price(town, good_id)
 
 	if player.inventory[good_id] < amount:
@@ -103,7 +103,7 @@ func simulation() -> void:
 		update_market(town)
 
 
-func update_market(town: TownTile):
+func update_market(town: Town):
 	print("TradingSystem.update_market")
 	if should_update_prices(town):
 		town.update_cached_stock(current_game_time)

@@ -38,7 +38,7 @@ func _setup_limits_and_borders() -> void:
 	_camera_limits(north_limit, south_limit, west_limit, east_limit)
 
 
-func _connect_signals(towns: Array[TownTile]) -> void:
+func _connect_signals(towns: Array[Town]) -> void:
 	for town in towns:
 		town.town_entered.connect(_on_town_tile_town_entered)
 		town.town_entered.connect(player._on_town_tile_town_entered)
@@ -90,7 +90,7 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 	camera.set_limit(SIDE_BOTTOM, int(south_limit))
 
 
-func _on_town_tile_town_entered(town: TownTile):
+func _on_town_tile_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
 	town_menu.init(town, trading_system.player, trading_system)
