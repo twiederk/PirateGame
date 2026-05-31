@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://baxxgmcrsalyx"]
 
 [ext_resource type="Texture2D" uid="uid://b7xcipud8gli" path="res://world/world.png" id="1_eevg3"]
-[ext_resource type="Script" uid="uid://vpeeg5213bi4" path="res://world/town_tile.gd" id="1_pwnmr"]
+[ext_resource type="Script" uid="uid://vpeeg5213bi4" path="res://world/town.gd" id="1_pwnmr"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5v6rl"]
 size = Vector2(32, 32)

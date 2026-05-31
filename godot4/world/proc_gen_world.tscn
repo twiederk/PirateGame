@@ -4,7 +4,7 @@
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
 [ext_resource type="Resource" uid="uid://bbipqeb2uqom4" path="res://world/town_habor.tres" id="4_btogb"]
 [ext_resource type="Resource" uid="uid://cr0a7pjdmhqd7" path="res://world/town_farm.tres" id="5_wx8f2"]
-[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town_tile.tscn" id="7_qlqlx"]
+[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town.tscn" id="7_qlqlx"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_p51ow"]
 
