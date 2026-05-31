@@ -6,7 +6,7 @@ signal town_left
 
 
 var _trading_system: TradingSystem
-var _player: Dictionary
+var _player: Player
 var _town: Town
 
 @onready var town_name = $CenterContainer/VBoxContainer/TownName
@@ -48,7 +48,7 @@ func _on_travel_button_pressed():
 	town_left.emit()
 
 
-func init(town: Town, player: Dictionary, trading_system: TradingSystem) -> void:
+func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
 	_town = town
 	_player = player
 	_trading_system = trading_system

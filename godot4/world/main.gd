@@ -21,7 +21,7 @@ func _ready() -> void:
 	_connect_signals(towns)
 	_setup_limits_and_borders()
 	
-	trading_system.init(towns)
+	trading_system.init(player, towns)
 
 	player.global_position = starting_pos
 
@@ -93,7 +93,7 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 func _on_town_tile_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
-	town_menu.init(town, trading_system.player, trading_system)
+	town_menu.init(town, player, trading_system)
 	town_menu.show()
 
 

@@ -4,10 +4,16 @@ extends CharacterBody2D
 @export var SPEED : float = 150.0
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
-
 var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
+
+var gold : int = 100
+var cargo_capacity : int = 20
+var inventory: Dictionary = {
+		"fish": 0,
+		"grain": 0
+	}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var animation_tree = $AnimationTree

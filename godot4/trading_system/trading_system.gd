@@ -8,6 +8,7 @@ var current_game_time: float = 0.0
 var price_update_interval: float = 2.5
 var accumulator: float = 0.0
 
+var _player: Player
 var _towns: Array[Town]
 
 var goods = {
@@ -15,16 +16,6 @@ var goods = {
 	"grain": { "base_price": 15 }
 }
 
-
-var player = {
-	"gold": 100,
-	"cargo_capacity": 20,
-	"inventory": {
-		"fish": 0,
-		"grain": 0
-	},
-	"current_city": "A"
-}
 
 
 func _process(delta):
@@ -35,7 +26,8 @@ func _process(delta):
 		accumulator -= SIMULATION_STEP
 
 
-func init(towns: Array[Town]):
+func init(player: Player, towns: Array[Town]):
+	_player = player
 	_towns = towns
 	
 
@@ -57,20 +49,20 @@ func should_update_prices(town: Town) -> bool:
 
 func get_used_capacity() -> int:
 	var total = 0
-	for g in player.inventory:
-		total += player.inventory[g]
+	for good in _player.inventory:
+		total += _player.inventory[good]
 	return total
 
 
 func has_space(amount: int) -> bool:
-	return get_used_capacity() + amount <= player.cargo_capacity
+	return get_used_capacity() + amount <= _player.cargo_capacity
 	
 	
 func buy(town: Town, good_id: String, amount: int):
 	var price = get_price(town, good_id)
 	var total_cost = price * amount
 
-	if player.gold < total_cost:
+	if _player.gold < total_cost:
 		return
 
 	if not has_space(amount):
@@ -79,21 +71,21 @@ func buy(town: Town, good_id: String, amount: int):
 	if town.get_stock() < amount:
 		return
 
-	player.gold -= total_cost
-	player.inventory[good_id] += amount
+	_player.gold -= total_cost
+	_player.inventory[good_id] += amount
 	town.set_stock(town.get_stock() - amount)
 
 
 func sell(town: Town, good_id: String, amount: int):
 	var price = get_price(town, good_id)
 
-	if player.inventory[good_id] < amount:
+	if _player.inventory[good_id] < amount:
 		return
 
 	var total_gain = price * amount
 
-	player.gold += total_gain
-	player.inventory[good_id] -= amount
+	_player.gold += total_gain
+	_player.inventory[good_id] -= amount
 	town.set_stock(town.get_stock() + amount)
 
 
