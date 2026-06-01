@@ -80,6 +80,10 @@ func in_town() -> bool:
 	return current_state == STATE.IN_TOWN
 
 
+func has_space(amount: int) -> bool:
+	return get_used_capacity() + amount <= cargo_capacity
+
+
 func get_used_capacity() -> int:
 	var total = 0
 	for good in inventory:

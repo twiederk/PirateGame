@@ -81,7 +81,7 @@ func buy(town: Town, good_id: String, amount: int):
 	if _player.gold < total_cost:
 		return
 
-	if not has_space(amount):
+	if not _player.has_space(amount):
 		return
 
 	if town.get_stock() < amount:
