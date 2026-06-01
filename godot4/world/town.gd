@@ -19,6 +19,9 @@ func _ready() -> void:
 func _on_body_entered(_body):
 	town_entered.emit(self)
 
+func get_town_name() -> String:
+	return town_resource.name
+
 
 func get_background_color() -> Color:
 	return town_resource.background_color

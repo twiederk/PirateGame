@@ -24,13 +24,13 @@ var _town: Town
 
 
 func _update_gui() -> void:
-	town_name.text = _town.name
+	town_name.text = "Name: " + _town.get_town_name()
 	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + str(_player.gold)
 	player_weight.text = "Laderaum: " + str(_trading_system.get_used_capacity()) + " / " + str(_player.cargo_capacity)
 	
 	good_name.text = "Fisch"
-	good_price.text = str(_trading_system.get_price(_town, "fish")) + "$"
+	good_price.text = str(_trading_system.get_price(_town, "fish"))
 	player_amount.text = str(_player.inventory.fish)
 	town_amount.text = str(_town.get_stock())
 

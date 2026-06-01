@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_ny4qs")
-name = "Habor"
+name = "Hafen"
 background_color = Color(0, 0, 1, 1)
 produces = Array[String](["fish"])
 consumes = Array[String](["grain"])
