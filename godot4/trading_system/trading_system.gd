@@ -70,15 +70,8 @@ func should_update_prices(town: Town) -> bool:
 	return current_game_time - last_update >= price_update_interval
 
 
-func get_used_capacity() -> int:
-	var total = 0
-	for good in _player.inventory:
-		total += _player.inventory[good]
-	return total
-
-
 func has_space(amount: int) -> bool:
-	return get_used_capacity() + amount <= _player.cargo_capacity
+	return _player.get_used_capacity() + amount <= _player.cargo_capacity
 	
 	
 func buy(town: Town, good_id: String, amount: int):
