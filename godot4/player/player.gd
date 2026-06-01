@@ -78,3 +78,10 @@ func _on_town_menu_town_left() -> void:
 
 func in_town() -> bool:
 	return current_state == STATE.IN_TOWN
+
+
+func get_used_capacity() -> int:
+	var total = 0
+	for good in inventory:
+		total += inventory[good]
+	return total
