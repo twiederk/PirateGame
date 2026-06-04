@@ -26,6 +26,8 @@ Refactor `TradingSystem`, `Player`, and `Town` to support **multiple goods** usi
    - `good: GoodResource`
    - `amount: int`
    - `last_updated: float` (needed for delayed/cached price update logic)
+   - `_stock: int` (internal actual stock)
+   - `_cached_stock: int` (snapshot for delayed price calculations)
 3. `TradingSystem` must contain an exported dictionary:
    - `@export var goods: Dictionary`
    - dictionary key = `GoodResource.id`
@@ -38,8 +40,7 @@ Refactor `TradingSystem`, `Player`, and `Town` to support **multiple goods** usi
 1. Create `trading_system/trading_item.gd`:
    - `class_name TradingItem`
    - extend `Resource` (preferred, so it can be serialized and edited if needed)
-   - exported fields: `good`, `amount`, `last_updated`
-   - helper methods if useful (for example increase/decrease amount with clamping)
+   - public fields: `good`, `amount`, `last_updated`, `stock`, `cached_stock` (accessible directly, no getters/setters needed)
 
 2. Keep `trading_system/good_resource.gd` unchanged:
    - do not modify `GoodResource` fields or types
