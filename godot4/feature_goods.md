@@ -85,13 +85,34 @@ Refactor `TradingSystem`, `Player`, and `Town` to support **multiple goods** usi
 6. Buy/sell, capacity, and gold updates still behave correctly.
 7. Existing tests are updated (or new tests added) to cover at least two goods.
 
-## Suggested Tests
+## Test-Driven Development Tests
 
-- Buy and sell `fish` and a second good (for example `grain`) in one run.
-- Verify independent stock and pricing per good.
-- Verify price cache delay (`last_updated`) affects each good correctly.
-- Verify capacity checks use total amounts across all goods.
-- Verify behavior when a good ID is unknown.
+### TradingItem Tests
+- `test_trading_item_creation`: Create `TradingItem` with `good`, `amount`, `stock`, `cached_stock` initialized correctly
+
+### TradingSystem Tests
+- `test_goods_dictionary_populated`: `@export var goods` contains at least `fish` and `grain` with correct base prices
+- `test_get_price_uses_good_base_price`: Price calculation uses `GoodResource.base_price`, not hardcoded strings
+- `test_price_varies_per_good`: Two different goods have independent price calculations based on their own stock
+
+### Player Inventory Tests
+- `test_player_inventory_stores_trading_items`: Player inventory uses `TradingItem` values (not raw ints)
+- `test_has_space_counts_total_items`: Capacity check sums amounts across all goods
+- `test_buy_updates_trading_item_amount`: Buying updates `TradingItem.amount` for the correct good
+- `test_sell_updates_trading_item_amount`: Selling updates `TradingItem.amount` for the correct good
+- `test_inventory_safe_missing_good`: Accessing unknown good ID fails gracefully (no crash)
+
+### Town Stock Tests
+- `test_town_stock_uses_trading_items`: Town inventory uses `TradingItem` per good (not single `_stock`)
+- `test_town_independent_goods_stock`: Two goods in one town have independent stock values
+- `test_town_cached_stock_updates`: `update_cached_stock()` syncs `cached_stock` and updates `last_updated`
+- `test_town_price_cache_delay`: Price remains cached until time interval expires, per good
+
+### Integration Tests
+- `test_buy_sell_two_goods_same_run`: Buy and sell `fish` and `grain` in same game session
+- `test_stock_and_price_independent`: Changing one good's stock doesn't affect another's price
+- `test_missing_good_id_safe`: Trading system handles unknown good IDs without crashes
+- `test_simulation_processes_all_goods`: Simulation loop updates production/consumption for each good
 
 ## Notes for Migration
 
