@@ -15,6 +15,7 @@ var _town: Town
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
 @onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
 @onready var background = $Background
+@onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
 
 
 func _update_gui() -> void:
@@ -22,7 +23,7 @@ func _update_gui() -> void:
 	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + str(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
-
+	travel_button.grab_focus()
 
 func _create_trading_rows() -> void:
 	# Iterate over all goods in TradingSystem
