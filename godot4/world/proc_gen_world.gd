@@ -130,23 +130,26 @@ func is_coast(player_position: Vector2) -> bool:
 
 func generate_towns() -> Array[Town]:
 	for i in range(5):
-		var town: Town = TownScene.instantiate()
-		town.town_resource = FarmTownResource
-		town.town_name = FarmTownResource.name + " " + str(i)
-		town.name = town.town_name
-		town.global_position = grass_arr.pick_random() * get_tile_size()
+		var town_name = FarmTownResource.name + " " + str(i)
+		var town: Town = _create_town(FarmTownResource, town_name, grass_arr.pick_random())
 		towns.add_child(town)
 		
 	for i in range(5):
-		var town: Town = TownScene.instantiate()
-		town.town_resource = HaborTownResource
-		town.town_name = HaborTownResource.name + " " + str(i)
-		town.name = town.town_name
-		town.global_position = sand_arr.pick_random() * get_tile_size()
+		var town_name = HaborTownResource.name + " " + str(i)
+		var town: Town = _create_town(HaborTownResource, town_name,sand_arr.pick_random())
 		towns.add_child(town)
-		
+
 	return get_towns()
 
+
+func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i) -> Town:
+	var town: Town = TownScene.instantiate()
+	town.town_resource = town_resource
+	town.town_name = town_name
+	town.name = town_name
+	town.global_position = pos * get_tile_size()
+	return town
+	
 
 func get_towns() -> Array[Town]:
 	var typed: Array[Town] = []
