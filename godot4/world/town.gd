@@ -7,14 +7,6 @@ signal town_entered(town_resource: TownResource)
 @export var town_resource: TownResource
 
 var inventory: Dictionary = {}
-var _stock: int
-var _cached_stock: int
-var _last_update: float
-
-
-func _ready() -> void:
-	_stock = town_resource.stock
-	_cached_stock = town_resource.stock
 
 
 func initialize_inventory(trading_system: TradingSystem) -> void:
@@ -41,15 +33,3 @@ func get_cached_stock(good_id: int) -> int:
 		return inventory[good_id].cached_stock
 	return 0
 	
-
-func get_stock() -> int:
-	return _stock
-
-
-func set_stock(amount: int) -> void:
-	_stock = amount
-
-
-func update_cached_stock(current_game_time: float) -> void:
-	_cached_stock = _stock
-	_last_update = current_game_time

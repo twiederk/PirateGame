@@ -64,7 +64,19 @@ func _update_all_rows() -> void:
 
 
 func _on_travel_button_pressed():
+	_clear_trading_rows()
 	town_left.emit()
+
+
+func _clear_trading_rows() -> void:
+	# Remove all trading rows, keeping only the header and travel button
+	var children_to_remove = []
+	for child in rows_container.get_children():
+		if child is TradingRow:
+			children_to_remove.append(child)
+	
+	for child in children_to_remove:
+		child.queue_free()
 
 
 func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
