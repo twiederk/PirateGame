@@ -31,12 +31,12 @@ z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="SandLayer" type="TileMapLayer" parent="." unique_id=198396820]
+[node name="SandAndGrassLayer" type="TileMapLayer" parent="." unique_id=198396820]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="GrassLayer" type="TileMapLayer" parent="." unique_id=1429979287]
+[node name="FarmFieldLayer" type="TileMapLayer" parent="." unique_id=1429979287]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
