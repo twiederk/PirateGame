@@ -26,28 +26,28 @@ noise_texture = SubResource("NoiseTexture2D_p51ow")
 tree_noise_texture = SubResource("NoiseTexture2D_btogb")
 seed_value = -57
 
-[node name="water_layer" type="TileMapLayer" parent="." unique_id=553333346]
+[node name="WaterLayer" type="TileMapLayer" parent="." unique_id=553333346]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="ground_layer" type="TileMapLayer" parent="." unique_id=198396820]
+[node name="SandLayer" type="TileMapLayer" parent="." unique_id=198396820]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="ground2_layer" type="TileMapLayer" parent="." unique_id=1429979287]
+[node name="GrassLayer" type="TileMapLayer" parent="." unique_id=1429979287]
 z_index = -1
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
-[node name="cliff_layer" type="TileMapLayer" parent="." unique_id=496936506]
+[node name="CliffLayer" type="TileMapLayer" parent="." unique_id=496936506]
 y_sort_enabled = true
 use_parent_material = true
 tile_set = ExtResource("2_btogb")
 y_sort_origin = 16
 
-[node name="environment_layer" type="TileMapLayer" parent="." unique_id=2078148654]
+[node name="EnvironmentLayer" type="TileMapLayer" parent="." unique_id=2078148654]
 y_sort_enabled = true
 use_parent_material = true
 tile_set = ExtResource("2_btogb")

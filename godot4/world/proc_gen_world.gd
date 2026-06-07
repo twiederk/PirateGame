@@ -26,11 +26,11 @@ var cliff_arr: Array[Vector2i] = []
 
 var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
-@onready var water_layer: TileMapLayer = $water_layer
-@onready var ground_layer: TileMapLayer = $ground_layer
-@onready var ground_2_layer: TileMapLayer = $ground2_layer
-@onready var cliff_layer: TileMapLayer = $cliff_layer
-@onready var environment_layer: TileMapLayer = $environment_layer
+@onready var water_layer: TileMapLayer = $WaterLayer
+@onready var sand_layer: TileMapLayer = $SandLayer
+@onready var grass_layer: TileMapLayer = $GrassLayer
+@onready var cliff_layer: TileMapLayer = $CliffLayer
+@onready var environment_layer: TileMapLayer = $EnvironmentLayer
 @onready var towns: Node2D = $Towns
 
 
@@ -57,8 +57,8 @@ func generate_world() -> Vector2i:
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
 			
-	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
-	ground_layer.set_cells_terrain_connect(grass_arr, 1, 0)
+	sand_layer.set_cells_terrain_connect(sand_arr, 3, 0)
+	sand_layer.set_cells_terrain_connect(grass_arr, 1, 0)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
 
 	if grass_arr.is_empty():
@@ -76,7 +76,7 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 		grass_arr.append(curr_pos)
 		if noise_val > 0.3:
 			#random grass
-			ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
+			grass_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
@@ -120,8 +120,8 @@ func get_tile_size() -> Vector2i:
 	
 	
 func is_coast(player_position: Vector2) -> bool:
-	var player_position_to_tile = ground_layer.local_to_map(player_position)
-	var tile_data : TileData = ground_layer.get_cell_tile_data(player_position_to_tile)
+	var player_position_to_tile = sand_layer.local_to_map(player_position)
+	var tile_data : TileData = sand_layer.get_cell_tile_data(player_position_to_tile)
 	if tile_data:
 		return tile_data.get_custom_data("coast")
 	else:
