@@ -9,8 +9,8 @@ const TownScene = preload("res://world/town.tscn")
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
 
-var width : int = 100
-var height : int =  100
+var width : int = 200
+var height : int = 200
 
 var noise : Noise
 var tree_noise : Noise
@@ -129,14 +129,18 @@ func is_coast(player_position: Vector2) -> bool:
 
 
 func generate_towns() -> Array[Town]:
-	for i in range(5):
-		var town_name = FarmTownResource.name + " " + str(i)
-		var town: Town = _create_town(FarmTownResource, town_name, grass_arr.pick_random())
+	@warning_ignore("integer_division")
+	var max_cities = int(width / 20)
+	var coast_arr = sand_arr.filter(is_coast)
+	
+	for i in range(max_cities):
+		var town_name = HaborTownResource.name + " " + str(i)
+		var town = _create_town(HaborTownResource, town_name, coast_arr.pick_random())
 		towns.add_child(town)
 		
-	for i in range(5):
-		var town_name = HaborTownResource.name + " " + str(i)
-		var town: Town = _create_town(HaborTownResource, town_name,sand_arr.pick_random())
+	for i in range(max_cities):
+		var town_name = FarmTownResource.name + " " + str(i)
+		var town = _create_town(FarmTownResource, town_name, grass_arr.pick_random())
 		towns.add_child(town)
 
 	return get_towns()

@@ -39,7 +39,6 @@ func advance_time(delta: float):
 
 
 func simulation() -> void:
-	print("TradingSystem.simulation()")
 	for town in _towns:
 		update_market(town)
 
