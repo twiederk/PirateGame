@@ -92,15 +92,14 @@ func buy(trading_item: TradingItem, amount: int):
 	trading_item.stock -= amount
 
 
-func sell(town: Town, good_id: int, amount: int):
-	var trading_item = town.inventory[good_id]
-	var price = get_price(trading_item)
+func sell(player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):
+	var price = get_price(town_trading_item)
 
-	if _player.inventory[good_id] < amount:
+	if player_trading_item.stock < amount:
 		return
 
 	var total_gain = price * amount
 
 	_player.gold += total_gain
-	_player.inventory[good_id] -= amount
-	town.set_stock(town.get_stock() + amount)
+	player_trading_item.stock -= amount
+	town_trading_item.stock += amount

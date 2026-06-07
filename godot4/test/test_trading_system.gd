@@ -61,17 +61,29 @@ func test_player_buys_fish_in_habor():
 	# tear down
 	player.free()
 
-#func test_player_sells_fish_in_habor():
-	## arrange
-	#trading_system.player.inventory.fish = 5
-	#
-	## act
-	#trading_system.sell("fish", 5)
-	#
-	## assert
-	#assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is added to stock of habor")
-	#assert_eq(trading_system.player.gold, 125, "Gold is added to player")
-	#assert_eq(trading_system.player.inventory.fish, 0, "Fish is removed from inventory of player")
+
+func test_player_sells_fish_in_habor():
+	# arrange
+	var fish: GoodResource = trading_system.goods[1]
+	var town_trading_item = TradingItem.new(fish, 50)
+	town_trading_item.cached_stock = 50
+	
+	var player = Player.new()
+	player.gold = 100
+	var player_trading_item: TradingItem = player.inventory[1]
+	player_trading_item.stock = 5
+	trading_system._player = player
+	
+	# act
+	trading_system.sell(player_trading_item, town_trading_item, 5)
+	
+	# assert
+	assert_eq(town_trading_item.stock, 55, "Fish is added to stock of habor")
+	assert_eq(player.gold, 125, "Gold is added to player")
+	assert_eq(player_trading_item.stock, 0, "Fish is removed from inventory of player")
+	
+	# tear down
+	player.free()
 
 
 #func test_update_market_of_habor():
