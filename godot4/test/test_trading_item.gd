@@ -8,6 +8,7 @@ func test_trading_item_creation():
 	good.name = "Fish"
 	good.base_price = 10
 	
+	# act
 	var item = TradingItem.new()
 	item.good = good
 	item.amount = 5
