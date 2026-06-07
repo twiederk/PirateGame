@@ -10,9 +10,11 @@ var direction : Vector2 = Vector2.ZERO
 
 var gold : int = 100
 var cargo_capacity : int = 20
+
+
 var inventory: Dictionary = {
-		"fish": 0,
-		"grain": 0
+		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
+		2: TradingItem.new(load("res://trading_system/good_grain.tres"))
 	}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -87,5 +89,5 @@ func has_space(amount: int) -> bool:
 func get_used_capacity() -> int:
 	var total = 0
 	for good in inventory:
-		total += inventory[good]
+		total += inventory[good].stock
 	return total

@@ -32,8 +32,7 @@ func test_goods_dictionary_populated():
 
 func test_price_in_habor_for_fish():
 	# arrange
-	var fish_item = TradingItem.new()
-	fish_item.good = load("res://trading_system/good_fish.tres")
+	var fish_item = TradingItem.new(load("res://trading_system/good_fish.tres"), 50)
 	
 	# act
 	var price = trading_system.get_price(fish_item)
@@ -43,15 +42,24 @@ func test_price_in_habor_for_fish():
 
 
 
-#func test_player_buys_fish_in_habor():
-	## act
-	#trading_system.buy("fish", 5)
-	#
-	## assert
-	#assert_eq(trading_system.cities.A.market.fish.stock, 45, "Fish is removed from stock of habor")
-	#assert_eq(trading_system.player.gold, 75, "Gold is reduced from player")
-	#assert_eq(trading_system.player.inventory.fish, 5, "Fish is put in inventory of player")
+func test_player_buys_fish_in_habor():
+	# arrange
+	var town_fish_item = TradingItem.new(load("res://trading_system/good_fish.tres"), 50)
+	
+	var player = Player.new()
+	player.gold = 100
+	trading_system._player = player
+	
+	# act
+	trading_system.buy(town_fish_item, 5)
+	
+	# assert
+	assert_eq(town_fish_item.stock, 45, "Fish is removed from stock of habor")
+	assert_eq(player.gold, 75, "Gold is reduced from player")
+	assert_eq(player.inventory[1].stock, 5, "Fish is put in inventory of player")
 
+	# tear down
+	player.free()
 
 #func test_player_sells_fish_in_habor():
 	## arrange
