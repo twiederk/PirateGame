@@ -44,13 +44,13 @@ func simulation() -> void:
 
 
 func update_market(town: Town):
-	if should_update_prices(town):
-		town.update_cached_stock(current_game_time)
+	for trading_item in town.inventory.values():
+		if should_update_prices(trading_item):
+			trading_item.update_cached_stock(current_game_time)
 	
-	# Update echter Stock basierend auf Produktion/Verbrauch
-	if "fish" in town.town_resource.produces:
+	for good in town.town_resource.produces:
 		town.set_stock(town.get_stock() + 5)
-	if "fish" in town.town_resource.consumes:
+	for good in town.town_resource.consumes:
 		town.set_stock(town.get_stock() - 3)
 	town.set_stock(max(1, town.get_stock()))
 
@@ -70,8 +70,8 @@ func get_price(trading_item: TradingItem) -> int:
 	return clampi(price, min_price, max_price)
 
 
-func should_update_prices(town: Town) -> bool:
-	var last_update = town._last_update
+func should_update_prices(trade_item: TradingItem) -> bool:
+	var last_update = trade_item.last_updated
 	return current_game_time - last_update >= price_update_interval
 
 
