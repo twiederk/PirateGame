@@ -5,6 +5,9 @@ extends Node2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var seed_value: int = 0
 
+const TownScene = preload("res://world/town.tscn")
+const HaborTownResource = preload("res://world/town_habor.tres")
+const FarmTownResource = preload("res://world/town_farm.tres")
 
 var width : int = 100
 var height : int =  100
@@ -126,6 +129,12 @@ func is_coast(player_position: Vector2) -> bool:
 
 
 func generate_towns() -> Array[Town]:
+	for i in range(1):
+		var town: Town = TownScene.instantiate()
+		town.town_resource = HaborTownResource
+		town.town_name = HaborTownResource.name + " " + str(i)
+		town.global_position = Vector2i(256, 1208.0)
+		towns.add_child(town)
 	return get_towns()
 
 

@@ -4,6 +4,7 @@ extends Control
 
 signal town_left
 
+const TradingRowScene = preload("res://gui/trading_row.tscn")
 
 var _trading_system: TradingSystem
 var _player: Player
@@ -14,8 +15,6 @@ var _town: Town
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
 @onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
 @onready var background = $Background
-
-const TradingRowScene = preload("res://gui/trading_row.tscn")
 
 
 func _update_gui() -> void:
