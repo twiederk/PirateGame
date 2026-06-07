@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dqyqpn2l6q80t" path="res://world/proc_gen_world.gd" id="1_p51ow"]
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
-[ext_resource type="Resource" uid="uid://bbipqeb2uqom4" path="res://world/town_habor.tres" id="4_btogb"]
-[ext_resource type="PackedScene" uid="uid://baxxgmcrsalyx" path="res://world/town.tscn" id="7_qlqlx"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_p51ow"]
 
@@ -52,7 +50,3 @@ use_parent_material = true
 tile_set = ExtResource("2_btogb")
 
 [node name="Towns" type="Node2D" parent="." unique_id=803467509]
-
-[node name="TownHabor" parent="Towns" unique_id=269579701 instance=ExtResource("7_qlqlx")]
-position = Vector2(504, 1208)
-town_resource = ExtResource("4_btogb")

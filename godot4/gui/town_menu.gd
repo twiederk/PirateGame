@@ -25,6 +25,7 @@ func _update_gui() -> void:
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
 	travel_button.grab_focus()
 
+
 func _create_trading_rows() -> void:
 	# Iterate over all goods in TradingSystem
 	for good_id in _trading_system.goods:

@@ -136,6 +136,15 @@ func generate_towns() -> Array[Town]:
 		town.name = town.town_name
 		town.global_position = grass_arr.pick_random() * get_tile_size()
 		towns.add_child(town)
+		
+	for i in range(5):
+		var town: Town = TownScene.instantiate()
+		town.town_resource = HaborTownResource
+		town.town_name = HaborTownResource.name + " " + str(i)
+		town.name = town.town_name
+		town.global_position = sand_arr.pick_random() * get_tile_size()
+		towns.add_child(town)
+		
 	return get_towns()
 
 
