@@ -37,6 +37,7 @@ func init(player: Player, towns: Array[Town]):
 func advance_time(delta: float):
 	current_game_time += delta
 
+
 func simulation() -> void:
 	for town in _towns:
 		update_market(town)
