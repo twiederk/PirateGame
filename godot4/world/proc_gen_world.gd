@@ -5,9 +5,12 @@ extends Node2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var seed_value: int = 0
 
+const TownScene = preload("res://world/town.tscn")
+const HaborTownResource = preload("res://world/town_habor.tres")
+const FarmTownResource = preload("res://world/town_farm.tres")
 
-var width : int = 100
-var height : int =  100
+var width : int = 200
+var height : int = 200
 
 var noise : Noise
 var tree_noise : Noise
@@ -23,11 +26,11 @@ var cliff_arr: Array[Vector2i] = []
 
 var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
-@onready var water_layer: TileMapLayer = $water_layer
-@onready var ground_layer: TileMapLayer = $ground_layer
-@onready var ground_2_layer: TileMapLayer = $ground2_layer
-@onready var cliff_layer: TileMapLayer = $cliff_layer
-@onready var environment_layer: TileMapLayer = $environment_layer
+@onready var water_layer: TileMapLayer = $WaterLayer
+@onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
+@onready var farm_field_layer: TileMapLayer = $FarmFieldLayer
+@onready var cliff_layer: TileMapLayer = $CliffLayer
+@onready var environment_layer: TileMapLayer = $EnvironmentLayer
 @onready var towns: Node2D = $Towns
 
 
@@ -54,8 +57,8 @@ func generate_world() -> Vector2i:
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
 			
-	ground_layer.set_cells_terrain_connect(sand_arr, 3, 0)
-	ground_layer.set_cells_terrain_connect(grass_arr, 1, 0)
+	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, 3, 0)
+	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, 1, 0)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
 
 	if grass_arr.is_empty():
@@ -73,7 +76,7 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 		grass_arr.append(curr_pos)
 		if noise_val > 0.3:
 			#random grass
-			ground_2_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
+			farm_field_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
@@ -117,8 +120,8 @@ func get_tile_size() -> Vector2i:
 	
 	
 func is_coast(player_position: Vector2) -> bool:
-	var player_position_to_tile = ground_layer.local_to_map(player_position)
-	var tile_data : TileData = ground_layer.get_cell_tile_data(player_position_to_tile)
+	var player_position_to_tile = sand_and_grass_layer.local_to_map(player_position)
+	var tile_data : TileData = sand_and_grass_layer.get_cell_tile_data(player_position_to_tile)
 	if tile_data:
 		return tile_data.get_custom_data("coast")
 	else:
@@ -126,8 +129,31 @@ func is_coast(player_position: Vector2) -> bool:
 
 
 func generate_towns() -> Array[Town]:
+	@warning_ignore("integer_division")
+	var max_cities = int(width / 20)
+	var coast_arr = sand_arr.filter(is_coast)
+	
+	for i in range(max_cities):
+		var town_name = HaborTownResource.name + " " + str(i)
+		var town = _create_town(HaborTownResource, town_name, coast_arr.pick_random())
+		towns.add_child(town)
+		
+	for i in range(max_cities):
+		var town_name = FarmTownResource.name + " " + str(i)
+		var town = _create_town(FarmTownResource, town_name, grass_arr.pick_random())
+		towns.add_child(town)
+
 	return get_towns()
 
+
+func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i) -> Town:
+	var town: Town = TownScene.instantiate()
+	town.town_resource = town_resource
+	town.town_name = town_name
+	town.name = town_name
+	town.global_position = pos * get_tile_size()
+	return town
+	
 
 func get_towns() -> Array[Town]:
 	var typed: Array[Town] = []

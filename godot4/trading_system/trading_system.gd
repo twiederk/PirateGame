@@ -39,7 +39,6 @@ func advance_time(delta: float):
 
 
 func simulation() -> void:
-	print("TradingSystem.simulation()")
 	for town in _towns:
 		update_market(town)
 
@@ -53,7 +52,7 @@ func update_market(town: Town):
 		town.inventory[good.id].stock += 5
 	for good in town.town_resource.consumes:
 		town.inventory[good.id].stock -= 3
-		town.inventory[good.id].stock = max(0, town.inventory[good.id].stock)
+		town.inventory[good.id].stock = max(1, town.inventory[good.id].stock)
 
 
 func get_price(trading_item: TradingItem) -> int:

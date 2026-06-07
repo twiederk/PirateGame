@@ -6,6 +6,7 @@ signal town_entered(town_resource: TownResource)
 
 @export var town_resource: TownResource
 
+var town_name: String
 var inventory: Dictionary = {}
 
 
@@ -26,12 +27,13 @@ func init_stock(good: GoodResource) -> int:
 		return stock
 
 
-func _on_body_entered(_body):
-	town_entered.emit(self)
+func _on_body_entered(body):
+	if body is Player:
+		town_entered.emit(self)
 
 
 func get_town_name() -> String:
-	return town_resource.name
+	return town_name
 
 
 func get_background_color() -> Color:
