@@ -54,9 +54,13 @@ func update_market(town: Town):
 	town.set_stock(max(1, town.get_stock()))
 
 
-func get_price(town: Town, good_id: String) -> int:
-	var base = goods[good_id]["base_price"]
-	var cached_stock = town.get_cached_stock()
+func get_price(trading_item: TradingItem) -> int:
+	var base = trading_item.good.base_price
+	var cached_stock = trading_item.cached_stock
+	
+	# Return min price when no cached stock data
+	if cached_stock == 0:
+		return int(base * 0.5)
 	
 	# Preis basiert auf gecachtem Stock, nicht echtem Stock
 	var price = base * (20.0 / max(cached_stock, 1))
@@ -70,8 +74,9 @@ func should_update_prices(town: Town) -> bool:
 	return current_game_time - last_update >= price_update_interval
 
 
-func buy(town: Town, good_id: String, amount: int):
-	var price = get_price(town, good_id)
+func buy(town: Town, good_id: int, amount: int):
+	var trading_item = town.inventory[good_id]
+	var price = get_price(trading_item)
 	var total_cost = price * amount
 
 	if _player.gold < total_cost:
@@ -88,8 +93,9 @@ func buy(town: Town, good_id: String, amount: int):
 	town.set_stock(town.get_stock() - amount)
 
 
-func sell(town: Town, good_id: String, amount: int):
-	var price = get_price(town, good_id)
+func sell(town: Town, good_id: int, amount: int):
+	var trading_item = town.inventory[good_id]
+	var price = get_price(trading_item)
 
 	if _player.inventory[good_id] < amount:
 		return

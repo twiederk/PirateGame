@@ -28,8 +28,10 @@ func get_background_color() -> Color:
 	return town_resource.background_color
 
 
-func get_cached_stock() -> int:
-	return _cached_stock
+func get_cached_stock(good_id: int) -> int:
+	if inventory.has(good_id):
+		return inventory[good_id].cached_stock
+	return 0
 	
 
 func get_stock() -> int:

@@ -30,15 +30,16 @@ func test_goods_dictionary_populated():
 	assert_eq(grain_resource.base_price, 15, "Grain should have base_price of 15")
 
 
-#func test_price_in_habor_for_fish():
-	## arrange
-	#var town = trading_system.cities.A
-	#
-	## act
-	#var price = trading_system.get_price(town, "fish")
-	#
-	## assert
-	#assert_eq(price, 5, "Price should not fall below min price")
+func test_price_in_habor_for_fish():
+	# arrange
+	var fish_item = TradingItem.new()
+	fish_item.good = load("res://trading_system/good_fish.tres")
+	
+	# act
+	var price = trading_system.get_price(fish_item)
+	
+	# assert
+	assert_eq(price, 5, "Price should not fall below min price")
 
 
 
