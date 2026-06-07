@@ -22,6 +22,9 @@ func _ready() -> void:
 	_setup_limits_and_borders()
 	
 	trading_system.init(player, towns)
+	
+	for town in towns:
+		town.initialize_inventory(trading_system)
 
 	player.global_position = starting_pos
 

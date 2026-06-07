@@ -17,8 +17,16 @@ func _ready() -> void:
 	_cached_stock = town_resource.stock
 
 
+func initialize_inventory(trading_system: TradingSystem) -> void:
+	inventory.clear()
+	for good_id in trading_system.goods:
+		var good = trading_system.goods[good_id]
+		inventory[good_id] = TradingItem.new(good, town_resource.stock)
+
+
 func _on_body_entered(_body):
 	town_entered.emit(self)
+
 
 func get_town_name() -> String:
 	return town_resource.name
@@ -45,10 +53,3 @@ func set_stock(amount: int) -> void:
 func update_cached_stock(current_game_time: float) -> void:
 	_cached_stock = _stock
 	_last_update = current_game_time
-
-
-func initialize_inventory(trading_system: TradingSystem) -> void:
-	inventory.clear()
-	for good_id in trading_system.goods:
-		var good = trading_system.goods[good_id]
-		inventory[good_id] = TradingItem.new(good, town_resource.stock)

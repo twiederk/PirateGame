@@ -21,6 +21,7 @@ var _town: Town
 func _ready() -> void:
 	buy_button.pressed.connect(_on_buy_button_pressed)
 	sell_button.pressed.connect(_on_sell_button_pressed)
+	update_display()
 
 
 func init(id: int, trading_system: TradingSystem, player: Player, town: Town) -> void:
@@ -28,7 +29,6 @@ func init(id: int, trading_system: TradingSystem, player: Player, town: Town) ->
 	_trading_system = trading_system
 	_player = player
 	_town = town
-	update_display()
 
 
 func update_display() -> void:
