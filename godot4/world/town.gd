@@ -6,6 +6,7 @@ signal town_entered(town_resource: TownResource)
 
 @export var town_resource: TownResource
 
+var inventory: Dictionary = {}
 var _stock: int
 var _cached_stock: int
 var _last_update: float
