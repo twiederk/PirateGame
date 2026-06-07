@@ -13,7 +13,17 @@ func initialize_inventory(trading_system: TradingSystem) -> void:
 	inventory.clear()
 	for good_id in trading_system.goods:
 		var good = trading_system.goods[good_id]
-		inventory[good_id] = TradingItem.new(good, town_resource.stock)
+		var stock = init_stock(good)
+		inventory[good_id] = TradingItem.new(good, stock)
+
+
+func init_stock(good: GoodResource) -> int:
+		var stock = 0
+		if good in town_resource.consumes:
+			stock = 10
+		if good in town_resource.produces:
+			stock = 50
+		return stock
 
 
 func _on_body_entered(_body):

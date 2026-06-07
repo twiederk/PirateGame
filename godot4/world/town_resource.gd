@@ -5,4 +5,3 @@ extends Resource
 @export var background_color: Color
 @export var produces: Array[GoodResource]
 @export var consumes: Array[GoodResource]
-@export var stock: int
