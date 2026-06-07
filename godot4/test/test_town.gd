@@ -12,7 +12,7 @@ func after_each():
 	town.free()
 
 
-func test_town_initalized_with_goods():
+func test_town_initialized_with_goods():
 	# arrange
 	var fish_item = TradingItem.new()
 	fish_item.good = load("res://trading_system/good_fish.tres")
@@ -22,12 +22,8 @@ func test_town_initalized_with_goods():
 	grain_item.good = load("res://trading_system/good_grain.tres")
 	town.inventory[2] = grain_item
 	
-	# act - verify inventory was set correctly
-	var retrieved_fish = town.inventory[1]
-	var retrieved_grain = town.inventory[2]
-	
 	# assert
-	assert_not_null(retrieved_fish, "Town should have fish in inventory")
-	assert_not_null(retrieved_grain, "Town should have grain in inventory")
-	assert_eq(retrieved_fish.good.id, 1, "Fish item should reference fish good")
-	assert_eq(retrieved_grain.good.id, 2, "Grain item should reference grain good")
+	assert_not_null(town.inventory[1], "Town should have fish in inventory")
+	assert_not_null(town.inventory[2], "Town should have grain in inventory")
+	assert_eq(town.inventory[1].good.id, 1, "Fish item should reference fish good")
+	assert_eq(town.inventory[2].good.id, 2, "Grain item should reference grain good")
