@@ -56,16 +56,16 @@ func update_market(town: Town):
 
 func get_price(trading_item: TradingItem) -> int:
 	var base = trading_item.good.base_price
+	var min_price = int(base * 0.5)
+	var max_price = int(base * 3)
 	var cached_stock = trading_item.cached_stock
 	
 	# Return min price when no cached stock data
 	if cached_stock == 0:
-		return int(base * 0.5)
+		return min_price
 	
-	# Preis basiert auf gecachtem Stock, nicht echtem Stock
-	var price = base * (20.0 / max(cached_stock, 1))
-	var min_price = base * 0.5
-	var max_price = base * 3
+	# Price based on cached stock, not actual stock
+	var price = int(base * (20.0 / max(cached_stock, 1)))
 	return clampi(price, min_price, max_price)
 
 
