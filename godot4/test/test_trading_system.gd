@@ -7,6 +7,29 @@ func before_each():
 	trading_system = TradingSystem.new()
 
 
+func after_each():
+	trading_system.free()
+
+
+func test_goods_dictionary_populated():
+	
+	# act
+	var goods_dict = trading_system.goods
+	
+	# assert
+	assert_not_null(goods_dict, "TradingSystem should have a goods dictionary")
+	assert_true(goods_dict.has(1), "Goods dictionary should contain fish (id: 1)")
+	assert_true(goods_dict.has(2), "Goods dictionary should contain grain (id: 2)")
+	
+	var fish_resource = goods_dict[1]
+	assert_is(fish_resource, GoodResource, "Fish entry should be a GoodResource")
+	assert_eq(fish_resource.base_price, 10, "Fish should have base_price of 10")
+	
+	var grain_resource = goods_dict[2]
+	assert_is(grain_resource, GoodResource, "Grain entry should be a GoodResource")
+	assert_eq(grain_resource.base_price, 15, "Grain should have base_price of 15")
+
+
 #func test_price_in_habor_for_fish():
 	## arrange
 	#var town = trading_system.cities.A

@@ -11,9 +11,9 @@ var accumulator: float = 0.0
 var _player: Player
 var _towns: Array[Town]
 
-var goods = {
-	"fish": { "base_price": 10 },
-	"grain": { "base_price": 15 }
+var goods: Dictionary = {
+	1: preload("res://trading_system/good_fish.tres"),
+	2: preload("res://trading_system/good_grain.tres")
 }
 
 
