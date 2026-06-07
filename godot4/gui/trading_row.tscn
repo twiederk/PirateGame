@@ -1,34 +1,35 @@
-[gd_scene format=3 uid="uid://dpy0cqepwdsl"]
+[gd_scene format=3 uid="uid://dwiuiq08a77r8"]
 
-[ext_resource type="Script" uid="uid://c2i5qd5tpqkv" path="res://gui/trading_row.gd" id="1_5u2xm"]
+[ext_resource type="Script" uid="uid://djreynb5ila6p" path="res://gui/trading_row.gd" id="1_5u2xm"]
 
-[node name="TradingRow" type="HBoxContainer"]
+[node name="TradingRow" type="HBoxContainer" unique_id=1085086894]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_5u2xm")
 
-[node name="GoodName" type="Label"]
+[node name="GoodName" type="Label" parent="." unique_id=1450564129]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Good"
 
-[node name="GoodPrice" type="Label"]
+[node name="GoodPrice" type="Label" parent="." unique_id=29879019]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-text = "0"
 
-[node name="PlayerAmount" type="Label"]
+[node name="PlayerAmount" type="Label" parent="." unique_id=1324874383]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "0"
 
-[node name="TownAmount" type="Label"]
+[node name="TownAmount" type="Label" parent="." unique_id=1894347671]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-text = "0"
 
-[node name="BuyButton" type="Button"]
+[node name="BuyButton" type="Button" parent="." unique_id=418738846]
 layout_mode = 2
 text = "Kaufen"
 
-[node name="SellButton" type="Button"]
+[node name="SellButton" type="Button" parent="." unique_id=841452649]
 layout_mode = 2
 text = "Verkaufen"
