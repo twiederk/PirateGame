@@ -69,41 +69,8 @@ custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Stadt"
 
-[node name="GoodRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=912500846]
-layout_mode = 2
-
-[node name="GoodName" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=1585043961]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "Fisch"
-
-[node name="GoodPrice" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=638732090]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "5"
-
-[node name="PlayerAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=1965829623]
-custom_minimum_size = Vector2(70, 0)
-layout_mode = 2
-text = "0"
-
-[node name="TownAmount" type="Label" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=858156583]
-custom_minimum_size = Vector2(70, 0)
-layout_mode = 2
-text = "50"
-
-[node name="BuyButton" type="Button" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=521605812]
-layout_mode = 2
-text = "Kaufen"
-
-[node name="SellButton" type="Button" parent="CenterContainer/VBoxContainer/GoodRow" unique_id=776894961]
-layout_mode = 2
-text = "Verkaufen"
-
 [node name="TravelButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2075163696]
 layout_mode = 2
 text = "Stadt verlassen"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/GoodRow/BuyButton" to="." method="_on_buy_fish_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/GoodRow/SellButton" to="." method="_on_sell_fish_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TravelButton" to="." method="_on_travel_button_pressed"]

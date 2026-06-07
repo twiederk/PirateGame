@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="GoodResource" format=3 uid="uid://3lb33c18mc5y"]
+
+[ext_resource type="Script" uid="uid://drlt6i2k3ur3t" path="res://trading_system/good_resource.gd" id="1_sdckk"]
+
+[resource]
+script = ExtResource("1_sdckk")
+id = 2
+name = "Korn"
+base_price = 15
+metadata/_custom_type_script = "uid://drlt6i2k3ur3t"

@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var SPEED : float = 150.0
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
+
 var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
@@ -11,8 +12,8 @@ var direction : Vector2 = Vector2.ZERO
 var gold : int = 100
 var cargo_capacity : int = 20
 var inventory: Dictionary = {
-		"fish": 0,
-		"grain": 0
+		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
+		2: TradingItem.new(load("res://trading_system/good_grain.tres"))
 	}
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -68,7 +69,7 @@ func board_ship():
 		current_state = STATE.ON_LAND
 
 
-func _on_town_tile_town_entered(town: Town) -> void:
+func _on_town_tile_town_entered(_town: Town) -> void:
 	current_state = STATE.IN_TOWN
 
 
@@ -78,3 +79,14 @@ func _on_town_menu_town_left() -> void:
 
 func in_town() -> bool:
 	return current_state == STATE.IN_TOWN
+
+
+func has_space(amount: int) -> bool:
+	return get_used_capacity() + amount <= cargo_capacity
+
+
+func get_used_capacity() -> int:
+	var total = 0
+	for good in inventory:
+		total += inventory[good].stock
+	return total
