@@ -1,5 +1,26 @@
 # Feature Prompt: Multi-Good Trading With OO Model
 
+**Status**: In Progress (6 of ~20 tests completed)
+
+## Progress Summary
+
+### Completed (✅):
+1. `TradingItem` class created with constructor
+2. `TradingSystem.goods` dictionary populated with fish and grain
+3. Player and Town use `TradingItem` for inventory
+4. `get_price()` uses `GoodResource.base_price` and TradingItem
+5. `buy()` method refactored to TradingItem-based API
+6. `sell()` method refactored to TradingItem-based API
+
+### Remaining:
+- Price independence per good
+- Capacity counting across all goods
+- Safe handling of missing good IDs
+- Cached stock and price updates
+- Integration tests for multi-good scenarios
+
+---
+
 You are implementing a refactor in a Godot 4 project to support many goods in a clean object-oriented way.
 
 ## Context
@@ -88,22 +109,22 @@ Refactor `TradingSystem`, `Player`, and `Town` to support **multiple goods** usi
 ## Test-Driven Development Tests
 
 ### TradingItem Tests
-- `test_trading_item_creation`: Create `TradingItem` with `good`, `amount`, `stock`, `cached_stock` initialized correctly
+- ✅ `test_trading_item_creation`: Create `TradingItem` with `good`, `amount`, `stock`, `cached_stock` initialized correctly
 
 ### TradingSystem Tests
-- `test_goods_dictionary_populated`: `@export var goods` contains at least `fish` and `grain` with correct base prices
-- `test_get_price_uses_good_base_price`: Price calculation uses `GoodResource.base_price`, not hardcoded strings
+- ✅ `test_goods_dictionary_populated`: `@export var goods` contains at least `fish` and `grain` with correct base prices
+- ✅ `test_get_price_uses_good_base_price`: Price calculation uses `GoodResource.base_price`, not hardcoded strings (implemented as `test_price_in_habor_for_fish`)
 - `test_price_varies_per_good`: Two different goods have independent price calculations based on their own stock
 
 ### Player Inventory Tests
-- `test_player_inventory_stores_trading_items`: Player inventory uses `TradingItem` values (not raw ints)
+- ✅ `test_player_inventory_stores_trading_items`: Player inventory uses `TradingItem` values (not raw ints) (verified in `test_town_initialized_with_goods`)
 - `test_has_space_counts_total_items`: Capacity check sums amounts across all goods
-- `test_buy_updates_trading_item_amount`: Buying updates `TradingItem.amount` for the correct good
-- `test_sell_updates_trading_item_amount`: Selling updates `TradingItem.amount` for the correct good
+- ✅ `test_buy_updates_trading_item_amount`: Buying updates `TradingItem.amount` for the correct good (implemented as `test_player_buys_fish_in_habor`)
+- ✅ `test_sell_updates_trading_item_amount`: Selling updates `TradingItem.amount` for the correct good (implemented as `test_player_sells_fish_in_habor`)
 - `test_inventory_safe_missing_good`: Accessing unknown good ID fails gracefully (no crash)
 
 ### Town Stock Tests
-- `test_town_stock_uses_trading_items`: Town inventory uses `TradingItem` per good (not single `_stock`)
+- ✅ `test_town_stock_uses_trading_items`: Town inventory uses `TradingItem` per good (not single `_stock`) (implemented as `test_town_initialized_with_goods`)
 - `test_town_independent_goods_stock`: Two goods in one town have independent stock values
 - `test_town_cached_stock_updates`: `update_cached_stock()` syncs `cached_stock` and updates `last_updated`
 - `test_town_price_cache_delay`: Price remains cached until time interval expires, per good
