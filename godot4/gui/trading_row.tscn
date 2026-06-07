@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dpy0cqepwdsl"]
+
+[ext_resource type="Script" uid="uid://c2i5qd5tpqkv" path="res://gui/trading_row.gd" id="1_5u2xm"]
+
+[node name="TradingRow" type="HBoxContainer"]
+script = ExtResource("1_5u2xm")
+
+[node name="GoodName" type="Label"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Good"
+
+[node name="GoodPrice" type="Label"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "0"
+
+[node name="PlayerAmount" type="Label"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "0"
+
+[node name="TownAmount" type="Label"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "0"
+
+[node name="BuyButton" type="Button"]
+layout_mode = 2
+text = "Kaufen"
+
+[node name="SellButton" type="Button"]
+layout_mode = 2
+text = "Verkaufen"
