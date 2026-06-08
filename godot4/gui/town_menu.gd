@@ -56,7 +56,7 @@ func _on_sell_requested(good_id: int, amount: int) -> void:
 
 
 func _update_all_rows() -> void:
-	player_gold.text = "Gold: " + str(_player.gold)
+	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
 	
 	for child in rows_container.get_children():
