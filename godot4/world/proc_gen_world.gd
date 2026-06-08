@@ -131,7 +131,7 @@ func is_coast(player_position: Vector2) -> bool:
 func generate_towns() -> Array[Town]:
 	@warning_ignore("integer_division")
 	var max_cities = int(width / 20)
-	var coast_arr = sand_arr.filter(is_coast)
+	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * get_tile_size()))
 	
 	for i in range(max_cities):
 		var town_name = HaborTownResource.name + " " + str(i)

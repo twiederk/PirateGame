@@ -5,4 +5,4 @@ extends Control
 
 
 func _ready():
-	version_label.text = " Version: " + ProjectSettings.get_setting("application/config/version")
+	version_label.text = "Version: " + ProjectSettings.get_setting("application/config/version")

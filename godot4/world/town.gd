@@ -10,12 +10,11 @@ var town_name: String
 var inventory: Dictionary = {}
 
 
-func initialize_inventory(trading_system: TradingSystem) -> void:
-	inventory.clear()
-	for good_id in trading_system.goods:
-		var good = trading_system.goods[good_id]
+func _ready() -> void:
+	var goods = town_resource.consumes + town_resource.produces
+	for good in goods:
 		var stock = init_stock(good)
-		inventory[good_id] = TradingItem.new(good, stock)
+		inventory[good.id] = TradingItem.new(good, stock)
 
 
 func init_stock(good: GoodResource) -> int:

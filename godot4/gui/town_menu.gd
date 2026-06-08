@@ -6,6 +6,8 @@ signal town_left
 
 const TradingRowScene = preload("res://gui/trading_row.tscn")
 
+var number_format = NumberFormat.new()
+
 var _trading_system: TradingSystem
 var _player: Player
 var _town: Town
@@ -21,7 +23,7 @@ var _town: Town
 func _update_gui() -> void:
 	town_name.text = "Name: " + _town.get_town_name()
 	background.self_modulate = _town.get_background_color()
-	player_gold.text = "Gold: " + str(_player.gold)
+	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
 	travel_button.grab_focus()
 
@@ -54,7 +56,7 @@ func _on_sell_requested(good_id: int, amount: int) -> void:
 
 
 func _update_all_rows() -> void:
-	player_gold.text = "Gold: " + str(_player.gold)
+	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
 	
 	for child in rows_container.get_children():
