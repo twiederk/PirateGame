@@ -26,9 +26,6 @@ func _ready() -> void:
 	
 	trading_system.init(player, towns)
 	
-	for town in towns:
-		town.initialize_inventory(trading_system)
-
 	player.global_position = starting_pos
 
 
