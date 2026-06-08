@@ -1,5 +1,9 @@
 extends GutTest
 
+const GOOD_FISH = preload("res://trading_system/good_fish.tres")
+const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
+const TOWN_HABOR = preload("res://world/town_habor.tres")
+
 var trading_system: TradingSystem = null
 
 
@@ -32,7 +36,7 @@ func test_goods_dictionary_populated():
 
 func test_price_in_habor_for_fish():
 	# arrange
-	var fish_item = TradingItem.new(load("res://trading_system/good_fish.tres"), 50)
+	var fish_item = TradingItem.new(GOOD_FISH, 50)
 	
 	# act
 	var price = trading_system.get_price(fish_item)
@@ -44,7 +48,7 @@ func test_price_in_habor_for_fish():
 
 func test_player_buys_fish_in_habor():
 	# arrange
-	var town_fish_item = TradingItem.new(load("res://trading_system/good_fish.tres"), 50)
+	var town_fish_item = TradingItem.new(GOOD_FISH, 50)
 	
 	var player = Player.new()
 	player.gold = 100
@@ -64,8 +68,7 @@ func test_player_buys_fish_in_habor():
 
 func test_player_sells_fish_in_habor():
 	# arrange
-	var fish: GoodResource = trading_system.goods[1]
-	var town_trading_item = TradingItem.new(fish, 50)
+	var town_trading_item = TradingItem.new(GOOD_FISH, 50)
 	town_trading_item.cached_stock = 50
 	
 	var player = Player.new()
@@ -86,13 +89,22 @@ func test_player_sells_fish_in_habor():
 	player.free()
 
 
-#func test_update_market_of_habor():
-	## act
-	#trading_system.update_market("A")
-	#
-	## assert
-	#assert_eq(trading_system.cities.A.market.fish.stock, 55, "Fish is produced in habor")
-	#assert_eq(trading_system.cities.A.market.grain.stock, 7, "Grain is consumed in habor")
+func test_update_market_of_habor():
+	# arrange
+	var town = Town.new()
+	town.town_resource = TOWN_HABOR
+	town.inventory[1] = TradingItem.new(GOOD_FISH, 50)
+	town.inventory[2] = TradingItem.new(GOOD_GRAIN, 10)
+	
+	# act
+	trading_system.update_market(town)
+	
+	# assert
+	assert_eq(town.inventory[1].stock, 55, "Fish is produced in habor")
+	assert_eq(town.inventory[2].stock, 7, "Grain is consumed in habor")
+	
+	# tear down
+	town.free()
 
 
 #func test_travel():
