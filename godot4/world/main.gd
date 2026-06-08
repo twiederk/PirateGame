@@ -9,17 +9,20 @@ extends Node2D
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
 @onready var town_menu: TownMenu = $gui/TownMenu
 @onready var trading_system = $TradingSystem
+@onready var debug_screen: DebugScreen = $gui/DebugScreen
 
 
 func _ready() -> void:
 	if not OS.has_feature("editor"):
 		get_window().mode = Window.MODE_FULLSCREEN
 
-	zoom_widget.set_zoom(camera.zoom)
 	var starting_pos = proc_gen_world.generate_world()
 	var towns = proc_gen_world.generate_towns()
 	_connect_signals(towns)
 	_setup_limits_and_borders()
+
+	debug_screen.set_seed(proc_gen_world.seed_value)
+	zoom_widget.set_zoom(camera.zoom)
 	
 	trading_system.init(player, towns)
 	

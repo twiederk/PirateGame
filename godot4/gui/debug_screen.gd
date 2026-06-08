@@ -2,8 +2,7 @@ class_name DebugScreen
 extends Control
 
 
-func _ready() -> void:
-	pass
+@onready var seed_label: Label = $VBoxContainer/SeedLabel
 
 
 func _input(_event) -> void:
@@ -12,3 +11,7 @@ func _input(_event) -> void:
 			hide()
 		else:
 			show()
+
+
+func set_seed(seed: int) -> void:
+	seed_label.text = "Seed: " + str(seed)
