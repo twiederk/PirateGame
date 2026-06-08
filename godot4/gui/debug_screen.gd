@@ -13,5 +13,5 @@ func _input(_event) -> void:
 			show()
 
 
-func set_seed(seed: int) -> void:
-	seed_label.text = "Seed: " + str(seed)
+func set_seed(seed_value: int) -> void:
+	seed_label.text = "Seed: " + str(seed_value)
