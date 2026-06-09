@@ -9,7 +9,6 @@ var price_update_interval: float = 2.5
 var accumulator: float = 0.0
 
 var _player: Player
-var _towns: Array[Town]
 
 var goods: Dictionary = {
 	1: preload("res://trading_system/good_fish.tres"),
@@ -17,33 +16,28 @@ var goods: Dictionary = {
 }
 
 
+func init(player: Player):
+	_player = player
 
-func _process(delta):
-	if _player.in_town():
-		return
 
+func simulation(delta: float, towns: Array[Town]) -> void:
 	advance_time(delta)
 	accumulator += delta
 	while accumulator >= SIMULATION_STEP:
-		simulation()
+		update_towns(towns)
 		accumulator -= SIMULATION_STEP
 
 
-func init(player: Player, towns: Array[Town]):
-	_player = player
-	_towns = towns
-
-
-func advance_time(delta: float):
+func advance_time(delta: float) -> void:
 	current_game_time += delta
 
 
-func simulation() -> void:
-	for town in _towns:
-		update_market(town)
+func update_towns(towns) -> void:
+	for town in towns:
+		update_town(town)
 
 
-func update_market(town: Town):
+func update_town(town: Town):
 	for trading_item in town.inventory.values():
 		if should_update_prices(trading_item):
 			trading_item.update_cached_stock(current_game_time)
@@ -52,7 +46,6 @@ func update_market(town: Town):
 		town.inventory[good.id].stock += 5
 	for good in town.town_resource.consumes:
 		town.inventory[good.id].stock -= 3
-		town.inventory[good.id].stock = max(1, town.inventory[good.id].stock)
 
 
 func get_price(trading_item: TradingItem) -> int:

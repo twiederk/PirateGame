@@ -90,7 +90,7 @@ func test_player_sells_fish_in_habor():
 	player.free()
 
 
-func test_update_market_of_habor():
+func test_update_town_habor():
 	# arrange
 	var town = Town.new()
 	town.town_resource = TOWN_HABOR
@@ -98,7 +98,7 @@ func test_update_market_of_habor():
 	town.inventory[2] = TradingItem.new(GOOD_GRAIN, 10)
 	
 	# act
-	trading_system.update_market(town)
+	trading_system.update_town(town)
 	
 	# assert
 	assert_eq(town.inventory[1].stock, 55, "Fish is produced in habor")
@@ -108,7 +108,7 @@ func test_update_market_of_habor():
 	town.free()
 
 
-func test_travel():
+func test_simulation():
 	# arrange
 	var habor = Town.new()
 	habor.town_resource = TOWN_HABOR
@@ -120,10 +120,8 @@ func test_travel():
 	farm.inventory[1] = TradingItem.new(GOOD_FISH, 10)
 	farm.inventory[2] = TradingItem.new(GOOD_GRAIN, 50)
 	
-	trading_system._towns = [habor, farm]
-	
 	# act
-	trading_system.simulation()
+	trading_system.simulation(trading_system.SIMULATION_STEP, [habor, farm])
 	
 	# assert
 	assert_eq(habor.inventory[1].stock, 55, "Fish is produced in habor")

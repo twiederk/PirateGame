@@ -1,6 +1,7 @@
 class_name Main
 extends Node2D
 
+var towns: Array[Town]
 
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
 @onready var player: CharacterBody2D = $Player
@@ -17,16 +18,22 @@ func _ready() -> void:
 		get_window().mode = Window.MODE_FULLSCREEN
 
 	var starting_pos = proc_gen_world.generate_world()
-	var towns = proc_gen_world.generate_towns()
-	_connect_signals(towns)
+	towns = proc_gen_world.generate_towns()
+	_connect_signals()
 	_setup_limits_and_borders()
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
 	zoom_widget.set_zoom(camera.zoom)
 	
-	trading_system.init(player, towns)
+	trading_system.init(player)
 	
 	player.global_position = starting_pos
+
+
+func _process(delta):
+	if player.in_town():
+		return
+	trading_system.simulation(delta, towns)
 
 
 func _setup_limits_and_borders() -> void:
@@ -41,7 +48,7 @@ func _setup_limits_and_borders() -> void:
 	_camera_limits(north_limit, south_limit, west_limit, east_limit)
 
 
-func _connect_signals(towns: Array[Town]) -> void:
+func _connect_signals() -> void:
 	for town in towns:
 		town.town_entered.connect(_on_town_tile_town_entered)
 		town.town_entered.connect(player._on_town_tile_town_entered)
