@@ -44,14 +44,14 @@ func _create_trading_rows() -> void:
 
 func _on_buy_requested(good_id: int, amount: int) -> void:
 	var town_item = _town.inventory[good_id]
-	_trading_system.buy(town_item, amount)
+	_trading_system.buy(_player, town_item, amount)
 	_update_all_rows()
 
 
 func _on_sell_requested(good_id: int, amount: int) -> void:
 	var player_item = _player.inventory[good_id]
 	var town_item = _town.inventory[good_id]
-	_trading_system.sell(player_item, town_item, amount)
+	_trading_system.sell(_player, player_item, town_item, amount)
 	_update_all_rows()
 
 

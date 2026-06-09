@@ -24,9 +24,7 @@ func _ready() -> void:
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
 	zoom_widget.set_zoom(camera.zoom)
-	
-	trading_system.init(player)
-	
+		
 	player.global_position = starting_pos
 
 

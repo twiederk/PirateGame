@@ -53,10 +53,9 @@ func test_player_buys_fish_in_habor():
 	
 	var player = Player.new()
 	player.gold = 100
-	trading_system._player = player
 	
 	# act
-	trading_system.buy(town_fish_item, 5)
+	trading_system.buy(player, town_fish_item, 5)
 	
 	# assert
 	assert_eq(town_fish_item.stock, 45, "Fish is removed from stock of habor")
@@ -76,10 +75,9 @@ func test_player_sells_fish_in_habor():
 	player.gold = 100
 	var player_trading_item: TradingItem = player.inventory[1]
 	player_trading_item.stock = 5
-	trading_system._player = player
 	
 	# act
-	trading_system.sell(player_trading_item, town_trading_item, 5)
+	trading_system.sell(player, player_trading_item, town_trading_item, 5)
 	
 	# assert
 	assert_eq(town_trading_item.stock, 55, "Fish is added to stock of habor")
