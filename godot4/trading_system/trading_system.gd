@@ -63,8 +63,8 @@ func should_update_prices(trade_item: TradingItem) -> bool:
 	return current_game_time - last_update >= price_update_interval
 
 
-func buy(player: Player, trading_item: TradingItem, amount: int):
-	var price = get_price(trading_item)
+func buy(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):
+	var price = get_price(town_trading_item)
 	var total_cost = price * amount
 
 	if player.gold < total_cost:
@@ -73,12 +73,12 @@ func buy(player: Player, trading_item: TradingItem, amount: int):
 	if not player.has_space(amount):
 		return
 
-	if trading_item.stock < amount:
+	if town_trading_item.stock < amount:
 		return
 
 	player.gold -= total_cost
-	player.inventory[trading_item.good.id].stock += amount
-	trading_item.stock -= amount
+	player_trading_item.stock += amount
+	town_trading_item.stock -= amount
 
 
 func sell(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):

@@ -49,18 +49,19 @@ func test_price_in_habor_for_fish():
 
 func test_player_buys_fish_in_habor():
 	# arrange
-	var town_fish_item = TradingItem.new(GOOD_FISH, 50)
+	var town_item = TradingItem.new(GOOD_FISH, 50)
+	var player_item = TradingItem.new(GOOD_FISH)
 	
 	var player = Player.new()
 	player.gold = 100
 	
 	# act
-	trading_system.buy(player, town_fish_item, 5)
+	trading_system.buy(player, player_item, town_item, 5)
 	
 	# assert
-	assert_eq(town_fish_item.stock, 45, "Fish is removed from stock of habor")
+	assert_eq(town_item.stock, 45, "Fish is removed from stock of habor")
 	assert_eq(player.gold, 75, "Gold is reduced from player")
-	assert_eq(player.inventory[1].stock, 5, "Fish is put in inventory of player")
+	assert_eq(player_item.stock, 5, "Fish is put in inventory of player")
 
 	# tear down
 	player.free()
