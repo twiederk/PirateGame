@@ -4,14 +4,17 @@ extends Resource
 
 var good: GoodResource
 
+var cached_stock: int
+var last_updated: float
+var good_id: int:
+	get:
+		return good.id
 var stock: int:
 	set(value):
 		_stock = max(value, 0)
 	get:
 		return _stock
 var _stock: int
-var cached_stock: int
-var last_updated: float
 
 
 func _init(a_good: GoodResource, a_stock: int = 0):

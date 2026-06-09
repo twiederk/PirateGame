@@ -74,7 +74,7 @@ func test_player_sells_fish_in_habor():
 	
 	var player = Player.new()
 	player.gold = 100
-	var player_trading_item: TradingItem = player.get_trading_item(town_trading_item.good.id)
+	var player_trading_item: TradingItem = player.get_trading_item(town_trading_item.good_id)
 	player_trading_item.stock = 5
 	
 	# act

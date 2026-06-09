@@ -9,7 +9,7 @@ func test_trading_item_creation():
 	var trading_item = TradingItem.new(GOOD_FISH, 100)
 	
 	# assert
-	assert_eq(trading_item.good.id, 1, "TradingItem should store the good")
+	assert_eq(trading_item.good_id, 1, "TradingItem should store the good")
 	assert_eq(trading_item.stock, 100, "TradingItem should store stock")
 	assert_eq(trading_item.cached_stock, 100, "TradingItem should store cached_stock")
 	assert_eq(trading_item.last_updated, 0.0, "TradingItem should store last_updated")
@@ -36,3 +36,11 @@ func test_stock_initialized_with_negative_value_should_be_set_to_zero():
 	
 	# assert
 	assert_eq(trading_item.stock, 0, "Stock should be set to zero")
+
+
+func test_get_good_id():
+	# act
+	var good_id = TradingItem.new(GOOD_FISH, 5).good_id
+	
+	# assert
+	assert_eq(good_id, GOOD_FISH.id, "Should return id of good")

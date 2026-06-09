@@ -41,4 +41,4 @@ func test_get_trading_item():
 	
 	# assert
 	assert_not_null(trading_item)
-	assert_eq(trading_item.good.id, 1, "Should return trading item for fish")
+	assert_eq(trading_item.good_id, 1, "Should return trading item for fish")
