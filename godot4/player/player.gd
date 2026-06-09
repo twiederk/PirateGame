@@ -9,6 +9,7 @@ var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
 
+var has_ship : bool = false
 var gold : int = 100
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
@@ -56,7 +57,10 @@ func _update_animation_parameters():
 		animation_tree["parameters/walk/blend_position"] = direction
 
 
-func board_ship():
+func board_ship() -> void:
+	if not has_ship:
+		return
+	
 	wanderer_sprite.visible = !wanderer_sprite.visible
 	ship_sprite.visible = !ship_sprite.visible
 	if current_state == STATE.ON_LAND:
