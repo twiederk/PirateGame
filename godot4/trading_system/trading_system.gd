@@ -44,7 +44,7 @@ func update_town(town: Town):
 
 
 func get_price(trading_item: TradingItem) -> int:
-	var base = trading_item.good.base_price
+	var base = trading_item.good_base_price
 	var min_price = int(base * 0.5)
 	var max_price = int(base * 3)
 	var cached_stock = trading_item.cached_stock
