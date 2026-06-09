@@ -34,7 +34,7 @@ func init(id: int, trading_system: TradingSystem, player: Player, town: Town) ->
 func update_display() -> void:
 	var good = _trading_system.goods[good_id]
 	var player_item = _player.get_trading_item(good_id)
-	var town_item = _town.inventory[good_id]
+	var town_item = _town.get_trading_item(good_id)
 	
 	good_name.text = good.name
 	good_price.text = str(_trading_system.get_price(town_item))

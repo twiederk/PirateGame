@@ -43,4 +43,6 @@ func get_cached_stock(good_id: int) -> int:
 	if inventory.has(good_id):
 		return inventory[good_id].cached_stock
 	return 0
-	
+
+func get_trading_item(good_id: int) -> TradingItem:
+	return inventory[good_id]
