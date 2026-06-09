@@ -93,15 +93,15 @@ func test_update_town_habor():
 	# arrange
 	var town = Town.new()
 	town.town_resource = TOWN_HABOR
-	town.inventory[1] = TradingItem.new(GOOD_FISH, 50)
-	town.inventory[2] = TradingItem.new(GOOD_GRAIN, 10)
+	town.add_trading_item(TradingItem.new(GOOD_FISH, 50))
+	town.add_trading_item(TradingItem.new(GOOD_GRAIN, 10))
 	
 	# act
 	trading_system.update_town(town)
 	
 	# assert
-	assert_eq(town.inventory[1].stock, 55, "Fish is produced in habor")
-	assert_eq(town.inventory[2].stock, 7, "Grain is consumed in habor")
+	assert_eq(town.get_trading_item(1).stock, 55, "Fish is produced in habor")
+	assert_eq(town.get_trading_item(2).stock, 7, "Grain is consumed in habor")
 	
 	# tear down
 	town.free()
@@ -111,22 +111,22 @@ func test_simulation():
 	# arrange
 	var habor = Town.new()
 	habor.town_resource = TOWN_HABOR
-	habor.inventory[1] = TradingItem.new(GOOD_FISH, 50)
-	habor.inventory[2] = TradingItem.new(GOOD_GRAIN, 10)
+	habor.add_trading_item(TradingItem.new(GOOD_FISH, 50))
+	habor.add_trading_item(TradingItem.new(GOOD_GRAIN, 10))
 	
 	var farm = Town.new()
 	farm.town_resource = TOWN_FARM
-	farm.inventory[1] = TradingItem.new(GOOD_FISH, 10)
-	farm.inventory[2] = TradingItem.new(GOOD_GRAIN, 50)
+	farm.add_trading_item(TradingItem.new(GOOD_FISH, 10))
+	farm.add_trading_item(TradingItem.new(GOOD_GRAIN, 50))
 	
 	# act
 	trading_system.simulation(trading_system.SIMULATION_STEP, [habor, farm])
 	
 	# assert
-	assert_eq(habor.inventory[1].stock, 55, "Fish is produced in habor")
-	assert_eq(habor.inventory[2].stock, 7, "Grain is consumed in habor")
-	assert_eq(farm.inventory[1].stock, 7, "Fish is consumed in farm")
-	assert_eq(farm.inventory[2].stock, 55, "Grain is produced in farm")
+	assert_eq(habor.get_trading_item(1).stock, 55, "Fish is produced in habor")
+	assert_eq(habor.get_trading_item(2).stock, 7, "Grain is consumed in habor")
+	assert_eq(farm.get_trading_item(1).stock, 7, "Fish is consumed in farm")
+	assert_eq(farm.get_trading_item(2).stock, 55, "Grain is produced in farm")
 	
 	# tear down
 	habor.free()

@@ -33,14 +33,14 @@ func update_towns(towns) -> void:
 
 
 func update_town(town: Town):
-	for trading_item in town.inventory.values():
+	for trading_item in town.get_trading_items():
 		if should_update_prices(trading_item):
 			trading_item.update_cached_stock(current_game_time)
 	
 	for good in town.town_resource.produces:
-		town.inventory[good.id].stock += 5
+		town.get_trading_item(good.id).stock += 5
 	for good in town.town_resource.consumes:
-		town.inventory[good.id].stock -= 3
+		town.get_trading_item(good.id).stock -= 3
 
 
 func get_price(trading_item: TradingItem) -> int:
