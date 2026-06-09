@@ -7,14 +7,14 @@ signal town_entered(town_resource: TownResource)
 @export var town_resource: TownResource
 
 var town_name: String
-var inventory: Dictionary = {}
+var _inventory: Dictionary = {}
 
 
 func _ready() -> void:
 	var goods = town_resource.consumes + town_resource.produces
 	for good in goods:
 		var stock = init_stock(good)
-		inventory[good.id] = TradingItem.new(good, stock)
+		_inventory[good.id] = TradingItem.new(good, stock)
 
 
 func init_stock(good: GoodResource) -> int:
@@ -40,7 +40,18 @@ func get_background_color() -> Color:
 
 
 func get_cached_stock(good_id: int) -> int:
-	if inventory.has(good_id):
-		return inventory[good_id].cached_stock
-	return 0
-	
+	return _inventory[good_id].cached_stock
+
+
+func get_trading_item(good_id: int) -> TradingItem:
+	return _inventory[good_id]
+
+
+func get_trading_items() -> Array[TradingItem]:
+	var typed: Array[TradingItem] = []
+	typed.assign(_inventory.values())
+	return typed
+
+
+func add_trading_item(trading_item: TradingItem) -> void:
+	_inventory[trading_item.good_id] = trading_item

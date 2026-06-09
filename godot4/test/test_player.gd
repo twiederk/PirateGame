@@ -33,3 +33,12 @@ func test_has_space_filled():
 	
 	# assert
 	assert_false(result, "Capacity is lower then addition capacity of goods")
+
+
+func test_get_trading_item():
+	# act
+	var trading_item = player.get_trading_item(1)
+	
+	# assert
+	assert_not_null(trading_item)
+	assert_eq(trading_item.good_id, 1, "Should return trading item for fish")

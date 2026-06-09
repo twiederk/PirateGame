@@ -8,8 +8,6 @@ var current_game_time: float = 0.0
 var price_update_interval: float = 2.5
 var accumulator: float = 0.0
 
-var _player: Player
-var _towns: Array[Town]
 
 var goods: Dictionary = {
 	1: preload("res://trading_system/good_fish.tres"),
@@ -17,46 +15,36 @@ var goods: Dictionary = {
 }
 
 
-
-func _process(delta):
-	if _player.in_town():
-		return
-
+func simulation(delta: float, towns: Array[Town]) -> void:
 	advance_time(delta)
 	accumulator += delta
 	while accumulator >= SIMULATION_STEP:
-		simulation()
+		update_towns(towns)
 		accumulator -= SIMULATION_STEP
 
 
-func init(player: Player, towns: Array[Town]):
-	_player = player
-	_towns = towns
-
-
-func advance_time(delta: float):
+func advance_time(delta: float) -> void:
 	current_game_time += delta
 
 
-func simulation() -> void:
-	for town in _towns:
-		update_market(town)
+func update_towns(towns) -> void:
+	for town in towns:
+		update_town(town)
 
 
-func update_market(town: Town):
-	for trading_item in town.inventory.values():
+func update_town(town: Town):
+	for trading_item in town.get_trading_items():
 		if should_update_prices(trading_item):
 			trading_item.update_cached_stock(current_game_time)
 	
 	for good in town.town_resource.produces:
-		town.inventory[good.id].stock += 5
+		town.get_trading_item(good.id).stock += 5
 	for good in town.town_resource.consumes:
-		town.inventory[good.id].stock -= 3
-		town.inventory[good.id].stock = max(1, town.inventory[good.id].stock)
+		town.get_trading_item(good.id).stock -= 3
 
 
 func get_price(trading_item: TradingItem) -> int:
-	var base = trading_item.good.base_price
+	var base = trading_item.good_base_price
 	var min_price = int(base * 0.5)
 	var max_price = int(base * 3)
 	var cached_stock = trading_item.cached_stock
@@ -75,25 +63,25 @@ func should_update_prices(trade_item: TradingItem) -> bool:
 	return current_game_time - last_update >= price_update_interval
 
 
-func buy(trading_item: TradingItem, amount: int):
-	var price = get_price(trading_item)
+func buy(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):
+	var price = get_price(town_trading_item)
 	var total_cost = price * amount
 
-	if _player.gold < total_cost:
+	if player.gold < total_cost:
 		return
 
-	if not _player.has_space(amount):
+	if not player.has_space(amount):
 		return
 
-	if trading_item.stock < amount:
+	if town_trading_item.stock < amount:
 		return
 
-	_player.gold -= total_cost
-	_player.inventory[trading_item.good.id].stock += amount
-	trading_item.stock -= amount
+	player.gold -= total_cost
+	player_trading_item.stock += amount
+	town_trading_item.stock -= amount
 
 
-func sell(player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):
+func sell(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):
 	var price = get_price(town_trading_item)
 
 	if player_trading_item.stock < amount:
@@ -101,6 +89,6 @@ func sell(player_trading_item: TradingItem, town_trading_item: TradingItem, amou
 
 	var total_gain = price * amount
 
-	_player.gold += total_gain
+	player.gold += total_gain
 	player_trading_item.stock -= amount
 	town_trading_item.stock += amount

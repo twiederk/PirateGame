@@ -18,6 +18,7 @@ var _town: Town
 @onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
 @onready var background = $Background
 @onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
+@onready var buy_ship_button: Button = $CenterContainer/VBoxContainer/BuyShipButton
 
 
 func _update_gui() -> void:
@@ -25,7 +26,17 @@ func _update_gui() -> void:
 	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
-	travel_button.grab_focus()
+	if _player.has_ship:
+		buy_ship_button.disabled = true
+	_update_all_rows()
+
+
+func _update_all_rows() -> void:
+	for child in rows_container.get_children():
+		if child is HBoxContainer and child != rows_container.get_child(rows_container.get_child_count() - 1):
+			# Check if this is a TradingRow by trying to call update_display
+			if child.has_method("update_display"):
+				child.update_display()
 
 
 func _create_trading_rows() -> void:
@@ -43,27 +54,17 @@ func _create_trading_rows() -> void:
 
 
 func _on_buy_requested(good_id: int, amount: int) -> void:
-	var town_item = _town.inventory[good_id]
-	_trading_system.buy(town_item, amount)
-	_update_all_rows()
+	var town_item = _town.get_trading_item(good_id)
+	var player_item = _player.get_trading_item(good_id)
+	_trading_system.buy(_player, player_item, town_item, amount)
+	_update_gui()
 
 
 func _on_sell_requested(good_id: int, amount: int) -> void:
-	var player_item = _player.inventory[good_id]
-	var town_item = _town.inventory[good_id]
-	_trading_system.sell(player_item, town_item, amount)
-	_update_all_rows()
-
-
-func _update_all_rows() -> void:
-	player_gold.text = "Gold: " + number_format.format(_player.gold)
-	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
-	
-	for child in rows_container.get_children():
-		if child is HBoxContainer and child != rows_container.get_child(rows_container.get_child_count() - 1):
-			# Check if this is a TradingRow by trying to call update_display
-			if child.has_method("update_display"):
-				child.update_display()
+	var player_item = _player.get_trading_item(good_id)
+	var town_item = _town.get_trading_item(good_id)
+	_trading_system.sell(_player, player_item, town_item, amount)
+	_update_gui()
 
 
 func _on_travel_button_pressed():
@@ -88,3 +89,11 @@ func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
 	_trading_system = trading_system
 	_create_trading_rows()
 	_update_gui()
+	travel_button.grab_focus()
+
+
+func _on_buy_ship_pressed() -> void:
+	if _player.gold >= 250:
+		_player.gold -= 250
+		_player.has_ship = true
+		_update_gui()

@@ -2,14 +2,25 @@ class_name TradingItem
 extends Resource
 
 
-var good: GoodResource
-var stock: int
 var cached_stock: int
 var last_updated: float
+var good_base_price: int:
+	get:
+		return _good_resource.base_price
+var good_id: int:
+	get:
+		return _good_resource.id
+var stock: int:
+	set(value):
+		_stock = max(value, 0)
+	get:
+		return _stock
+var _stock: int
+var _good_resource: GoodResource
 
 
-func _init(a_good: GoodResource, a_stock: int = 0):
-	good = a_good
+func _init(good_resource: GoodResource, a_stock: int = 0):
+	_good_resource = good_resource
 	stock = a_stock
 	cached_stock = a_stock
 

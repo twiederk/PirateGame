@@ -9,9 +9,10 @@ var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
 
+var has_ship : bool = false
 var gold : int = 100
 var cargo_capacity : int = 20
-var inventory: Dictionary = {
+var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
 		2: TradingItem.new(load("res://trading_system/good_grain.tres"))
 	}
@@ -56,7 +57,10 @@ func _update_animation_parameters():
 		animation_tree["parameters/walk/blend_position"] = direction
 
 
-func board_ship():
+func board_ship() -> void:
+	if not has_ship:
+		return
+	
 	wanderer_sprite.visible = !wanderer_sprite.visible
 	ship_sprite.visible = !ship_sprite.visible
 	if current_state == STATE.ON_LAND:
@@ -87,6 +91,10 @@ func has_space(amount: int) -> bool:
 
 func get_used_capacity() -> int:
 	var total = 0
-	for good in inventory:
-		total += inventory[good].stock
+	for good_id in _inventory:
+		total += _inventory[good_id].stock
 	return total
+
+
+func get_trading_item(good_id: int) -> TradingItem:
+	return _inventory[good_id]
