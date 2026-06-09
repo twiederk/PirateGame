@@ -3,7 +3,13 @@ extends Resource
 
 
 var good: GoodResource
-var stock: int
+
+var stock: int:
+	set(value):
+		_stock = max(value, 0)
+	get:
+		return _stock
+var _stock: int
 var cached_stock: int
 var last_updated: float
 
