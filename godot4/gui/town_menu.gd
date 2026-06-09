@@ -18,6 +18,7 @@ var _town: Town
 @onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
 @onready var background = $Background
 @onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
+@onready var buy_ship_button: Button = $CenterContainer/VBoxContainer/BuyShipButton
 
 
 func _update_gui() -> void:
@@ -25,6 +26,8 @@ func _update_gui() -> void:
 	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
+	if _player.has_ship:
+		buy_ship_button.disabled = true
 	_update_all_rows()
 
 
@@ -87,3 +90,10 @@ func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
 	_create_trading_rows()
 	_update_gui()
 	travel_button.grab_focus()
+
+
+func _on_buy_ship_pressed() -> void:
+	if _player.gold >= 250:
+		_player.gold -= 250
+		_player.has_ship = true
+		_update_gui()
