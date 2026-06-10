@@ -51,7 +51,7 @@ func get_price(trading_item: TradingItem) -> int:
 	
 	# Return min price when no cached stock data
 	if cached_stock == 0:
-		return min_price
+		return max_price
 	
 	# Price based on cached stock, not actual stock
 	var price = int(base * (20.0 / max(cached_stock, 1)))
