@@ -4,7 +4,7 @@
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_2f1qc"]
 
-[node name="City" type="Control" unique_id=502314466]
+[node name="TownMenu" type="Control" unique_id=502314466]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
