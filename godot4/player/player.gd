@@ -5,6 +5,11 @@ extends CharacterBody2D
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
+const BOATS = {
+	"boat": "res://player/boat_spritesheet.png",
+	"ship": "res://player/ship_spritesheet.png",
+}
+
 var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
@@ -103,3 +108,10 @@ func get_used_capacity() -> int:
 
 func get_trading_item(good_id: int) -> TradingItem:
 	return _inventory[good_id]
+
+
+func equip_ship_by_name(ship_name: String) -> void:
+	var texture = load(BOATS[ship_name])
+	if texture:
+		ship_sprite.texture = texture
+		has_ship = true

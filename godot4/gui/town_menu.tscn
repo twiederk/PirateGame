@@ -46,9 +46,13 @@ text = "Player Gold"
 layout_mode = 2
 text = "Player Weight"
 
+[node name="BuyBoatButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1913026820]
+layout_mode = 2
+text = "Boot kaufen (150 gold)"
+
 [node name="BuyShipButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1487060545]
 layout_mode = 2
-text = "Schiff kaufen (250 gold)"
+text = "Schiff kaufen (500 gold)"
 
 [node name="Heading" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=790509194]
 layout_mode = 2
@@ -77,5 +81,6 @@ text = "Stadt"
 layout_mode = 2
 text = "Stadt verlassen"
 
+[connection signal="pressed" from="CenterContainer/VBoxContainer/BuyBoatButton" to="." method="_on_buy_boat_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/BuyShipButton" to="." method="_on_buy_ship_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TravelButton" to="." method="_on_travel_button_pressed"]

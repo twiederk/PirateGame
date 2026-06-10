@@ -26,8 +26,6 @@ func _update_gui() -> void:
 	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
-	if _player.has_ship:
-		buy_ship_button.disabled = true
 	_update_all_rows()
 
 
@@ -92,8 +90,16 @@ func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
 	travel_button.grab_focus()
 
 
+func _on_buy_boat_button_pressed():
+	_buy_ship("boat", 150)
+
+
 func _on_buy_ship_pressed() -> void:
-	if _player.gold >= 250:
-		_player.gold -= 250
-		_player.has_ship = true
+	_buy_ship("ship", 500)
+
+
+func _buy_ship(ship_name: String, price: int) -> void:
+	if _player.gold >= price:
+		_player.gold -= price
+		_player.equip_ship_by_name(ship_name)
 		_update_gui()
