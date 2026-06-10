@@ -49,11 +49,9 @@ func get_price(trading_item: TradingItem) -> int:
 	var max_price = int(base * 3)
 	var cached_stock = trading_item.cached_stock
 	
-	# Return min price when no cached stock data
 	if cached_stock == 0:
 		return max_price
 	
-	# Price based on cached stock, not actual stock
 	var price = int(base * (20.0 / max(cached_stock, 1)))
 	return clampi(price, min_price, max_price)
 
