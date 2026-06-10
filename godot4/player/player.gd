@@ -9,7 +9,7 @@ var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
 
-var has_ship : bool = true
+var has_ship : bool = false
 var gold : int = 100
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
@@ -49,7 +49,6 @@ func _update_animation_parameters():
 		wanderer_animation_tree["parameters/conditions/is_idle"] = true
 		wanderer_animation_tree["parameters/conditions/is_moving"] = false
 	else:
-		wanderer_animation_tree["parameters/conditions/is_chopping"] = false
 		wanderer_animation_tree["parameters/conditions/is_idle"] = false
 		wanderer_animation_tree["parameters/conditions/is_moving"] = true
 
