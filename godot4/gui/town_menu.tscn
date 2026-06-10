@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b5rdq1cvlg4uu"]
 
 [ext_resource type="Script" uid="uid://cb01lexuy1va7" path="res://gui/town_menu.gd" id="1_2f1qc"]
+[ext_resource type="Theme" uid="uid://b87ft7eyrjj0h" path="res://gui/MessageLabelTheme.tres" id="2_5udr4"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_2f1qc"]
 
@@ -33,6 +34,10 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1511360140]
 layout_mode = 2
+
+[node name="Message" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1180445840]
+layout_mode = 2
+theme = ExtResource("2_5udr4")
 
 [node name="TownName" type="Label" parent="CenterContainer/VBoxContainer" unique_id=646220943]
 layout_mode = 2
@@ -80,6 +85,8 @@ text = "Stadt"
 [node name="TravelButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2075163696]
 layout_mode = 2
 text = "Stadt verlassen"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1320096196]
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/BuyBoatButton" to="." method="_on_buy_boat_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/BuyShipButton" to="." method="_on_buy_ship_pressed"]

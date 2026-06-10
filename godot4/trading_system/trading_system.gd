@@ -63,32 +63,34 @@ func should_update_prices(trade_item: TradingItem) -> bool:
 	return current_game_time - last_update >= price_update_interval
 
 
-func buy(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):
+func buy(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int) -> String:
 	var price = get_price(town_trading_item)
 	var total_cost = price * amount
 
 	if player.gold < total_cost:
-		return
+		return "Nicht genug Gold"
 
 	if not player.has_space(amount):
-		return
+		return "Laderaum is voll."
 
 	if town_trading_item.stock < amount:
-		return
+		return "Ware ist ausverkauft."
 
 	player.gold -= total_cost
 	player_trading_item.stock += amount
 	town_trading_item.stock -= amount
+	return "Ware gekauft."
 
 
-func sell(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int):
+func sell(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int) -> String:
 	var price = get_price(town_trading_item)
 
 	if player_trading_item.stock < amount:
-		return
+		return "Keine Ware."
 
 	var total_gain = price * amount
 
 	player.gold += total_gain
 	player_trading_item.stock -= amount
 	town_trading_item.stock += amount
+	return "Ware verkauft."

@@ -19,6 +19,17 @@ var _town: Town
 @onready var background = $Background
 @onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
 @onready var buy_ship_button: Button = $CenterContainer/VBoxContainer/BuyShipButton
+@onready var message = $CenterContainer/VBoxContainer/Message
+
+
+func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
+	_town = town
+	_player = player
+	_trading_system = trading_system
+	_create_trading_rows()
+	_update_gui()
+	travel_button.grab_focus()
+	message.text = ""
 
 
 func _update_gui() -> void:
@@ -54,14 +65,14 @@ func _create_trading_rows() -> void:
 func _on_buy_requested(good_id: int, amount: int) -> void:
 	var town_item = _town.get_trading_item(good_id)
 	var player_item = _player.get_trading_item(good_id)
-	_trading_system.buy(_player, player_item, town_item, amount)
+	message.text = _trading_system.buy(_player, player_item, town_item, amount)
 	_update_gui()
 
 
 func _on_sell_requested(good_id: int, amount: int) -> void:
 	var player_item = _player.get_trading_item(good_id)
 	var town_item = _town.get_trading_item(good_id)
-	_trading_system.sell(_player, player_item, town_item, amount)
+	message.text = _trading_system.sell(_player, player_item, town_item, amount)
 	_update_gui()
 
 
@@ -81,25 +92,19 @@ func _clear_trading_rows() -> void:
 		child.queue_free()
 
 
-func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
-	_town = town
-	_player = player
-	_trading_system = trading_system
-	_create_trading_rows()
-	_update_gui()
-	travel_button.grab_focus()
-
-
 func _on_buy_boat_button_pressed():
-	_buy_ship("boat", 150)
+	message.text = _buy_ship("boat", 150)
 
 
 func _on_buy_ship_pressed() -> void:
-	_buy_ship("ship", 500)
+	message.text = _buy_ship("ship", 500)
 
 
-func _buy_ship(ship_name: String, price: int) -> void:
+func _buy_ship(ship_name: String, price: int) -> String:
 	if _player.gold >= price:
 		_player.gold -= price
 		_player.equip_ship_by_name(ship_name)
 		_update_gui()
+		return str("Schiff gekauft.")
+	else:
+		return "Nicht genug Gold."
