@@ -9,20 +9,23 @@ var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
 
-var has_ship : bool = false
+var has_ship : bool = true
 var gold : int = 100
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
 		2: TradingItem.new(load("res://trading_system/good_grain.tres"))
 	}
+
 @onready var wanderer_animation_tree = $WandererSprite2D/WandererAnimationTree
 @onready var wanderer_sprite: Sprite2D = $WandererSprite2D
+@onready var ship_animation_tree = $ShipSprite2D/ShipAnimationTree
 @onready var ship_sprite: Sprite2D = $ShipSprite2D
 
 
 func _ready():
 	wanderer_animation_tree.active = true
+	ship_animation_tree.active = false
 
 
 func _process(_delta):
@@ -53,6 +56,7 @@ func _update_animation_parameters():
 	if direction != Vector2.ZERO:
 		wanderer_animation_tree["parameters/idle/blend_position"] = direction
 		wanderer_animation_tree["parameters/walk/blend_position"] = direction
+		ship_animation_tree.set("parameters/blend_position", velocity.normalized())
 
 
 func board_ship() -> void:
@@ -61,6 +65,10 @@ func board_ship() -> void:
 	
 	wanderer_sprite.visible = !wanderer_sprite.visible
 	ship_sprite.visible = !ship_sprite.visible
+	
+	wanderer_animation_tree.active = !wanderer_animation_tree.active
+	ship_animation_tree.active = !ship_animation_tree.active
+	
 	if current_state == STATE.ON_LAND:
 		set_collision_mask_value(2, false)
 		set_collision_mask_value(3, true)
