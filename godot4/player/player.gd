@@ -16,14 +16,13 @@ var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
 		2: TradingItem.new(load("res://trading_system/good_grain.tres"))
 	}
-@onready var animation_player = $WandererSprite2D/AnimationPlayer
-@onready var animation_tree = $WandererSprite2D/AnimationTree
+@onready var wanderer_animation_tree = $WandererSprite2D/WandererAnimationTree
 @onready var wanderer_sprite: Sprite2D = $WandererSprite2D
 @onready var ship_sprite: Sprite2D = $ShipSprite2D
 
 
 func _ready():
-	animation_tree.active = true
+	wanderer_animation_tree.active = true
 
 
 func _process(_delta):
@@ -44,16 +43,16 @@ func _physics_process(_delta):
 
 func _update_animation_parameters():
 	if velocity == Vector2.ZERO:
-		animation_tree["parameters/conditions/is_idle"] = true
-		animation_tree["parameters/conditions/is_moving"] = false
+		wanderer_animation_tree["parameters/conditions/is_idle"] = true
+		wanderer_animation_tree["parameters/conditions/is_moving"] = false
 	else:
-		animation_tree["parameters/conditions/is_chopping"] = false
-		animation_tree["parameters/conditions/is_idle"] = false
-		animation_tree["parameters/conditions/is_moving"] = true
+		wanderer_animation_tree["parameters/conditions/is_chopping"] = false
+		wanderer_animation_tree["parameters/conditions/is_idle"] = false
+		wanderer_animation_tree["parameters/conditions/is_moving"] = true
 
 	if direction != Vector2.ZERO:
-		animation_tree["parameters/idle/blend_position"] = direction
-		animation_tree["parameters/walk/blend_position"] = direction
+		wanderer_animation_tree["parameters/idle/blend_position"] = direction
+		wanderer_animation_tree["parameters/walk/blend_position"] = direction
 
 
 func board_ship() -> void:
