@@ -5,6 +5,11 @@ extends CharacterBody2D
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
+const BOATS = {
+	"boat": "res://player/boat_spritesheet.png",
+	"ship": "res://player/ship_spritesheet.png",
+}
+
 var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
@@ -17,14 +22,15 @@ var _inventory: Dictionary = {
 		2: TradingItem.new(load("res://trading_system/good_grain.tres"))
 	}
 
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var animation_tree = $AnimationTree
+@onready var wanderer_animation_tree = $WandererSprite2D/WandererAnimationTree
 @onready var wanderer_sprite: Sprite2D = $WandererSprite2D
+@onready var ship_animation_tree = $ShipSprite2D/ShipAnimationTree
 @onready var ship_sprite: Sprite2D = $ShipSprite2D
 
 
 func _ready():
-	animation_tree.active = true
+	wanderer_animation_tree.active = true
+	ship_animation_tree.active = false
 
 
 func _process(_delta):
@@ -45,16 +51,16 @@ func _physics_process(_delta):
 
 func _update_animation_parameters():
 	if velocity == Vector2.ZERO:
-		animation_tree["parameters/conditions/is_idle"] = true
-		animation_tree["parameters/conditions/is_moving"] = false
+		wanderer_animation_tree["parameters/conditions/is_idle"] = true
+		wanderer_animation_tree["parameters/conditions/is_moving"] = false
 	else:
-		animation_tree["parameters/conditions/is_chopping"] = false
-		animation_tree["parameters/conditions/is_idle"] = false
-		animation_tree["parameters/conditions/is_moving"] = true
+		wanderer_animation_tree["parameters/conditions/is_idle"] = false
+		wanderer_animation_tree["parameters/conditions/is_moving"] = true
 
 	if direction != Vector2.ZERO:
-		animation_tree["parameters/idle/blend_position"] = direction
-		animation_tree["parameters/walk/blend_position"] = direction
+		wanderer_animation_tree["parameters/idle/blend_position"] = direction
+		wanderer_animation_tree["parameters/walk/blend_position"] = direction
+		ship_animation_tree.set("parameters/blend_position", velocity.normalized())
 
 
 func board_ship() -> void:
@@ -63,6 +69,10 @@ func board_ship() -> void:
 	
 	wanderer_sprite.visible = !wanderer_sprite.visible
 	ship_sprite.visible = !ship_sprite.visible
+	
+	wanderer_animation_tree.active = !wanderer_animation_tree.active
+	ship_animation_tree.active = !ship_animation_tree.active
+	
 	if current_state == STATE.ON_LAND:
 		set_collision_mask_value(2, false)
 		set_collision_mask_value(3, true)
@@ -98,3 +108,10 @@ func get_used_capacity() -> int:
 
 func get_trading_item(good_id: int) -> TradingItem:
 	return _inventory[good_id]
+
+
+func equip_ship_by_name(ship_name: String) -> void:
+	var texture = load(BOATS[ship_name])
+	if texture:
+		ship_sprite.texture = texture
+		has_ship = true

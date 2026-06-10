@@ -35,7 +35,29 @@ func test_goods_dictionary_populated():
 	assert_eq(grain_resource.base_price, 15, "Grain should have base_price of 15")
 
 
-func test_price_in_habor_for_fish():
+func test_get_price_stock_is_empty():
+	# arrange
+	var fish_item = TradingItem.new(GOOD_FISH, 0)
+	
+	# act
+	var price = trading_system.get_price(fish_item)
+	
+	# assert
+	assert_eq(price, GOOD_FISH.base_price * 3, "Should have base price * 3 when stock is empty")
+
+
+func test_get_price_stock_medium():
+	# arrange
+	var fish_item = TradingItem.new(GOOD_FISH, 15)
+	
+	# act
+	var price = trading_system.get_price(fish_item)
+	
+	# assert
+	assert_eq(price, 13, "Should have calculated price when stock is medium")
+
+
+func test_get_price_stock_high():
 	# arrange
 	var fish_item = TradingItem.new(GOOD_FISH, 50)
 	
@@ -43,8 +65,8 @@ func test_price_in_habor_for_fish():
 	var price = trading_system.get_price(fish_item)
 	
 	# assert
-	assert_eq(price, 5, "Price should not fall below min price")
-
+	@warning_ignore("integer_division")
+	assert_eq(price, GOOD_FISH.base_price / 2, "Should have halve of base price when stock is high")
 
 
 func test_player_buys_fish_in_habor():

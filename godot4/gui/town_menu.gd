@@ -19,6 +19,17 @@ var _town: Town
 @onready var background = $Background
 @onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
 @onready var buy_ship_button: Button = $CenterContainer/VBoxContainer/BuyShipButton
+@onready var message = $CenterContainer/VBoxContainer/Message
+
+
+func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
+	_town = town
+	_player = player
+	_trading_system = trading_system
+	_create_trading_rows()
+	_update_gui()
+	travel_button.grab_focus()
+	message.text = ""
 
 
 func _update_gui() -> void:
@@ -26,8 +37,6 @@ func _update_gui() -> void:
 	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
-	if _player.has_ship:
-		buy_ship_button.disabled = true
 	_update_all_rows()
 
 
@@ -56,14 +65,14 @@ func _create_trading_rows() -> void:
 func _on_buy_requested(good_id: int, amount: int) -> void:
 	var town_item = _town.get_trading_item(good_id)
 	var player_item = _player.get_trading_item(good_id)
-	_trading_system.buy(_player, player_item, town_item, amount)
+	message.text = _trading_system.buy(_player, player_item, town_item, amount)
 	_update_gui()
 
 
 func _on_sell_requested(good_id: int, amount: int) -> void:
 	var player_item = _player.get_trading_item(good_id)
 	var town_item = _town.get_trading_item(good_id)
-	_trading_system.sell(_player, player_item, town_item, amount)
+	message.text = _trading_system.sell(_player, player_item, town_item, amount)
 	_update_gui()
 
 
@@ -83,17 +92,19 @@ func _clear_trading_rows() -> void:
 		child.queue_free()
 
 
-func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
-	_town = town
-	_player = player
-	_trading_system = trading_system
-	_create_trading_rows()
-	_update_gui()
-	travel_button.grab_focus()
+func _on_buy_boat_button_pressed():
+	message.text = _buy_ship("boat", 150)
 
 
 func _on_buy_ship_pressed() -> void:
-	if _player.gold >= 250:
-		_player.gold -= 250
-		_player.has_ship = true
+	message.text = _buy_ship("ship", 500)
+
+
+func _buy_ship(ship_name: String, price: int) -> String:
+	if _player.gold >= price:
+		_player.gold -= price
+		_player.equip_ship_by_name(ship_name)
 		_update_gui()
+		return str("Schiff gekauft.")
+	else:
+		return "Nicht genug Gold."
