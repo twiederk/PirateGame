@@ -59,25 +59,28 @@ text = "Boot kaufen (150 gold)"
 layout_mode = 2
 text = "Schiff kaufen (500 gold)"
 
-[node name="Heading" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=790509194]
+[node name="TradingItemTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1492825442]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=2003425170]
+[node name="Heading" type="HBoxContainer" parent="CenterContainer/VBoxContainer/TradingItemTable" unique_id=790509194]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="CenterContainer/VBoxContainer/TradingItemTable/Heading" unique_id=2003425170]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Handelsware"
 
-[node name="Price" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=1227950657]
+[node name="Price" type="Label" parent="CenterContainer/VBoxContainer/TradingItemTable/Heading" unique_id=1227950657]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "Preis"
 
-[node name="PlayerStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=496338392]
+[node name="PlayerStock" type="Label" parent="CenterContainer/VBoxContainer/TradingItemTable/Heading" unique_id=496338392]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Ladung"
 
-[node name="TownStock" type="Label" parent="CenterContainer/VBoxContainer/Heading" unique_id=1938835319]
+[node name="TownStock" type="Label" parent="CenterContainer/VBoxContainer/TradingItemTable/Heading" unique_id=1938835319]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Stadt"

@@ -12,7 +12,7 @@ var _trading_system: TradingSystem
 var _player: Player
 var _town: Town
 
-@onready var rows_container = $CenterContainer/VBoxContainer
+@onready var trading_item_table = $CenterContainer/VBoxContainer/TradingItemTable
 @onready var town_name = $CenterContainer/VBoxContainer/TownName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
 @onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
@@ -41,25 +41,18 @@ func _update_gui() -> void:
 
 
 func _update_all_rows() -> void:
-	for child in rows_container.get_children():
-		if child is HBoxContainer and child != rows_container.get_child(rows_container.get_child_count() - 1):
-			# Check if this is a TradingRow by trying to call update_display
-			if child.has_method("update_display"):
-				child.update_display()
+	for child in trading_item_table.get_children():
+		if child is TradingRow:
+			child.update_display()
 
 
 func _create_trading_rows() -> void:
-	# Iterate over all goods in TradingSystem
 	for good_id in _trading_system.goods:
 		var row = TradingRowScene.instantiate()
 		row.init(good_id, _trading_system, _player, _town)
 		row.buy_requested.connect(_on_buy_requested)
 		row.sell_requested.connect(_on_sell_requested)
-		
-		# Insert before TravelButton (which should be the last child)
-		var travel_button_index = rows_container.get_child_count() - 1
-		rows_container.add_child(row)
-		rows_container.move_child(row, travel_button_index)
+		trading_item_table.add_child(row)
 
 
 func _on_buy_requested(good_id: int, amount: int) -> void:
@@ -82,9 +75,8 @@ func _on_travel_button_pressed():
 
 
 func _clear_trading_rows() -> void:
-	# Remove all trading rows, keeping only the header and travel button
 	var children_to_remove = []
-	for child in rows_container.get_children():
+	for child in trading_item_table.get_children():
 		if child is TradingRow:
 			children_to_remove.append(child)
 	
