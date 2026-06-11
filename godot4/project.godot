@@ -12,7 +12,7 @@ config_version=5
 
 config/name="PirateGame"
 config/version="1.4.0"
-run/main_scene="uid://dhptvycu3kb8x"
+run/main_scene="uid://b8d0jj36n3kdo"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

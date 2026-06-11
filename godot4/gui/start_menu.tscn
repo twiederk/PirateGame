@@ -12,9 +12,12 @@ grow_vertical = 2
 script = ExtResource("1_82ymg")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=499531628]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1628878752]
 layout_mode = 2
@@ -22,6 +25,7 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1432445850]
 layout_mode = 2
 text = "Pirate Game"
+horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2112661459]
 layout_mode = 2
@@ -31,4 +35,5 @@ text = "Spiel starten"
 layout_mode = 2
 text = "Spiel verlassen"
 
+[connection signal="pressed" from="CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

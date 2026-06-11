@@ -14,8 +14,6 @@ var towns: Array[Town]
 
 
 func _ready() -> void:
-	if not OS.has_feature("editor"):
-		get_window().mode = Window.MODE_FULLSCREEN
 
 	var starting_pos = proc_gen_world.generate_world()
 	towns = proc_gen_world.generate_towns()
