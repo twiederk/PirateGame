@@ -16,6 +16,10 @@ const CLIFF_LEVEL: float = 0.6
 const TREE_CHANCE: float = 0.9
 const PALM_TREE_CHANCE: float = 0.92
 
+const GRASS_IN_SAND_TERRAIN: int = 1
+const SAND_IN_WATER_TERRAIN: int = 3
+const CLIFF_TERRAIN: int = 4
+
 var width : int = 200
 var height : int = 200
 
@@ -64,9 +68,9 @@ func generate_world() -> Vector2i:
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
 			
-	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, 3, 0)
-	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, 1, 0)
-	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
+	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, SAND_IN_WATER_TERRAIN, 0)
+	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN, 0)
+	cliff_layer.set_cells_terrain_connect(cliff_arr, CLIFF_TERRAIN, 0)
 
 	if grass_arr.is_empty():
 		return Vector2i.ZERO
