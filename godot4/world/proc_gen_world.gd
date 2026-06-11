@@ -9,6 +9,13 @@ const TownScene = preload("res://world/town.tscn")
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
 
+const WATER_LEVEL: float = 0
+const GRASS_LEVEL: float = 0.2
+const FIELD_LEVEL: float = 0.3
+const CLIFF_LEVEL: float = 0.6
+const TREE_CHANCE: float = 0.9
+const PALM_TREE_CHANCE: float = 0.92
+
 var width : int = 200
 var height : int = 200
 
@@ -67,39 +74,37 @@ func generate_world() -> Vector2i:
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
-	if noise_val > 0:
+	if noise_val > WATER_LEVEL:
 		sand_arr.append(curr_pos)
 
 
 func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
-	if noise_val > 0.2:
+	if noise_val > GRASS_LEVEL:
 		grass_arr.append(curr_pos)
-		if noise_val > 0.3:
-			#random grass
+		if noise_val > FIELD_LEVEL:
 			farm_field_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
-		#setting cliffs
-		if noise_val > 0.6:
+		if noise_val > CLIFF_LEVEL:
 			cliff_arr.append(curr_pos)
 
 
 func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
-	if noise_val <= 0:
+	if noise_val <= WATER_LEVEL:
 		water_layer.set_cell(curr_pos, 0, water_tile)
 
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
-	if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
+	if (tree_noise_val > TREE_CHANCE) and (noise_val > FIELD_LEVEL) and (noise_val < CLIFF_LEVEL):
 		environment_layer.set_cell(curr_pos, 0, tree_tile)
 
 
 func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	# setting palm trees on sand, between water and grass
-	if (noise_val > 0.0) and (noise_val < 0.18):
-		if tree_noise_val > 0.92:
+	if (noise_val > WATER_LEVEL) and (noise_val < GRASS_LEVEL):
+		if tree_noise_val > PALM_TREE_CHANCE:
 			environment_layer.set_cell(curr_pos, 0, random_palm_tree_array.pick_random())
 
 
