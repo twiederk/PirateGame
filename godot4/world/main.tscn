@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://blu6n1yghidqx" path="res://world/proc_gen_world.tscn" id="2_gu74f"]
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
-[ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="6_tp5tb"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
 [ext_resource type="PackedScene" uid="uid://chrrtsgq0q8ro" path="res://gui/debug_screen.tscn" id="7_vrojb"]
 [ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
@@ -27,8 +26,6 @@ position = Vector2(0, -6)
 
 [node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_vid1e")]
 visible = false
-
-[node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("6_tp5tb")]
 
 [node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
 
