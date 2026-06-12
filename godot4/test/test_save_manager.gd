@@ -28,6 +28,37 @@ func test_collect_game_state():
 	assert_eq(game_state["player"]["position"], Vector2(17, 29), "Collected data should include player position")
 	assert_eq(game_state["world_seed"], 12345, "Collected data should include world seed")
 
+
+func test_save_file():
+	# arrange
+	var slot_number = 3
+	var save_path = "user://saves/save_slot_%d.json" % slot_number
+	var game_state: Dictionary = {
+		"world_seed": 67890,
+		"player": {
+			"gold": 99,
+		}
+	}
+
+	if FileAccess.file_exists(save_path):
+		DirAccess.remove_absolute(save_path)
+
+	# act
+	SaveManager._save_file(game_state, slot_number)
+
+	# assert
+	assert_true(FileAccess.file_exists(save_path), "Save file should be created for the target slot")
+
+	var save_file = FileAccess.open(save_path, FileAccess.READ)
+	assert_not_null(save_file, "Save file should be readable")
+
+	var saved_text = save_file.get_as_text()
+	save_file.close()
+
+	var parsed_state = JSON.parse_string(saved_text)
+	var expected_state = JSON.parse_string(JSON.stringify(game_state))
+	assert_eq(parsed_state, expected_state, "Saved file content should match provided game state")
+
 # Phase 2 scope only: SaveManager + GameState core save/load mechanics (no pause/load menu UI).
 
 # should collect gold, position from player
