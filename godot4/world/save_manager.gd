@@ -2,7 +2,7 @@ extends Node
 
 
 func save(player: Player, proc_gen_world: ProcGenWorld, slot_number: int) -> void:
-	var game_state := _collect_game_state(player, proc_gen_world)
+	var game_state: Dictionary = _collect_game_state(player, proc_gen_world)
 	_save_file(game_state, slot_number)
 
 
@@ -18,9 +18,29 @@ func _save_file(game_state: Dictionary, slot_number: int) -> void:
 	if make_dir_error != OK:
 		return
 
-	var save_path = "user://saves/save_slot_%d.json" % slot_number
+	var save_path = _build_save_slot_path(slot_number)
 	var save_file = FileAccess.open(save_path, FileAccess.WRITE)
 	if save_file == null:
 		return
 	save_file.store_string(JSON.stringify(game_state))
 	save_file.close()
+
+
+func load(slot_number: int) -> Dictionary:
+	var save_path = _build_save_slot_path(slot_number)
+	var save_file = FileAccess.open(save_path, FileAccess.READ)
+	if save_file == null:
+		return {}
+
+	var saved_text: String = save_file.get_as_text()
+	save_file.close()
+
+	var parsed_state = JSON.parse_string(saved_text)
+	if parsed_state is Dictionary:
+		return parsed_state
+
+	return {}
+
+
+func _build_save_slot_path(slot_number: int) -> String:
+	return "user://saves/save_slot_%d.json" % slot_number
