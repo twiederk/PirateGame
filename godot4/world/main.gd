@@ -24,8 +24,8 @@ func _ready() -> void:
 	debug_screen.set_seed(proc_gen_world.seed_value)
 	zoom_widget.set_zoom(camera.zoom)
 	
-	var starting_pos = _get_starting_pos()
-	player.global_position = starting_pos
+	player.gold = _get_gold()
+	player.global_position = _get_starting_pos()
 
 
 func _process(delta):
@@ -58,7 +58,15 @@ func _get_starting_pos() -> Vector2i:
 	var pos_data = SaveManager.load_game_state["player"]["position"]
 	var pos = Vector2i(int(pos_data["x"]), int(pos_data["y"]))
 	return pos
-	
+
+
+func _get_gold() -> int:
+	if SaveManager.load_game_state.is_empty():
+		return 100
+	var gold_data = SaveManager.load_game_state["player"]["gold"]
+	var gold = int(gold_data)
+	return gold
+
 
 func _connect_signals() -> void:
 	for town in towns:
