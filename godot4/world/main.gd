@@ -15,9 +15,7 @@ var towns: Array[Town]
 
 func _ready() -> void:
 
-	var seed = _get_seed()
-
-	var starting_pos = proc_gen_world.generate_world(seed)
+	var starting_pos = proc_gen_world.generate_world(_get_seed())
 	towns = proc_gen_world.generate_towns()
 	_connect_signals()
 	_setup_limits_and_borders()

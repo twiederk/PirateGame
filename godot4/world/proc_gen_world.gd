@@ -57,7 +57,8 @@ func _ready() -> void:
 	tree_noise = tree_noise_texture.noise
 
 
-func generate_world() -> Vector2i:
+func generate_world(new_seed: int) -> Vector2i:
+	seed_value = new_seed
 	var noise_val: float
 	var tree_noise_val: float
 	_generate_seed()
