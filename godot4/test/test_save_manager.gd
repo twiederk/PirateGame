@@ -114,7 +114,3 @@ func test_load():
 	# tear down
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
-
-
-# should load slot 1 JSON into GameState and return success
-# should apply loaded world_seed to ProcGenWorld and regenerate deterministically via generate_world() intent
