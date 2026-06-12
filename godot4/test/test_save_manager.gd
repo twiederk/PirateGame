@@ -104,12 +104,12 @@ func test_load():
 	SaveManager._save_file(game_state, slot_number)
 
 	# act
-	var loaded_state = SaveManager.load(slot_number)
+	var result = SaveManager.load(slot_number)
 
 	# assert
+	assert_true(result, "Should return true when game is successfully loaded")
 	var expected_state = JSON.parse_string(JSON.stringify(game_state))
-	var normalized_loaded_state = JSON.parse_string(JSON.stringify(loaded_state))
-	assert_eq(normalized_loaded_state, expected_state, "Loaded game state should match saved game state")
+	assert_eq(SaveManager.load_game_state, expected_state, "Loaded game state should match saved game state")
 
 	# tear down
 	if FileAccess.file_exists(save_path):

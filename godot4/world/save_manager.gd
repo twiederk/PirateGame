@@ -1,5 +1,7 @@
 extends Node
 
+var load_game_state : Dictionary = {}
+
 
 func save(player: Player, proc_gen_world: ProcGenWorld, slot_number: int) -> void:
 	var game_state: Dictionary = _collect_game_state(player, proc_gen_world)
@@ -26,20 +28,23 @@ func _save_file(game_state: Dictionary, slot_number: int) -> void:
 	save_file.close()
 
 
-func load(slot_number: int) -> Dictionary:
+func load(slot_number: int) -> bool:
 	var save_path = _build_save_slot_path(slot_number)
 	var save_file = FileAccess.open(save_path, FileAccess.READ)
 	if save_file == null:
-		return {}
+		load_game_state = {}
+		return false
 
 	var saved_text: String = save_file.get_as_text()
 	save_file.close()
 
-	var parsed_state = JSON.parse_string(saved_text)
-	if parsed_state is Dictionary:
-		return parsed_state
+	var parsed_game_state = JSON.parse_string(saved_text)
+	if parsed_game_state is Dictionary:
+		load_game_state = parsed_game_state
+		return true
 
-	return {}
+	load_game_state = {}
+	return false
 
 
 func _build_save_slot_path(slot_number: int) -> String:
