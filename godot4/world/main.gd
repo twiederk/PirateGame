@@ -15,7 +15,9 @@ var towns: Array[Town]
 
 func _ready() -> void:
 
-	var starting_pos = proc_gen_world.generate_world()
+	var seed = _get_seed()
+
+	var starting_pos = proc_gen_world.generate_world(seed)
 	towns = proc_gen_world.generate_towns()
 	_connect_signals()
 	_setup_limits_and_borders()
@@ -42,6 +44,12 @@ func _setup_limits_and_borders() -> void:
 
 	map_borders.set_borders(north_limit, south_limit, west_limit, east_limit)
 	_camera_limits(north_limit, south_limit, west_limit, east_limit)
+
+
+func _get_seed() -> int:
+	if SaveManager.load_game_state.is_empty():
+		return 0
+	return SaveManager.load_game_state.world_seed
 
 
 func _connect_signals() -> void:
