@@ -16,14 +16,15 @@ var towns: Array[Town]
 
 func _ready() -> void:
 	var world_seed = _get_seed()
-	var starting_pos = proc_gen_world.generate_world(world_seed)
+	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
 	_connect_signals()
 	_setup_limits_and_borders()
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
 	zoom_widget.set_zoom(camera.zoom)
-		
+	
+	var starting_pos = _get_starting_pos()
 	player.global_position = starting_pos
 
 
@@ -50,6 +51,14 @@ func _get_seed() -> int:
 		return 0
 	return SaveManager.load_game_state.world_seed
 
+
+func _get_starting_pos() -> Vector2i:
+	if SaveManager.load_game_state.is_empty():
+		return proc_gen_world.get_starting_position()
+	var pos_data = SaveManager.load_game_state["player"]["position"]
+	var pos = Vector2i(int(pos_data["x"]), int(pos_data["y"]))
+	return pos
+	
 
 func _connect_signals() -> void:
 	for town in towns:
@@ -114,3 +123,7 @@ func _on_town_menu_town_left():
 	proc_gen_world.show()
 	player.show()
 	town_menu.hide()
+
+
+func _on_pause_menu_save_button_pressed():
+	SaveManager.save(player, proc_gen_world, 1)

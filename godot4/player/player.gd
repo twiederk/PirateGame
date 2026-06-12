@@ -121,6 +121,9 @@ func get_save_data() -> Dictionary:
 	return {
 		"player": {
 			"gold": gold,
-			"position": position,
+			"position": {
+				"x": position.x,
+				"y": position.y,
+			}
 		}
 	}

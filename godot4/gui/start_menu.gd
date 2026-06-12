@@ -14,12 +14,7 @@ func _on_start_button_pressed():
 
 
 func _on_load_button_pressed():
-	SaveManager.load_game_state = {
-		"world_seed": 67890,
-		"player": {
-			"gold": 99,
-		}
-	}
+	SaveManager.load(1)
 	get_tree().change_scene_to_file("res://world/main.tscn")
 
 

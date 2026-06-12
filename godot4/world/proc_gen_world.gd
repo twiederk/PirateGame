@@ -57,7 +57,7 @@ func _ready() -> void:
 	tree_noise = tree_noise_texture.noise
 
 
-func generate_world(new_seed: int) -> Vector2i:
+func generate_world(new_seed: int):
 	seed_value = new_seed
 	var noise_val: float
 	var tree_noise_val: float
@@ -80,6 +80,8 @@ func generate_world(new_seed: int) -> Vector2i:
 	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN_SET, TERRAIN)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, CLIFF_TERRAIN_SET, TERRAIN)
 
+
+func get_starting_position() -> Vector2i:
 	if grass_arr.is_empty():
 		return Vector2i.ZERO
 	return grass_arr.pick_random() * water_layer.tile_set.tile_size
