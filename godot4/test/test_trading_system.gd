@@ -46,6 +46,17 @@ func test_get_price_stock_is_empty():
 	assert_eq(price, GOOD_FISH.base_price * 3, "Should have base price * 3 when stock is empty")
 
 
+func test_get_price_stock_low():
+	# arrange
+	var fish_item = TradingItem.new(GOOD_FISH, 5)
+	
+	# act
+	var price = trading_system.get_price(fish_item)
+	
+	# assert
+	assert_eq(price, GOOD_FISH.base_price * 3, "Should have base price * 3 when stock is low")
+
+
 func test_get_price_stock_medium():
 	# arrange
 	var fish_item = TradingItem.new(GOOD_FISH, 15)
