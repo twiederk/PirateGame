@@ -59,6 +59,28 @@ func test_save_file():
 	var expected_state = JSON.parse_string(JSON.stringify(game_state))
 	assert_eq(parsed_state, expected_state, "Saved file content should match provided game state")
 
+
+func test_save():
+	# arrange
+	player.gold = 123
+	player.position = Vector2(45, 67)
+	proc_gen_world.seed_value = 24680
+
+	var slot_number = 2
+	var save_path = "user://saves/save_slot_%d.json" % slot_number
+
+	if FileAccess.file_exists(save_path):
+		DirAccess.remove_absolute(save_path)
+
+	# act
+	SaveManager.save(player, proc_gen_world, slot_number)
+
+	# assert
+	assert_true(FileAccess.file_exists(save_path), "Save file should be created for the target slot")
+
+	if FileAccess.file_exists(save_path):
+		DirAccess.remove_absolute(save_path)
+
 # Phase 2 scope only: SaveManager + GameState core save/load mechanics (no pause/load menu UI).
 
 # should collect gold, position from player
