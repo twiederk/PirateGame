@@ -55,4 +55,3 @@ func test_get_save_data():
 	# assert
 	assert_eq(save_data["player"]["gold"], 321, "Collected data should include player gold")
 	assert_eq(save_data["player"]["position"], Vector2(17, 29), "Collected data should include player position")
-	player.free()

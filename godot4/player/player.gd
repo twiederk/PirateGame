@@ -115,3 +115,12 @@ func equip_ship_by_name(ship_name: String) -> void:
 	if texture:
 		ship_sprite.texture = texture
 		has_ship = true
+
+
+func get_save_data() -> Dictionary:
+	return {
+		"player": {
+			"gold": gold,
+			"position": position,
+		}
+	}
