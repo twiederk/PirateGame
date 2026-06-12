@@ -11,6 +11,7 @@ var towns: Array[Town]
 @onready var town_menu: TownMenu = $gui/TownMenu
 @onready var trading_system = $TradingSystem
 @onready var debug_screen: DebugScreen = $gui/DebugScreen
+@onready var pause_menu = $gui/PauseMenu
 
 
 func _ready() -> void:
@@ -59,7 +60,7 @@ func _connect_signals() -> void:
 func _input(_event) -> void:
 	_camera_zoom()
 	_board_ship()
-	_quit_game()
+	_pause_game()
 	
 	
 func _camera_zoom() -> void:
@@ -81,9 +82,9 @@ func _camera_zoom() -> void:
 		
 
 
-func _quit_game() -> void:
-	if Input.is_action_just_pressed("quit"):
-		get_tree().quit(0)
+func _pause_game() -> void:
+	if Input.is_action_just_pressed("pause"):
+		pause_menu.show_menu()
 
 
 func _board_ship() -> void:

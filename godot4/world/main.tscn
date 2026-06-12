@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
+[ext_resource type="PackedScene" uid="uid://bublk3k17bw7t" path="res://gui/pause_menu.tscn" id="7_qnd6n"]
 [ext_resource type="PackedScene" uid="uid://chrrtsgq0q8ro" path="res://gui/debug_screen.tscn" id="7_vrojb"]
 [ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
@@ -31,6 +32,9 @@ visible = false
 [node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
 
 [node name="DebugScreen" parent="gui" unique_id=92080076 instance=ExtResource("7_vrojb")]
+visible = false
+
+[node name="PauseMenu" parent="gui" unique_id=567357806 instance=ExtResource("7_qnd6n")]
 visible = false
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
