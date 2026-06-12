@@ -14,6 +14,7 @@ y_sort_enabled = true
 script = ExtResource("1_04q08")
 
 [node name="ProcGenWorld" parent="." unique_id=572580707 instance=ExtResource("2_gu74f")]
+seed_value = 0
 
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
 position = Vector2(736, 410)
