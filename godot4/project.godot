@@ -16,6 +16,10 @@ run/main_scene="uid://b8d0jj36n3kdo"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SaveManager="*res://world/save_manager.gd"
+
 [display]
 
 window/size/viewport_width=640
@@ -26,10 +30,6 @@ window/stretch/aspect="expand"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
-
-[autoload]
-
-SaveManager="*res://save_manager.gd"
 
 [input]
 
