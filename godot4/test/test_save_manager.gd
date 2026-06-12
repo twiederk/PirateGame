@@ -14,14 +14,14 @@ func after_each():
 	proc_gen_world.free()
 
 
-func test_collect_save_data():
+func test_collect_game_state():
 	# arrange
 	player.gold = 321
 	player.position = Vector2(17, 29)
 	proc_gen_world.seed_value = 12345
 
 	# act
-	var game_state = SaveManager.collect_save_data(player, proc_gen_world)
+	var game_state = SaveManager.collect_game_state(player, proc_gen_world)
 
 	# assert
 	assert_eq(game_state["player"]["gold"], 321, "Collected data should include player gold")
