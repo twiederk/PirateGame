@@ -15,10 +15,10 @@ func test_seed_new_game():
 	SaveManager.load_game_state = {}
 	
 	# act
-	var seed = main._get_seed()
+	var result = main._get_seed()
 	
 	# assert
-	assert_eq(seed, 0, "Should start with random seed.")
+	assert_eq(result, 0, "Should start with random seed.")
 
 
 func test_seed_load_game():
@@ -28,7 +28,7 @@ func test_seed_load_game():
 	}
 	
 	# act
-	var seed = main._get_seed()
+	var result = main._get_seed()
 	
 	# assert
-	assert_eq(seed, 24680, "Should start with loaded seed.")
+	assert_eq(result, 24680, "Should start with loaded seed.")

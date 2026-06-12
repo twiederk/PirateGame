@@ -1,5 +1,7 @@
 extends GutTest
 
+const SLOT_NUMBER: int = 100
+
 var player: Player = null
 var proc_gen_world: ProcGenWorld = null
 
@@ -31,8 +33,7 @@ func test_collect_game_state():
 
 func test_save_file():
 	# arrange
-	var slot_number = 3
-	var save_path = "user://saves/save_slot_%d.json" % slot_number
+	var save_path = "user://saves/save_slot_%d.json" % SLOT_NUMBER
 	var game_state: Dictionary = {
 		"world_seed": 67890,
 		"player": {
@@ -44,7 +45,7 @@ func test_save_file():
 		DirAccess.remove_absolute(save_path)
 
 	# act
-	SaveManager._save_file(game_state, slot_number)
+	SaveManager._save_file(game_state, SLOT_NUMBER)
 
 	# assert
 	assert_true(FileAccess.file_exists(save_path), "Save file should be created for the target slot")
@@ -66,14 +67,13 @@ func test_save():
 	player.position = Vector2(45, 67)
 	proc_gen_world.seed_value = 24680
 
-	var slot_number = 2
-	var save_path = "user://saves/save_slot_%d.json" % slot_number
+	var save_path = "user://saves/save_slot_%d.json" % SLOT_NUMBER
 
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
 
 	# act
-	SaveManager.save(player, proc_gen_world, slot_number)
+	SaveManager.save(player, proc_gen_world, SLOT_NUMBER)
 
 	# assert
 	assert_true(FileAccess.file_exists(save_path), "Save file should be created for the target slot")
@@ -85,8 +85,7 @@ func test_save():
 
 func test_load():
 	# arrange
-	var slot_number = 4
-	var save_path = "user://saves/save_slot_%d.json" % slot_number
+	var save_path = "user://saves/save_slot_%d.json" % SLOT_NUMBER
 	var game_state: Dictionary = {
 		"world_seed": 13579,
 		"player": {
@@ -101,10 +100,10 @@ func test_load():
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
 
-	SaveManager._save_file(game_state, slot_number)
+	SaveManager._save_file(game_state, SLOT_NUMBER)
 
 	# act
-	var result = SaveManager.load(slot_number)
+	var result = SaveManager.load(SLOT_NUMBER)
 
 	# assert
 	assert_true(result, "Should return true when game is successfully loaded")
