@@ -133,6 +133,10 @@ func get_used_rect() -> Rect2i:
 
 func get_tile_size() -> Vector2i:
 	return water_layer.tile_set.tile_size
+
+
+func get_save_data() -> Dictionary:
+	return {"world_seed": seed_value}
 	
 	
 func is_coast(player_position: Vector2) -> bool:

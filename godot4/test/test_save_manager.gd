@@ -3,6 +3,7 @@ extends GutTest
 # Phase 2 scope only: SaveManager + GameState core save/load mechanics (no pause/load menu UI).
 
 # should collect gold, position from player
+# should collect seed from ProcGenWorld
 # should reject save requests for slot numbers outside 1..3
 # should return false when loading a slot file that does not exist in user://saves/
 # should create user://saves/ automatically before writing a slot file
