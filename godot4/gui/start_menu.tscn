@@ -31,9 +31,14 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Spiel starten"
 
+[node name="LoadButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1355451811]
+layout_mode = 2
+text = "Spiel laden"
+
 [node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=733418335]
 layout_mode = 2
 text = "Spiel verlassen"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
