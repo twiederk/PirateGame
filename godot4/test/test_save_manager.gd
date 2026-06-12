@@ -27,7 +27,8 @@ func test_collect_game_state():
 
 	# assert
 	assert_eq(game_state["player"]["gold"], 321, "Collected data should include player gold")
-	assert_eq(game_state["player"]["position"], Vector2(17, 29), "Collected data should include player position")
+	assert_eq(game_state["player"]["position"]["x"], 17.0, "Collected data should include player position")
+	assert_eq(game_state["player"]["position"]["y"], 29.0, "Collected data should include player position")
 	assert_eq(game_state["world_seed"], 12345, "Collected data should include world seed")
 
 
