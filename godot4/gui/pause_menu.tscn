@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bublk3k17bw7t"]
+
+[ext_resource type="Script" uid="uid://yq0wm8t5ubh5" path="res://gui/pause_menu.gd" id="1_r7i8h"]
+
+[node name="PauseMenu" type="Control" unique_id=567357806]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r7i8h")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=479809618]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=634506482]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=365780360]
+layout_mode = 2
+text = "Pause"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=519443600]
+layout_mode = 2
+text = "Spiel fortsetzen"
+
+[node name="SaveButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=576735343]
+layout_mode = 2
+text = "Spiel speichern"
+
+[node name="MenuButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=239051199]
+layout_mode = 2
+text = "Hauptmenu"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/MenuButton" to="." method="_on_menu_button_pressed"]

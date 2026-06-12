@@ -11,21 +11,21 @@ var towns: Array[Town]
 @onready var town_menu: TownMenu = $gui/TownMenu
 @onready var trading_system = $TradingSystem
 @onready var debug_screen: DebugScreen = $gui/DebugScreen
+@onready var pause_menu = $gui/PauseMenu
 
 
 func _ready() -> void:
-	if not OS.has_feature("editor"):
-		get_window().mode = Window.MODE_FULLSCREEN
-
-	var starting_pos = proc_gen_world.generate_world()
+	var world_seed = _get_seed()
+	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
 	_connect_signals()
 	_setup_limits_and_borders()
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
 	zoom_widget.set_zoom(camera.zoom)
-		
-	player.global_position = starting_pos
+	
+	player.gold = _get_gold()
+	player.global_position = _get_starting_pos()
 
 
 func _process(delta):
@@ -46,6 +46,28 @@ func _setup_limits_and_borders() -> void:
 	_camera_limits(north_limit, south_limit, west_limit, east_limit)
 
 
+func _get_seed() -> int:
+	if SaveManager.load_game_state.is_empty():
+		return 0
+	return SaveManager.load_game_state.world_seed
+
+
+func _get_starting_pos() -> Vector2i:
+	if SaveManager.load_game_state.is_empty():
+		return proc_gen_world.get_starting_position()
+	var pos_data = SaveManager.load_game_state["player"]["position"]
+	var pos = Vector2i(int(pos_data["x"]), int(pos_data["y"]))
+	return pos
+
+
+func _get_gold() -> int:
+	if SaveManager.load_game_state.is_empty():
+		return 100
+	var gold_data = SaveManager.load_game_state["player"]["gold"]
+	var gold = int(gold_data)
+	return gold
+
+
 func _connect_signals() -> void:
 	for town in towns:
 		town.town_entered.connect(_on_town_tile_town_entered)
@@ -55,7 +77,7 @@ func _connect_signals() -> void:
 func _input(_event) -> void:
 	_camera_zoom()
 	_board_ship()
-	_quit_game()
+	_pause_game()
 	
 	
 func _camera_zoom() -> void:
@@ -77,9 +99,9 @@ func _camera_zoom() -> void:
 		
 
 
-func _quit_game() -> void:
-	if Input.is_action_just_pressed("quit"):
-		get_tree().quit(0)
+func _pause_game() -> void:
+	if Input.is_action_just_pressed("pause"):
+		pause_menu.show_menu()
 
 
 func _board_ship() -> void:
@@ -109,3 +131,7 @@ func _on_town_menu_town_left():
 	proc_gen_world.show()
 	player.show()
 	town_menu.hide()
+
+
+func _on_pause_menu_save_button_pressed():
+	SaveManager.save(player, proc_gen_world, 1)

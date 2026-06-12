@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://blu6n1yghidqx" path="res://world/proc_gen_world.tscn" id="2_gu74f"]
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
-[ext_resource type="PackedScene" uid="uid://bpkpuwnv5gy7d" path="res://gui/version_widget.tscn" id="6_tp5tb"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
+[ext_resource type="PackedScene" uid="uid://bublk3k17bw7t" path="res://gui/pause_menu.tscn" id="7_qnd6n"]
 [ext_resource type="PackedScene" uid="uid://chrrtsgq0q8ro" path="res://gui/debug_screen.tscn" id="7_vrojb"]
 [ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
@@ -15,6 +15,7 @@ y_sort_enabled = true
 script = ExtResource("1_04q08")
 
 [node name="ProcGenWorld" parent="." unique_id=572580707 instance=ExtResource("2_gu74f")]
+seed_value = 0
 
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
 position = Vector2(736, 410)
@@ -28,11 +29,12 @@ position = Vector2(0, -6)
 [node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_vid1e")]
 visible = false
 
-[node name="VersionWidget" parent="gui" unique_id=521969044 instance=ExtResource("6_tp5tb")]
-
 [node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
 
 [node name="DebugScreen" parent="gui" unique_id=92080076 instance=ExtResource("7_vrojb")]
+visible = false
+
+[node name="PauseMenu" parent="gui" unique_id=567357806 instance=ExtResource("7_qnd6n")]
 visible = false
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
@@ -41,3 +43,4 @@ visible = false
 
 [connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
 [connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_menu_town_left"]
+[connection signal="save_button_pressed" from="gui/PauseMenu" to="." method="_on_pause_menu_save_button_pressed"]

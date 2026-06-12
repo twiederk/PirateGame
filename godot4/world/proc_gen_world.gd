@@ -4,10 +4,28 @@ extends Node2D
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var seed_value: int = 0
+@export var city_denstity: int = 20
 
 const TownScene = preload("res://world/town.tscn")
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
+
+const WATER_LEVEL: float = 0
+const GRASS_LEVEL: float = 0.2
+const FIELD_LEVEL: float = 0.3
+const CLIFF_LEVEL: float = 0.6
+const TREE_CHANCE: float = 0.9
+const PALM_TREE_CHANCE: float = 0.92
+
+const WORLD_TILE_SET = 0
+
+const GRASS_IN_SAND_TERRAIN_SET: int = 1
+const SAND_IN_WATER_TERRAIN_SET: int = 3
+const CLIFF_TERRAIN_SET: int = 4
+const TERRAIN: int = 0
+
+const COAST_TILE_DATA = "coast"
+
 
 var width : int = 200
 var height : int = 200
@@ -39,7 +57,8 @@ func _ready() -> void:
 	tree_noise = tree_noise_texture.noise
 
 
-func generate_world() -> Vector2i:
+func generate_world(new_seed: int):
+	seed_value = new_seed
 	var noise_val: float
 	var tree_noise_val: float
 	_generate_seed()
@@ -57,50 +76,50 @@ func generate_world() -> Vector2i:
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
 			
-	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, 3, 0)
-	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, 1, 0)
-	cliff_layer.set_cells_terrain_connect(cliff_arr, 4, 0)
+	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, SAND_IN_WATER_TERRAIN_SET, TERRAIN)
+	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN_SET, TERRAIN)
+	cliff_layer.set_cells_terrain_connect(cliff_arr, CLIFF_TERRAIN_SET, TERRAIN)
 
+
+func get_starting_position() -> Vector2i:
 	if grass_arr.is_empty():
 		return Vector2i.ZERO
 	return grass_arr.pick_random() * water_layer.tile_set.tile_size
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
-	if noise_val > 0:
+	if noise_val > WATER_LEVEL:
 		sand_arr.append(curr_pos)
 
 
 func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
-	if noise_val > 0.2:
+	if noise_val > GRASS_LEVEL:
 		grass_arr.append(curr_pos)
-		if noise_val > 0.3:
-			#random grass
-			farm_field_layer.set_cell(curr_pos, 0, random_grass_tile_arr.pick_random())
+		if noise_val > FIELD_LEVEL:
+			farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, random_grass_tile_arr.pick_random())
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
-		#setting cliffs
-		if noise_val > 0.6:
+		if noise_val > CLIFF_LEVEL:
 			cliff_arr.append(curr_pos)
 
 
 func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
-	if noise_val <= 0:
-		water_layer.set_cell(curr_pos, 0, water_tile)
+	if noise_val <= WATER_LEVEL:
+		water_layer.set_cell(curr_pos, WORLD_TILE_SET, water_tile)
 
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
-	if (tree_noise_val > 0.9) and (noise_val > 0.3) and (noise_val < 0.5):
-		environment_layer.set_cell(curr_pos, 0, tree_tile)
+	if (tree_noise_val > TREE_CHANCE) and (noise_val > FIELD_LEVEL) and (noise_val < CLIFF_LEVEL):
+		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, tree_tile)
 
 
 func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	# setting palm trees on sand, between water and grass
-	if (noise_val > 0.0) and (noise_val < 0.18):
-		if tree_noise_val > 0.92:
-			environment_layer.set_cell(curr_pos, 0, random_palm_tree_array.pick_random())
+	if (noise_val > WATER_LEVEL) and (noise_val < GRASS_LEVEL):
+		if tree_noise_val > PALM_TREE_CHANCE:
+			environment_layer.set_cell(curr_pos, WORLD_TILE_SET, random_palm_tree_array.pick_random())
 
 
 func _generate_seed() -> void:
@@ -117,20 +136,24 @@ func get_used_rect() -> Rect2i:
 
 func get_tile_size() -> Vector2i:
 	return water_layer.tile_set.tile_size
+
+
+func get_save_data() -> Dictionary:
+	return {"world_seed": seed_value}
 	
 	
 func is_coast(player_position: Vector2) -> bool:
 	var player_position_to_tile = sand_and_grass_layer.local_to_map(player_position)
 	var tile_data : TileData = sand_and_grass_layer.get_cell_tile_data(player_position_to_tile)
 	if tile_data:
-		return tile_data.get_custom_data("coast")
+		return tile_data.get_custom_data(COAST_TILE_DATA)
 	else:
 		return false
 
 
 func generate_towns() -> Array[Town]:
 	@warning_ignore("integer_division")
-	var max_cities = int(width / 20)
+	var max_cities = int(width / city_denstity)
 	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * get_tile_size()))
 	
 	for i in range(max_cities):
