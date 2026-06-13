@@ -2,10 +2,10 @@ class_name TradingSystem
 extends Node
 
 
-const SIMULATION_STEP: float = 5.0
+const SIMULATION_STEP: float = 30.0
+const PRICE_UPDATE_INTERVAL: float = 10.0
 
 var current_game_time: float = 0.0
-var price_update_interval: float = 2.5
 var accumulator: float = 0.0
 
 
@@ -55,7 +55,7 @@ func get_price(trading_item: TradingItem) -> int:
 
 func should_update_prices(trade_item: TradingItem) -> bool:
 	var last_update = trade_item.last_updated
-	return current_game_time - last_update >= price_update_interval
+	return current_game_time - last_update >= PRICE_UPDATE_INTERVAL
 
 
 func buy(player: Player, player_trading_item: TradingItem, town_trading_item: TradingItem, amount: int) -> String:

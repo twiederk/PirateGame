@@ -19,8 +19,6 @@ var _town: Town
 
 
 func _ready() -> void:
-	buy_button.pressed.connect(_on_buy_button_pressed)
-	sell_button.pressed.connect(_on_sell_button_pressed)
 	update_display()
 
 

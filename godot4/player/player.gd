@@ -1,20 +1,17 @@
 class_name Player
 extends CharacterBody2D
 
-@export var SPEED : float = 150.0
+const LAND_SPEED : float = 250.0
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
-const BOATS = {
-	"boat": "res://player/boat_spritesheet.png",
-	"ship": "res://player/ship_spritesheet.png",
-}
+var current_speed : float = LAND_SPEED
 
 var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
 
-var has_ship : bool = false
+var _ship_resource : ShipResource = null
 var gold : int = 100
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
@@ -43,7 +40,7 @@ func _physics_process(_delta):
 
 	direction = Input.get_vector("left", "right","up","down").normalized()
 	if direction:
-		velocity = direction * SPEED
+		velocity = direction * current_speed
 	else:
 		velocity = Vector2.ZERO
 	move_and_slide()
@@ -63,8 +60,12 @@ func _update_animation_parameters():
 		ship_animation_tree.set("parameters/blend_position", velocity.normalized())
 
 
+func owns_ship() -> bool:
+	return _ship_resource != null
+
+
 func board_ship() -> void:
-	if not has_ship:
+	if not owns_ship():
 		return
 	
 	wanderer_sprite.visible = !wanderer_sprite.visible
@@ -77,10 +78,12 @@ func board_ship() -> void:
 		set_collision_mask_value(2, false)
 		set_collision_mask_value(3, true)
 		current_state = STATE.ON_SHIP
+		current_speed = _ship_resource.speed
 	else:
 		set_collision_mask_value(2, true)
 		set_collision_mask_value(3, false)
 		current_state = STATE.ON_LAND
+		current_speed = LAND_SPEED
 
 
 func _on_town_tile_town_entered(_town: Town) -> void:
@@ -110,11 +113,9 @@ func get_trading_item(good_id: int) -> TradingItem:
 	return _inventory[good_id]
 
 
-func equip_ship_by_name(ship_name: String) -> void:
-	var texture = load(BOATS[ship_name])
-	if texture:
-		ship_sprite.texture = texture
-		has_ship = true
+func equip_ship(ship_resource: ShipResource) -> void:
+	_ship_resource = ship_resource
+	ship_sprite.texture = ship_resource.texture
 
 
 func get_save_data() -> Dictionary:

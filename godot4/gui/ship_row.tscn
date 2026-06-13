@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bitv8gflmeprg"]
+
+[ext_resource type="Script" uid="uid://ky7wsrbfolta" path="res://gui/ship_row.gd" id="1_qvrnw"]
+
+[node name="ShipRow" type="HBoxContainer" unique_id=1005104812]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qvrnw")
+
+[node name="ShipName" type="Label" parent="." unique_id=1499098562]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="ShipSpeed" type="Label" parent="." unique_id=1017815709]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="ShipPrice" type="Label" parent="." unique_id=732639425]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="." unique_id=1571637370]
+layout_mode = 2
+text = "Kaufen"
+
+[connection signal="pressed" from="BuyButton" to="." method="_on_buy_button_pressed"]

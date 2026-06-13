@@ -4,7 +4,10 @@ extends Control
 
 signal town_left
 
+const ShipRowScene = preload("res://gui/ship_row.tscn")
 const TradingRowScene = preload("res://gui/trading_row.tscn")
+
+@export var ship_resources: Array[ShipResource]
 
 var number_format = NumberFormat.new()
 
@@ -12,13 +15,13 @@ var _trading_system: TradingSystem
 var _player: Player
 var _town: Town
 
-@onready var trading_item_table = $CenterContainer/VBoxContainer/TradingItemTable
 @onready var town_name = $CenterContainer/VBoxContainer/TownName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
 @onready var player_weight = $CenterContainer/VBoxContainer/PlayerWeight
+@onready var ship_item_table = $CenterContainer/VBoxContainer/ShipItemTable
 @onready var background = $Background
+@onready var trading_item_table = $CenterContainer/VBoxContainer/TradingItemTable
 @onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
-@onready var buy_ship_button: Button = $CenterContainer/VBoxContainer/BuyShipButton
 @onready var message = $CenterContainer/VBoxContainer/Message
 
 
@@ -26,6 +29,7 @@ func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
 	_town = town
 	_player = player
 	_trading_system = trading_system
+	_create_ship_rows()
 	_create_trading_rows()
 	_update_gui()
 	travel_button.grab_focus()
@@ -55,6 +59,14 @@ func _create_trading_rows() -> void:
 		trading_item_table.add_child(row)
 
 
+func _create_ship_rows() -> void:
+	for ship_resource in ship_resources:
+		var row = ShipRowScene.instantiate()
+		row.init(ship_resource)
+		row.ship_bought.connect(_on_buy_ship)
+		ship_item_table.add_child(row)
+
+
 func _on_buy_requested(good_id: int, amount: int) -> void:
 	var town_item = _town.get_trading_item(good_id)
 	var player_item = _player.get_trading_item(good_id)
@@ -70,6 +82,7 @@ func _on_sell_requested(good_id: int, amount: int) -> void:
 
 
 func _on_travel_button_pressed():
+	_clear_ship_rows()
 	_clear_trading_rows()
 	town_left.emit()
 
@@ -83,19 +96,20 @@ func _clear_trading_rows() -> void:
 	for child in children_to_remove:
 		child.queue_free()
 
+func _clear_ship_rows() -> void:
+	var children_to_remove = []
+	for child in ship_item_table.get_children():
+		if child is ShipRow:
+			children_to_remove.append(child)
+	
+	for child in children_to_remove:
+		child.queue_free()
 
-func _on_buy_boat_button_pressed():
-	message.text = _buy_ship("boat", 150)
 
-
-func _on_buy_ship_pressed() -> void:
-	message.text = _buy_ship("ship", 500)
-
-
-func _buy_ship(ship_name: String, price: int) -> String:
-	if _player.gold >= price:
-		_player.gold -= price
-		_player.equip_ship_by_name(ship_name)
+func _on_buy_ship(ship_resource: ShipResource) -> String:
+	if _player.gold >= ship_resource.price:
+		_player.gold -= ship_resource.price
+		_player.equip_ship(ship_resource)
 		_update_gui()
 		return str("Schiff gekauft.")
 	else:

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ShipResource" format=3 uid="uid://cywk05iyh8a6y"]
+
+[ext_resource type="Script" uid="uid://bs8dbntnkgu15" path="res://trading_system/ship_resource.gd" id="1_gfuot"]
+[ext_resource type="Texture2D" uid="uid://8ticqsf65xrt" path="res://player/ship_spritesheet.png" id="2_274kh"]
+
+[resource]
+script = ExtResource("1_gfuot")
+id = 2
+name = "Segelship"
+price = 2500
+speed = 300
+texture = ExtResource("2_274kh")
+metadata/_custom_type_script = "uid://bs8dbntnkgu15"
