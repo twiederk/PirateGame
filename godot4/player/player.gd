@@ -119,7 +119,7 @@ func equip_ship(ship_resource: ShipResource) -> void:
 
 
 func get_save_data() -> Dictionary:
-	return {
+	var save_data = {
 		"player": {
 			"gold": gold,
 			"position": {
@@ -128,8 +128,18 @@ func get_save_data() -> Dictionary:
 			}
 		}
 	}
+	if _ship_resource != null:
+		save_data["player"]["ship"] = {}
+		save_data["player"]["ship"]["resource_path"] = _ship_resource.resource_path
+	return save_data
+
 
 func set_save_data(save_data: Dictionary) -> void:
 	var pos_data = save_data["player"]["position"]
 	position = Vector2i(int(pos_data["x"]), int(pos_data["y"]))
 	gold = int(save_data["player"]["gold"])
+	if save_data["player"].has("ship"):
+		var resource_path = save_data["player"]["ship"]["resource_path"]
+		print("resource_path", resource_path)
+		_ship_resource =  load(resource_path)
+		
