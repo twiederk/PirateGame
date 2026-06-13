@@ -56,3 +56,28 @@ func test_get_save_data():
 	assert_eq(save_data["player"]["gold"], 321, "Collected data should include player gold")
 	assert_eq(save_data["player"]["position"]["x"], 17.0, "Collected data should include player position")
 	assert_eq(save_data["player"]["position"]["y"], 29.0, "Collected data should include player position")
+
+
+func test_player_ship_resource_initialized_as_null():
+	# assert
+	assert_null(player._ship_resource, "Player should start without a ship_resource")
+
+
+func test_player_owns_ship_returns_false_when_no_ship():
+	# act
+	var result = player.owns_ship()
+
+	# assert
+	assert_false(result, "Player should report no ship when no ship is equipped")
+
+
+func test_player_equip_ship_assigns_ship_resource():
+	# arrange
+	var ship: ShipResource = load("res://trading_system/ship_boat.tres")
+	player.ship_sprite = Sprite2D.new()
+
+	# act
+	player.equip_ship(ship)
+
+	# assert
+	assert_eq(player._ship_resource, ship, "Player should store the provided ShipResource when equipped")

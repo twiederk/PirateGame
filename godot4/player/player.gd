@@ -14,7 +14,7 @@ var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO
 
-var has_ship : bool = false
+var _ship_resource : ShipResource = null
 var gold : int = 100
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
@@ -63,8 +63,12 @@ func _update_animation_parameters():
 		ship_animation_tree.set("parameters/blend_position", velocity.normalized())
 
 
+func owns_ship() -> bool:
+	return _ship_resource != null
+
+
 func board_ship() -> void:
-	if not has_ship:
+	if not owns_ship():
 		return
 	
 	wanderer_sprite.visible = !wanderer_sprite.visible
@@ -110,11 +114,9 @@ func get_trading_item(good_id: int) -> TradingItem:
 	return _inventory[good_id]
 
 
-func equip_ship_by_name(ship_name: String) -> void:
-	var texture = load(BOATS[ship_name])
-	if texture:
-		ship_sprite.texture = texture
-		has_ship = true
+func equip_ship(ship_resource: ShipResource) -> void:
+	_ship_resource = ship_resource
+	ship_sprite.texture = ship_resource.texture
 
 
 func get_save_data() -> Dictionary:

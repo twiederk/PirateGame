@@ -9,9 +9,10 @@ This feature introduces a **ShipResource** system to manage player ships with st
 1. **New ShipResource Class**: A Godot Resource class with standardized ship properties
 2. **Ship Resource Instances**: Two predefined ships (boat and sailing ship)
 3. **Player Updates**:
-   - Replace `has_ship: bool` property with `has_ship()` function
+   - Remove legacy `has_ship`/`_has_ship` property and use `owns_ship()`
    - Add `ship_resource: ShipResource` property (initially null)
    - Update sprite texture when ship is acquired
+   - Rename `equip_ship_by_name(ship_name: String)` to `equip_ship(ship: ShipResource)`
 
 ### Goals
 
@@ -70,21 +71,21 @@ texture: res://player/ship_spritesheet.png
 
 Make the following changes:
 
-1. **Remove** the `has_ship: bool = false` property
+1. **Remove** any `has_ship` / `_has_ship` property
 2. **Add** `ship_resource: ShipResource = null` property
-3. **Add** `has_ship() -> bool` function that returns `ship_resource != null`
-4. **Update** `board_ship()` to use `has_ship()` instead of `has_ship`
-5. **Add** `set_ship(ship: ShipResource) -> void` function:
+3. **Keep/Add** `owns_ship() -> bool` function that returns `ship_resource != null`
+4. **Update** `board_ship()` to use `owns_ship()`
+5. **Rename** `equip_ship_by_name(ship_name: String)` to `equip_ship(ship: ShipResource)` and implement:
    - Set `ship_resource = ship`
-   - Update `ship_sprite.texture` to `ship.texture`
+   - Update `ship_sprite.texture` to the ship texture reference/path
    - Update player speed: `SPEED = ship.speed`
-6. **Update** any other code that references `has_ship` as a property
+6. **Update** any call sites to use the new function signature
 
 ### Phase 4: Update Dependent Code
 
 Identify and update all code that:
-- Checks `player.has_ship` (now call `player.has_ship()`)
-- Sets `player.has_ship = true` (now call `player.set_ship(ship_resource)`)
+- Checks ship ownership using `player.owns_ship()`
+- Calls `player.equip_ship_by_name(...)` (now call `player.equip_ship(ship_resource)`)
 - Accesses ship properties (use `player.ship_resource.property`)
 
 Expected locations:
@@ -103,12 +104,12 @@ Tests organized by GUT convention. File: `test/test_ship_resource.gd`
 
 ```gdscript
 test_player_ship_resource_initialized_as_null()
-test_player_has_ship_returns_false_when_no_ship()
-test_player_has_ship_returns_true_when_ship_assigned()
+test_player_owns_ship_returns_false_when_no_ship()
+test_player_owns_ship_returns_true_when_ship_assigned()
 
-test_player_set_ship_assigns_ship_resource()
-test_player_set_ship_updates_sprite_texture()
-test_player_set_ship_updates_speed()
+test_player_equip_ship_assigns_ship_resource()
+test_player_equip_ship_updates_sprite_texture()
+test_player_equip_ship_updates_speed()
 
 test_player_can_board_ship_when_has_ship()
 test_player_cannot_board_ship_when_no_ship()

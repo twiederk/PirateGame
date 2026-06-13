@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ShipResource" format=3 uid="uid://edons74dmifg"]
+
+[ext_resource type="Script" uid="uid://bs8dbntnkgu15" path="res://trading_system/ship_resource.gd" id="1_6dx0b"]
+[ext_resource type="Texture2D" uid="uid://b76wir1ruqefs" path="res://player/boat_spritesheet.png" id="2_ocv0l"]
+
+[resource]
+script = ExtResource("1_6dx0b")
+id = 1
+name = "Ruderboot"
+price = 150
+speed = 50
+texture_path = "res://player/boat_spritesheet.png"
+texture = ExtResource("2_ocv0l")
+metadata/_custom_type_script = "uid://bs8dbntnkgu15"
