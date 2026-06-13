@@ -140,6 +140,4 @@ func set_save_data(save_data: Dictionary) -> void:
 	gold = int(save_data["player"]["gold"])
 	if save_data["player"].has("ship"):
 		var resource_path = save_data["player"]["ship"]["resource_path"]
-		print("resource_path", resource_path)
-		_ship_resource =  load(resource_path)
-		
+		equip_ship(load(resource_path))
