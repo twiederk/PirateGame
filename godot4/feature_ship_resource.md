@@ -98,33 +98,6 @@ Expected locations:
 
 Tests organized by GUT convention. File: `test/test_ship_resource.gd`
 
-### ShipResource Class Tests
-
-```gdscript
-test_ship_resource_has_id_property()
-test_ship_resource_has_name_property()
-test_ship_resource_has_price_property()
-test_ship_resource_has_speed_property()
-test_ship_resource_has_texture_property()
-```
-
-### Ship Instance Tests
-
-```gdscript
-test_ship_boat_instance_loads_correctly()
-test_ship_boat_has_correct_id()
-test_ship_boat_has_correct_name()
-test_ship_boat_has_correct_price()
-test_ship_boat_has_correct_speed()
-test_ship_boat_has_correct_texture_path()
-
-test_ship_sailing_instance_loads_correctly()
-test_ship_sailing_has_correct_id()
-test_ship_sailing_has_correct_name()
-test_ship_sailing_has_correct_price()
-test_ship_sailing_has_correct_speed()
-test_ship_sailing_has_correct_texture_path()
-```
 
 ### Player Integration Tests (extend test_player.gd)
 
@@ -140,22 +113,12 @@ test_player_set_ship_updates_speed()
 test_player_can_board_ship_when_has_ship()
 test_player_cannot_board_ship_when_no_ship()
 
-test_player_set_ship_with_boat_updates_to_boat_texture()
-test_player_set_ship_with_sailing_updates_to_sailing_texture()
-
-test_player_set_ship_boat_sets_correct_speed()
-test_player_set_ship_sailing_sets_correct_speed()
 ```
 
 ### Edge Cases & Robustness
 
 ```gdscript
-test_player_set_ship_null_clears_ship_resource()
-test_player_has_ship_returns_false_after_ship_cleared()
 test_player_multiple_set_ship_calls_overwrite_previous()
-
-test_ship_resource_instances_are_unique()
-test_ship_boat_and_sailing_have_different_ids()
 ```
 
 ---
@@ -165,12 +128,3 @@ test_ship_boat_and_sailing_have_different_ids()
 - GUT testing framework (already in project)
 - Godot 4.x Resource system
 - Player class modifications
-
-## Notes
-
-- Tests should use `autofree()` for automatic memory cleanup
-- Use `before_each()` to load ship resources
-- Test both the resource instances loading AND their properties
-- Verify sprite texture assignment works with Sprite2D node
-- Consider testing `board_ship()` behavior after ship is assigned
-
