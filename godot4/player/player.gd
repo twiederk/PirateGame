@@ -5,11 +5,6 @@ extends CharacterBody2D
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
-const BOATS = {
-	"boat": "res://player/boat_spritesheet.png",
-	"ship": "res://player/ship_spritesheet.png",
-}
-
 var current_state = STATE.ON_LAND
 
 var direction : Vector2 = Vector2.ZERO

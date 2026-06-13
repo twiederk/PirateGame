@@ -6,6 +6,11 @@ signal town_left
 
 const TradingRowScene = preload("res://gui/trading_row.tscn")
 
+const BOATS: Array[ShipResource] = [
+	preload("res://trading_system/ship_boat.tres"),
+	preload("res://trading_system/ship_sailing.tres"),
+]
+
 var number_format = NumberFormat.new()
 
 var _trading_system: TradingSystem
@@ -85,17 +90,17 @@ func _clear_trading_rows() -> void:
 
 
 func _on_buy_boat_button_pressed():
-	message.text = _buy_ship("boat", 150)
+	message.text = _buy_ship(BOATS[0])
 
 
 func _on_buy_ship_pressed() -> void:
-	message.text = _buy_ship("ship", 500)
+	message.text = _buy_ship(BOATS[1])
 
 
-func _buy_ship(ship_name: String, price: int) -> String:
-	if _player.gold >= price:
-		_player.gold -= price
-		_player.equip_ship_by_name(ship_name)
+func _buy_ship(ship_resource: ShipResource) -> String:
+	if _player.gold >= ship_resource.price:
+		_player.gold -= ship_resource.price
+		_player.equip_ship(ship_resource)
 		_update_gui()
 		return str("Schiff gekauft.")
 	else:
