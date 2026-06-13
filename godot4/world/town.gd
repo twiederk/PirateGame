@@ -55,3 +55,7 @@ func get_trading_items() -> Array[TradingItem]:
 
 func add_trading_item(trading_item: TradingItem) -> void:
 	_inventory[trading_item.good_id] = trading_item
+
+
+func get_ship_resources() -> Array[ShipResource]:
+	return town_resource.ships
