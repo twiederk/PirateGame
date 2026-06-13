@@ -51,13 +51,26 @@ text = "Player Gold"
 layout_mode = 2
 text = "Player Weight"
 
-[node name="BuyBoatButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1913026820]
+[node name="ShipItemTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=263114402]
 layout_mode = 2
-text = "Boot kaufen (150 gold)"
 
-[node name="BuyShipButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1487060545]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/ShipItemTable" unique_id=1921021733]
 layout_mode = 2
-text = "Schiff kaufen (500 gold)"
+
+[node name="ShipName" type="Label" parent="CenterContainer/VBoxContainer/ShipItemTable/HBoxContainer" unique_id=2016717196]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Schiff"
+
+[node name="ShipSpeed" type="Label" parent="CenterContainer/VBoxContainer/ShipItemTable/HBoxContainer" unique_id=1431334932]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "Knoten"
+
+[node name="ShipPrice" type="Label" parent="CenterContainer/VBoxContainer/ShipItemTable/HBoxContainer" unique_id=1050765175]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Preis"
 
 [node name="TradingItemTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1492825442]
 layout_mode = 2
@@ -91,6 +104,4 @@ text = "Stadt verlassen"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1320096196]
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/BuyBoatButton" to="." method="_on_buy_boat_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/BuyShipButton" to="." method="_on_buy_ship_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TravelButton" to="." method="_on_travel_button_pressed"]

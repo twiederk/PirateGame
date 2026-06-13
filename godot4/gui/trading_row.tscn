@@ -33,3 +33,6 @@ text = "Kaufen"
 [node name="SellButton" type="Button" parent="." unique_id=841452649]
 layout_mode = 2
 text = "Verkaufen"
+
+[connection signal="pressed" from="BuyButton" to="." method="_on_buy_button_pressed"]
+[connection signal="pressed" from="SellButton" to="." method="_on_sell_button_pressed"]
