@@ -7,10 +7,7 @@ signal town_left
 const ShipRowScene = preload("res://gui/ship_row.tscn")
 const TradingRowScene = preload("res://gui/trading_row.tscn")
 
-const SHIP_RESOURCES: Array[ShipResource] = [
-	preload("res://trading_system/ship_boat.tres"),
-	preload("res://trading_system/ship_sailing.tres"),
-]
+@export var ship_resources: Array[ShipResource]
 
 var number_format = NumberFormat.new()
 
@@ -63,7 +60,7 @@ func _create_trading_rows() -> void:
 
 
 func _create_ship_rows() -> void:
-	for ship_resource in SHIP_RESOURCES:
+	for ship_resource in ship_resources:
 		var row = ShipRowScene.instantiate()
 		row.init(ship_resource)
 		row.ship_bought.connect(_on_buy_ship)
@@ -85,6 +82,7 @@ func _on_sell_requested(good_id: int, amount: int) -> void:
 
 
 func _on_travel_button_pressed():
+	_clear_ship_rows()
 	_clear_trading_rows()
 	town_left.emit()
 
@@ -93,6 +91,15 @@ func _clear_trading_rows() -> void:
 	var children_to_remove = []
 	for child in trading_item_table.get_children():
 		if child is TradingRow:
+			children_to_remove.append(child)
+	
+	for child in children_to_remove:
+		child.queue_free()
+
+func _clear_ship_rows() -> void:
+	var children_to_remove = []
+	for child in ship_item_table.get_children():
+		if child is ShipRow:
 			children_to_remove.append(child)
 	
 	for child in children_to_remove:

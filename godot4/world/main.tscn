@@ -3,8 +3,11 @@
 [ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/main.gd" id="1_04q08"]
 [ext_resource type="PackedScene" uid="uid://blu6n1yghidqx" path="res://world/proc_gen_world.tscn" id="2_gu74f"]
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
+[ext_resource type="Script" uid="uid://bs8dbntnkgu15" path="res://trading_system/ship_resource.gd" id="5_tp5tb"]
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
+[ext_resource type="Resource" uid="uid://edons74dmifg" path="res://trading_system/ship_boat.tres" id="6_8q2wj"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
+[ext_resource type="Resource" uid="uid://cywk05iyh8a6y" path="res://trading_system/ship_sailing.tres" id="7_60vd7"]
 [ext_resource type="PackedScene" uid="uid://bublk3k17bw7t" path="res://gui/pause_menu.tscn" id="7_qnd6n"]
 [ext_resource type="PackedScene" uid="uid://chrrtsgq0q8ro" path="res://gui/debug_screen.tscn" id="7_vrojb"]
 [ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
@@ -19,7 +22,6 @@ seed_value = 0
 
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
 position = Vector2(736, 410)
-SPEED = 300.0
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=462744124]
 position = Vector2(0, -6)
@@ -28,6 +30,7 @@ position = Vector2(0, -6)
 
 [node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_vid1e")]
 visible = false
+ship_resources = Array[ExtResource("5_tp5tb")]([ExtResource("6_8q2wj"), ExtResource("7_60vd7")])
 
 [node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
 
