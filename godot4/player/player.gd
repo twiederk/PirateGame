@@ -1,11 +1,11 @@
 class_name Player
 extends CharacterBody2D
 
-@export var SPEED : float = 150.0
-
-var current_speed : float = SPEED
+@export var SPEED : float = 300.0
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
+
+var current_speed : float = SPEED
 
 var current_state = STATE.ON_LAND
 
