@@ -21,7 +21,6 @@ y_sort_enabled = true
 script = ExtResource("1_p51ow")
 noise_texture = SubResource("NoiseTexture2D_p51ow")
 tree_noise_texture = SubResource("NoiseTexture2D_btogb")
-seed_value = null
 
 [node name="WaterLayer" type="TileMapLayer" parent="." unique_id=553333346]
 z_index = -1

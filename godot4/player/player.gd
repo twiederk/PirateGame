@@ -12,7 +12,7 @@ var current_state = STATE.ON_LAND
 var direction : Vector2 = Vector2.ZERO
 
 var _ship_resource : ShipResource = null
-var gold : int = 100
+var gold : int
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
@@ -128,3 +128,8 @@ func get_save_data() -> Dictionary:
 			}
 		}
 	}
+
+func set_save_data(save_data: Dictionary) -> void:
+	var pos_data = save_data["player"]["position"]
+	position = Vector2i(int(pos_data["x"]), int(pos_data["y"]))
+	gold = int(save_data["player"]["gold"])

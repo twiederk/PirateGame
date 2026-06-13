@@ -49,3 +49,7 @@ func load(slot_number: int) -> bool:
 
 func _build_save_slot_path(slot_number: int) -> String:
 	return "user://saves/save_slot_%d.json" % slot_number
+
+
+func is_game_loaded() -> bool:
+	return not load_game_state.is_empty()

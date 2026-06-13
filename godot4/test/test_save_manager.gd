@@ -114,3 +114,14 @@ func test_load():
 	# tear down
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
+
+
+func test_is_game_loaded():
+	# arrange
+	SaveManager.load_game_state = {}
+	
+	# act
+	var result = SaveManager.is_game_loaded()
+	
+	# assert
+	assert_false(result, "Should false if load game state is empty")
