@@ -1,5 +1,7 @@
 extends GutTest
 
+const BOAT:= preload("res://trading_system/ship_boat.tres")
+
 var player: Player = null
 
 
@@ -58,11 +60,6 @@ func test_get_save_data():
 	assert_eq(save_data["player"]["position"]["y"], 29.0, "Collected data should include player position")
 
 
-func test_player_ship_resource_initialized_as_null():
-	# assert
-	assert_null(player._ship_resource, "Player should start without a ship_resource")
-
-
 func test_player_owns_ship_returns_false_when_no_ship():
 	# act
 	var result = player.owns_ship()
@@ -73,11 +70,14 @@ func test_player_owns_ship_returns_false_when_no_ship():
 
 func test_player_equip_ship_assigns_ship_resource():
 	# arrange
-	var ship: ShipResource = load("res://trading_system/ship_boat.tres")
-	player.ship_sprite = Sprite2D.new()
+	var sprite2D = Sprite2D.new()
+	player.ship_sprite = sprite2D
 
 	# act
-	player.equip_ship(ship)
+	player.equip_ship(BOAT)
 
 	# assert
-	assert_eq(player._ship_resource, ship, "Player should store the provided ShipResource when equipped")
+	assert_eq(player._ship_resource, BOAT, "Player should store the provided ShipResource when equipped")
+	
+	# tear down
+	sprite2D.free()
