@@ -1,11 +1,11 @@
 class_name Player
 extends CharacterBody2D
 
-@export var SPEED : float = 300.0
+const LAND_SPEED : float = 250.0
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
-var current_speed : float = SPEED
+var current_speed : float = LAND_SPEED
 
 var current_state = STATE.ON_LAND
 
@@ -83,7 +83,7 @@ func board_ship() -> void:
 		set_collision_mask_value(2, true)
 		set_collision_mask_value(3, false)
 		current_state = STATE.ON_LAND
-		current_speed = SPEED
+		current_speed = LAND_SPEED
 
 
 func _on_town_tile_town_entered(_town: Town) -> void:
