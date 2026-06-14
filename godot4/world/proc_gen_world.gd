@@ -10,6 +10,7 @@ const TownScene = preload("res://world/town.tscn")
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
 
+const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
 const GRASS_LEVEL: float = 0.2
 const FIELD_LEVEL: float = 0.3
@@ -107,8 +108,10 @@ func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
 
 
 func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
-	if noise_val <= WATER_LEVEL:
+	if noise_val <= DEEP_WATER_LEVEL:
 		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
+	elif noise_val <= WATER_LEVEL:
+		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
 
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
