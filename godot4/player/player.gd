@@ -86,16 +86,23 @@ func board_ship() -> void:
 func _move_on_ship() -> void:
 	current_state = STATE.ON_SHIP
 	current_speed = _ship_resource.speed
-	set_collision_mask_value(MASK_WATER, false)
 	set_collision_mask_value(MASK_LAND, true)
+	set_collision_mask_value(MASK_WATER, false)
+	if _ship_resource.ocean_going:
+		set_collision_mask_value(MASK_OCEAN, false)
+	else:
+		set_collision_mask_value(MASK_OCEAN, true)
+
+
+	
 
 
 func _move_on_land() -> void:
 	current_state = STATE.ON_LAND
 	current_speed = LAND_SPEED
-	set_collision_mask_value(MASK_WATER, true)
 	set_collision_mask_value(MASK_LAND, false)
-
+	set_collision_mask_value(MASK_WATER, true)
+	set_collision_mask_value(MASK_OCEAN, true)
 
 func _on_town_tile_town_entered(_town: Town) -> void:
 	current_state = STATE.IN_TOWN

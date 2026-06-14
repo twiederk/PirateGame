@@ -10,4 +10,5 @@ name = "Segelship"
 price = 2500
 speed = 300
 texture = ExtResource("2_274kh")
+ocean_going = true
 metadata/_custom_type_script = "uid://bs8dbntnkgu15"

@@ -6,3 +6,4 @@ extends Resource
 @export var price: int
 @export var speed: int
 @export var texture: Texture2D
+@export var ocean_going: bool
