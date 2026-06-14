@@ -1802,11 +1802,13 @@ texture = ExtResource("1_1bkiy")
 3:1/animation_frame_1/duration = 1.0
 3:1/animation_frame_2/duration = 1.0
 3:1/0 = 0
+3:1/0/physics_layer_3/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [resource]
 physics_layer_0/collision_layer = 2
 physics_layer_1/collision_layer = 4
 physics_layer_2/collision_layer = 8
+physics_layer_3/collision_layer = 16
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "dirt"
 terrain_set_0/terrain_0/color = Color(1, 0.0823529, 0.0862745, 1)

@@ -2,6 +2,9 @@ class_name Player
 extends CharacterBody2D
 
 const LAND_SPEED : float = 250.0
+const MASK_WATER: int = 2
+const MASK_LAND: int = 3
+const MASK_OCEAN: int = 5
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
@@ -75,15 +78,23 @@ func board_ship() -> void:
 	ship_animation_tree.active = !ship_animation_tree.active
 	
 	if current_state == STATE.ON_LAND:
-		set_collision_mask_value(2, false)
-		set_collision_mask_value(3, true)
-		current_state = STATE.ON_SHIP
-		current_speed = _ship_resource.speed
+		_move_on_ship()
 	else:
-		set_collision_mask_value(2, true)
-		set_collision_mask_value(3, false)
-		current_state = STATE.ON_LAND
-		current_speed = LAND_SPEED
+		_move_on_land()
+
+
+func _move_on_ship() -> void:
+	current_state = STATE.ON_SHIP
+	current_speed = _ship_resource.speed
+	set_collision_mask_value(MASK_WATER, false)
+	set_collision_mask_value(MASK_LAND, true)
+
+
+func _move_on_land() -> void:
+	current_state = STATE.ON_LAND
+	current_speed = LAND_SPEED
+	set_collision_mask_value(MASK_WATER, true)
+	set_collision_mask_value(MASK_LAND, false)
 
 
 func _on_town_tile_town_entered(_town: Town) -> void:
