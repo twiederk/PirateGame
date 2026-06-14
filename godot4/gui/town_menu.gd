@@ -7,8 +7,6 @@ signal town_left
 const ShipRowScene = preload("res://gui/ship_row.tscn")
 const TradingRowScene = preload("res://gui/trading_row.tscn")
 
-@export var ship_resources: Array[ShipResource]
-
 var number_format = NumberFormat.new()
 
 var _trading_system: TradingSystem
@@ -60,7 +58,7 @@ func _create_trading_rows() -> void:
 
 
 func _create_ship_rows() -> void:
-	for ship_resource in ship_resources:
+	for ship_resource in _town.get_ship_resources():
 		var row = ShipRowScene.instantiate()
 		row.init(ship_resource)
 		row.ship_bought.connect(_on_buy_ship)

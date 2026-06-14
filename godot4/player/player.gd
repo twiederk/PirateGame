@@ -2,6 +2,9 @@ class_name Player
 extends CharacterBody2D
 
 const LAND_SPEED : float = 250.0
+const MASK_WATER: int = 2
+const MASK_LAND: int = 3
+const MASK_OCEAN: int = 5
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
@@ -12,7 +15,7 @@ var current_state = STATE.ON_LAND
 var direction : Vector2 = Vector2.ZERO
 
 var _ship_resource : ShipResource = null
-var gold : int = 100
+var gold : int
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
@@ -75,16 +78,31 @@ func board_ship() -> void:
 	ship_animation_tree.active = !ship_animation_tree.active
 	
 	if current_state == STATE.ON_LAND:
-		set_collision_mask_value(2, false)
-		set_collision_mask_value(3, true)
-		current_state = STATE.ON_SHIP
-		current_speed = _ship_resource.speed
+		_move_on_ship()
 	else:
-		set_collision_mask_value(2, true)
-		set_collision_mask_value(3, false)
-		current_state = STATE.ON_LAND
-		current_speed = LAND_SPEED
+		_move_on_land()
 
+
+func _move_on_ship() -> void:
+	current_state = STATE.ON_SHIP
+	current_speed = _ship_resource.speed
+	set_collision_mask_value(MASK_LAND, true)
+	set_collision_mask_value(MASK_WATER, false)
+	if _ship_resource.ocean_going:
+		set_collision_mask_value(MASK_OCEAN, false)
+	else:
+		set_collision_mask_value(MASK_OCEAN, true)
+
+
+	
+
+
+func _move_on_land() -> void:
+	current_state = STATE.ON_LAND
+	current_speed = LAND_SPEED
+	set_collision_mask_value(MASK_LAND, false)
+	set_collision_mask_value(MASK_WATER, true)
+	set_collision_mask_value(MASK_OCEAN, true)
 
 func _on_town_tile_town_entered(_town: Town) -> void:
 	current_state = STATE.IN_TOWN
@@ -119,7 +137,7 @@ func equip_ship(ship_resource: ShipResource) -> void:
 
 
 func get_save_data() -> Dictionary:
-	return {
+	var save_data = {
 		"player": {
 			"gold": gold,
 			"position": {
@@ -128,3 +146,16 @@ func get_save_data() -> Dictionary:
 			}
 		}
 	}
+	if _ship_resource != null:
+		save_data["player"]["ship"] = {}
+		save_data["player"]["ship"]["resource_path"] = _ship_resource.resource_path
+	return save_data
+
+
+func set_save_data(save_data: Dictionary) -> void:
+	var pos_data = save_data["player"]["position"]
+	position = Vector2i(int(pos_data["x"]), int(pos_data["y"]))
+	gold = int(save_data["player"]["gold"])
+	if save_data["player"].has("ship"):
+		var resource_path = save_data["player"]["ship"]["resource_path"]
+		equip_ship(load(resource_path))
