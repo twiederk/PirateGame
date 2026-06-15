@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
-const LAND_SPEED : float = 250.0
+const LAND_SPEED : float = 200.0
 const MASK_WATER: int = 2
 const MASK_LAND: int = 3
 const MASK_OCEAN: int = 5
