@@ -2,16 +2,15 @@ class_name Player
 extends CharacterBody2D
 
 const LAND_SPEED : float = 200.0
+
 const MASK_WATER: int = 2
 const MASK_LAND: int = 3
 const MASK_OCEAN: int = 5
 
 enum STATE { ON_LAND, ON_SHIP, IN_TOWN }
 
-var current_speed : float = LAND_SPEED
-
 var current_state = STATE.ON_LAND
-
+var current_speed : float = LAND_SPEED
 var direction : Vector2 = Vector2.ZERO
 
 var _ship_resource : ShipResource = null
@@ -140,6 +139,7 @@ func get_save_data() -> Dictionary:
 	save_data.player.position = {}
 	save_data.player.position.x = position.x
 	save_data.player.position.y = position.y
+	save_data.player.current_state = current_state
 	if _ship_resource != null:
 		save_data.player.ship = {}
 		save_data.player.ship.resource_path = _ship_resource.resource_path
