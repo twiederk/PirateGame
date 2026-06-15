@@ -147,9 +147,15 @@ func get_save_data() -> Dictionary:
 
 
 func set_save_data(save_data: Dictionary) -> void:
-	var pos_data = save_data["player"]["position"]
-	position = Vector2i(int(pos_data["x"]), int(pos_data["y"]))
-	gold = int(save_data["player"]["gold"])
-	if save_data["player"].has("ship"):
-		var resource_path = save_data["player"]["ship"]["resource_path"]
+	var pos_data = save_data.player.position
+	position = Vector2i(int(pos_data.x), int(pos_data.y))
+	gold = int(save_data.player.gold)
+	if save_data.player.has("ship"):
+		var resource_path = save_data.player.ship.resource_path
 		equip_ship(load(resource_path))
+
+
+func get_trading_items() -> Array[TradingItem]:
+	var typed: Array[TradingItem] = []
+	typed.assign(_inventory.values())
+	return typed

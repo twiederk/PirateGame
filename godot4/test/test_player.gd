@@ -81,3 +81,11 @@ func test_player_equip_ship_assigns_ship_resource():
 	
 	# tear down
 	sprite2D.free()
+
+
+func test_get_trading_items():
+	# act
+	var trading_items = player.get_trading_items()
+	
+	# assert
+	assert_eq(trading_items.size(), 2, "Player should store a trading item for each good")
