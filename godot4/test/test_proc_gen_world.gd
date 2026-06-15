@@ -37,3 +37,42 @@ func test_get_save_data():
 
 	# tear down
 	towns_root.free()
+
+
+func test_set_save_data():
+	# arrange
+	var towns_root = Node2D.new()
+	var town = Town.new()
+	var town_item = TradingItem.new(GOOD_FISH, 1)
+	town_item.cached_stock = 2
+	town_item.last_updated = 3.0
+	town.add_trading_item(town_item)
+	towns_root.add_child(town)
+	proc_gen_world.towns = towns_root
+
+	var save_data = {
+		"world": {
+			"towns": [
+				{
+					"inventory": {
+						1: {
+							"stock": 50,
+							"cached_stock": 45,
+							"last_updated": 1234.5,
+						}
+					}
+				}
+			]
+		}
+	}
+
+	# act
+	proc_gen_world.set_save_data(save_data)
+
+	# assert
+	assert_eq(town_item.stock, 50, "set_save_data should restore town item stock")
+	assert_eq(town_item.cached_stock, 45, "set_save_data should restore town item cached_stock")
+	assert_eq(town_item.last_updated, 1234.5, "set_save_data should restore town item last_updated")
+
+	# tear down
+	towns_root.free()
