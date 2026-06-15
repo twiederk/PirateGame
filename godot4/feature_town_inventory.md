@@ -35,15 +35,31 @@ Extend `save_data` structure:
 			"Harbor 0": {
 				"town_name": "Harbor 0",
 				"inventory": {
-					"1": {"stock": 15},
-					"2": {"stock": 8},
+					"1": {
+						"stock": 15,
+						"cached_stock": 10,
+						"last_update": 1100.0
+					},
+					"2": {
+						"stock": 8,
+						"cached_stock": 5,
+						"last_update": 1050.0
+					}
 				}
 			},
 			"Farm 1": {
 				"town_name": "Farm 1",
 				"inventory": {
-					"3": {"stock": 42},
-					"4": {"stock": 25},
+					"3": {
+						"stock": 42,
+						"cached_stock": 40,
+						"last_update": 1150.0
+					},
+					"4": {
+						"stock": 25,
+						"cached_stock": 22,
+						"last_update": 1120.0
+					}
 				}
 			}
 		}
@@ -55,8 +71,9 @@ Notes:
 - All world data is nested under "world" key (mirrors "player" hierarchy from Player save/load).
 - Global fields `game_time` and `accumulation` are at `world` level (ProcGenWorld-scoped).
 - Town identifier is keyed by `town_name` (stable across saves).
+- Per-town inventory items serialize: `stock`, `cached_stock`, and `last_update` (float) from each TradingItem.
 - Inventory keys are strings (safer for serialization).
-- Only per-town inventory stock is persisted; inventory structure is defined by town_resource.
+- Inventory structure is defined by town_resource; restore only updates stocks for goods that exist in current resource.
 
 ## Implementation Steps
 
@@ -70,15 +87,15 @@ Notes:
 ### Phase 2: Extend `get_save_data()` in ProcGenWorld
 1. Add tests in `test/test_proc_gen_world.gd` for verifying game_time and accumulation are included in save data.
 2. Update `world/proc_gen_world.gd` `get_save_data()` to serialize:
-   - world_seed (existing)
+   - seed_value (existing)
    - game_time and accumulation (new global fields)
-   - Per-town inventory stock
+	- Per-town inventory: stock, cached_stock, and last_update (float) for each TradingItem
 
 ### Phase 3: Implement `set_save_data()` in ProcGenWorld
 1. Add tests in `test/test_proc_gen_world.gd` for loading state.
 2. Implement `world/proc_gen_world.gd` `set_save_data()` to restore:
    - game_time and accumulation (global).
-   - Per-town inventory stocks (match towns by name).
+	- Per-town inventory: stock, cached_stock, and last_update (float, match towns by name).
 
 ### Phase 4: Backward Compatibility
 1. Handle missing `game_time` and `accumulation` keys in save data (pre-feature saves, default to 0).
@@ -91,16 +108,16 @@ game_time and accumulation.
 4. **Red**: add test for get_save_data includes towns structure.
 5. **Green**: minimal serialization of town names as keys.
 6. **Refactor**.
-7. **Red**: add test for inventory stock serialization per town.
-8. **Green**: add inventory stock to save for each town.
+7. **Red**: add test for inventory serialization per town (stock, cached_stock, last_update float).
+8. **Green**: add inventory with all fields to save for each town.
 9. **Refactor**: consider helper for inventory serialization (similar to Player).
 
 ### Load Side (set_save_data)
 10. **Red**: add test for set_save_data restores game_time and accumulation.
 11. **Green**: minimal restore logic for those fields.
 12. **Refactor**.
-13. **Red**: add test for set_save_data restores per-town inventory stock.
-14. **Green**: minimal inventory restore.
+13. **Red**: add test for set_save_data restores per-town inventory (stock, cached_stock, last_update float).
+14. **Green**: minimal inventory restore with all fields.
 15. **Refactor**.
 16. **Red**: add backward-compatibility test (missing game_time/accumulation/towns in old save).
 17. **Green**: handle missing keys gracefully (default to 0 or skip)
@@ -114,11 +131,11 @@ game_time and accumulation.
 - `test_get_save_data_includes_game_time_and_accumulation`
 - `test_get_save_data_includes_towns_structure`
 - `test_get_save_data_includes_town_names`
-- `test_get_save_data_includes_town_inventory_stock`
+- `test_get_save_data_includes_town_inventory_stock_cached_stock_and_last_update`
 
 ### Load Data Tests
 - `test_set_save_data_restores_game_time_and_accumulation`
-- `test_set_save_data_restores_town_inventory_stock`
+- `test_set_save_data_restores_town_inventory_stock_cached_stock_and_last_update`
 - `test_set_save_data_without_game_time_defaults_to_zero`
 - `test_set_save_data_without_towns_key_does_not_crash`
 
@@ -148,7 +165,7 @@ Once the "world" hierarchy is implemented.
 - **Hierarchy Refactor**: Wrapping world data under `"world"` key is a breaking change to the existing `get_save_data()` return structure. The existing test `test_get_save_data()` must be updated to access `save_data.world.world_seed` instead of `save_data["world_seed"]`.
 - **Town Identification**: Using `town_name` as key assumes uniqueness and stability. If names can change post-load, consider storing an ID instead.
 - **Partial Persistence**: If some towns are loaded but others are not, the save/load cycle will only restore the persisted subset.
-- **Inventory Complexity**: Each Town may have different goods based on `town_resource`, so inventory restore must only update stocks for goods that exist in the town's current resource definition.
+- **Inventory Complexity**: Each Town may have different goods based on `town_resource`, so inventory restore must only update stock, cached_stock, and last_update (float) for goods that exist in the town's current resource definition. Unknown goods in saved inventory should be skipped.
 - **Initialization Order**: Town `_ready()` initializes inventory with default stocks. `set_save_data()` must restore after this is called.
 - **New Global Fields**: Adding `game_time` and `accumulation` to ProcGenWorld requires default values (0) so existing code paths don't break.
 - **Backward Compatibility**: Old saves without `game_time`, `accumulation`, or `towns` keys must not crash; missing keys default to 0 or are skipped.
