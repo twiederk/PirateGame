@@ -26,10 +26,10 @@ func test_collect_game_state():
 	var game_state = SaveManager._collect_game_state(player, proc_gen_world)
 
 	# assert
-	assert_eq(game_state["player"]["gold"], 321, "Collected data should include player gold")
-	assert_eq(game_state["player"]["position"]["x"], 17.0, "Collected data should include player position")
-	assert_eq(game_state["player"]["position"]["y"], 29.0, "Collected data should include player position")
-	assert_eq(game_state["world_seed"], 12345, "Collected data should include world seed")
+	assert_eq(game_state.player.gold, 321, "Collected data should include player gold")
+	assert_eq(game_state.player.position.x, 17.0, "Collected data should include player position")
+	assert_eq(game_state.player.position.y, 29.0, "Collected data should include player position")
+	assert_eq(game_state.world.seed_value, 12345, "Collected data should include world seed")
 
 
 func test_save_file():

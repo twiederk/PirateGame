@@ -144,9 +144,12 @@ func get_tile_size() -> Vector2i:
 
 
 func get_save_data() -> Dictionary:
-	return {"world_seed": seed_value}
-	
-	
+	var world_data = {
+		"seed_value": seed_value
+	}
+	return {"world": world_data}
+
+
 func is_coast(player_position: Vector2) -> bool:
 	var player_position_to_tile = sand_and_grass_layer.local_to_map(player_position)
 	var tile_data : TileData = sand_and_grass_layer.get_cell_tile_data(player_position_to_tile)
