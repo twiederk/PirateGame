@@ -34,3 +34,6 @@ func test_get_save_data():
 	assert_eq(save_data.world.towns[0].inventory[1].stock, 50, "Town inventory stock should be serialized")
 	assert_eq(save_data.world.towns[0].inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
 	assert_eq(save_data.world.towns[0].inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
+
+	# tear down
+	towns_root.free()
