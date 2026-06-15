@@ -173,8 +173,7 @@ func set_save_data(save_data: Dictionary) -> void:
 func _restore_inventory_stock(inventory_data: Dictionary) -> void:
 	for good_id in inventory_data:
 		var item_data = inventory_data[good_id]
-		if _inventory.has(good_id) and item_data.has("stock"):
-			_inventory[good_id].stock = int(item_data.stock)
+		get_trading_item(int(good_id)).stock = int(item_data.stock)
 
 
 func get_trading_items() -> Array[TradingItem]:
