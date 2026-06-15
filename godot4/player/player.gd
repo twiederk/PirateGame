@@ -94,9 +94,6 @@ func _move_on_ship() -> void:
 		set_collision_mask_value(MASK_OCEAN, true)
 
 
-	
-
-
 func _move_on_land() -> void:
 	current_state = STATE.ON_LAND
 	current_speed = LAND_SPEED
