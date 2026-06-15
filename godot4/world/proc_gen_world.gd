@@ -147,7 +147,27 @@ func get_save_data() -> Dictionary:
 	var world_data = {
 		"seed_value": seed_value
 	}
+	world_data.towns = []
+	for town in get_towns():
+		world_data.towns.append(_serialize_town_save_data(town))
 	return {"world": world_data}
+
+
+func _serialize_town_save_data(town: Town) -> Dictionary:
+	return {
+		"inventory": _serialize_town_inventory(town)
+	}
+
+
+func _serialize_town_inventory(town: Town) -> Dictionary:
+	var inventory_data: Dictionary = {}
+	for item in town.get_trading_items():
+		inventory_data[item.good_id] = {
+			"stock": item.stock,
+			"cached_stock": item.cached_stock,
+			"last_updated": item.last_updated,
+		}
+	return inventory_data
 
 
 func is_coast(player_position: Vector2) -> bool:
