@@ -134,18 +134,15 @@ func equip_ship(ship_resource: ShipResource) -> void:
 
 
 func get_save_data() -> Dictionary:
-	var save_data = {
-		"player": {
-			"gold": gold,
-			"position": {
-				"x": position.x,
-				"y": position.y,
-			}
-		}
-	}
+	var save_data = {}
+	save_data.player = {}
+	save_data.player.gold = gold
+	save_data.player.position = {}
+	save_data.player.position.x = position.x
+	save_data.player.position.y = position.y
 	if _ship_resource != null:
-		save_data["player"]["ship"] = {}
-		save_data["player"]["ship"]["resource_path"] = _ship_resource.resource_path
+		save_data.player.ship = {}
+		save_data.player.ship.resource_path = _ship_resource.resource_path
 	return save_data
 
 

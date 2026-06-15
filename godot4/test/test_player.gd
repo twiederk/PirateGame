@@ -55,9 +55,9 @@ func test_get_save_data():
 	var save_data = player.get_save_data()
 
 	# assert
-	assert_eq(save_data["player"]["gold"], 321, "Collected data should include player gold")
-	assert_eq(save_data["player"]["position"]["x"], 17.0, "Collected data should include player position")
-	assert_eq(save_data["player"]["position"]["y"], 29.0, "Collected data should include player position")
+	assert_eq(save_data.player.gold, 321, "Collected data should include player gold")
+	assert_eq(save_data.player.position.x, 17.0, "Collected data should include player position")
+	assert_eq(save_data.player.position.y, 29.0, "Collected data should include player position")
 
 
 func test_player_owns_ship_returns_false_when_no_ship():
