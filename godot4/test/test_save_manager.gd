@@ -21,6 +21,8 @@ func test_collect_game_state():
 	player.gold = 321
 	player.position = Vector2(17, 29)
 	proc_gen_world.seed_value = 12345
+	var towns_root = Node2D.new()
+	proc_gen_world.towns = towns_root
 
 	# act
 	var game_state = SaveManager._collect_game_state(player, proc_gen_world)
@@ -30,6 +32,9 @@ func test_collect_game_state():
 	assert_eq(game_state.player.position.x, 17.0, "Collected data should include player position")
 	assert_eq(game_state.player.position.y, 29.0, "Collected data should include player position")
 	assert_eq(game_state.world.seed_value, 12345, "Collected data should include world seed")
+
+	# tear down
+	towns_root.free()
 
 
 func test_save_file():
@@ -67,6 +72,8 @@ func test_save():
 	player.gold = 123
 	player.position = Vector2(45, 67)
 	proc_gen_world.seed_value = 24680
+	var towns_root = Node2D.new()
+	proc_gen_world.towns = towns_root
 
 	var save_path = "user://saves/save_slot_%d.json" % SLOT_NUMBER
 
@@ -80,6 +87,7 @@ func test_save():
 	assert_true(FileAccess.file_exists(save_path), "Save file should be created for the target slot")
 
 	# tear down
+	towns_root.free()
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
 
