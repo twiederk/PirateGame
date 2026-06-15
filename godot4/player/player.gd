@@ -133,20 +133,19 @@ func equip_ship(ship_resource: ShipResource) -> void:
 
 
 func get_save_data() -> Dictionary:
-	var player_data = {}
-	player_data.gold = gold
-	player_data.position = {}
-	player_data.position.x = position.x
-	player_data.position.y = position.y
-	player_data.current_state = current_state
-	player_data.inventory = _serialize_inventory_stock()
+	var player_data = {
+		"gold": gold,
+		"position": {
+			"x": position.x,
+			"y": position.y,
+		},
+		"current_state": current_state,
+		"inventory": _serialize_inventory_stock(),
+	}
 	if _ship_resource != null:
-		player_data.ship = {}
-		player_data.ship.resource_path = _ship_resource.resource_path
+		player_data.ship = {"resource_path": _ship_resource.resource_path}
 
-	var save_data = {}
-	save_data.player = player_data
-	return save_data
+	return {"player": player_data}
 
 
 func _serialize_inventory_stock() -> Dictionary:
@@ -159,11 +158,13 @@ func _serialize_inventory_stock() -> Dictionary:
 
 
 func set_save_data(save_data: Dictionary) -> void:
-	var pos_data = save_data.player.position
+	var player_data = save_data.player
+	var pos_data = player_data.position
 	position = Vector2i(int(pos_data.x), int(pos_data.y))
-	gold = int(save_data.player.gold)
-	if save_data.player.has("ship"):
-		var resource_path = save_data.player.ship.resource_path
+	gold = int(player_data.gold)
+	current_state = int(player_data.current_state) as STATE
+	if player_data.has("ship"):
+		var resource_path = player_data.ship.resource_path
 		equip_ship(load(resource_path))
 
 
