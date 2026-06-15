@@ -51,6 +51,8 @@ func test_get_save_data():
 	player.gold = 321
 	player.position = Vector2(17, 29)
 	player.current_state = Player.STATE.IN_TOWN
+	player.get_trading_item(1).stock = 5
+	player.get_trading_item(2).stock = 7
 
 	# act
 	var save_data = player.get_save_data()
@@ -60,6 +62,8 @@ func test_get_save_data():
 	assert_eq(save_data.player.position.x, 17.0, "Collected data should include player position")
 	assert_eq(save_data.player.position.y, 29.0, "Collected data should include player position")
 	assert_eq(save_data.player.current_state, Player.STATE.IN_TOWN, "Collected data should include player current_state")
+	assert_eq(save_data.player.inventory[1].stock, 5, "Collected data should include serialized player inventory stock")
+	assert_eq(save_data.player.inventory[2].stock, 7, "Collected data should include serialized player inventory stock")
 
 
 func test_player_owns_ship_returns_false_when_no_ship():

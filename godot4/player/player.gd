@@ -139,6 +139,7 @@ func get_save_data() -> Dictionary:
 	player_data.position.x = position.x
 	player_data.position.y = position.y
 	player_data.current_state = current_state
+	player_data.inventory = _serialize_inventory_stock()
 	if _ship_resource != null:
 		player_data.ship = {}
 		player_data.ship.resource_path = _ship_resource.resource_path
@@ -146,6 +147,15 @@ func get_save_data() -> Dictionary:
 	var save_data = {}
 	save_data.player = player_data
 	return save_data
+
+
+func _serialize_inventory_stock() -> Dictionary:
+	var inventory_data = {}
+	for good_id in _inventory:
+		var item_data = {}
+		item_data.stock = _inventory[good_id].stock
+		inventory_data[good_id] = item_data
+	return inventory_data
 
 
 func set_save_data(save_data: Dictionary) -> void:
