@@ -124,4 +124,4 @@ func _on_town_menu_town_left():
 
 
 func _on_pause_menu_save_button_pressed():
-	SaveManager.save(player, proc_gen_world, 1)
+	SaveManager.save(player, proc_gen_world, trading_system, 1)
