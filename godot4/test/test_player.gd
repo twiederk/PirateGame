@@ -123,4 +123,4 @@ func test_get_trading_items():
 	var trading_items = player.get_trading_items()
 	
 	# assert
-	assert_eq(trading_items.size(), 2, "Player should store a trading item for each good")
+	assert_eq(trading_items.size(), 3, "Player should store a trading item for each good")
