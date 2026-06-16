@@ -26,6 +26,7 @@ func _ready() -> void:
 	
 	if SaveManager.is_game_loaded():
 		player.set_save_data(SaveManager.load_game_state)
+		proc_gen_world.set_save_data(SaveManager.load_game_state)
 	else:
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
@@ -54,7 +55,7 @@ func _setup_limits_and_borders() -> void:
 func _get_seed() -> int:
 	if SaveManager.load_game_state.is_empty():
 		return 0
-	return SaveManager.load_game_state.world_seed
+	return SaveManager.load_game_state.world.seed_value
 
 
 func _connect_signals() -> void:

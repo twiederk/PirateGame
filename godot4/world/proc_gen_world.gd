@@ -154,20 +154,20 @@ func get_save_data() -> Dictionary:
 
 
 func set_save_data(save_data: Dictionary) -> void:
-	var world_data: Dictionary = save_data["world"]
-	var world_towns: Array = world_data["towns"]
-	var current_towns : Array[Town] = get_towns()
-	for i in range(world_towns.size()):
-		var town_data: Dictionary = world_towns[i]
-		_restore_town_inventory_from_save(current_towns[i], town_data.get("inventory", {}))
+	var world_data: Dictionary = save_data.world
+	var towns_data: Array = world_data.towns
+	var generated_towns : Array[Town] = get_towns()
+	for i in range(towns_data.size()):
+		var town_data: Dictionary = towns_data[i]
+		_restore_town_inventory_from_save(generated_towns[i], town_data.inventory)
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
 	for item in town.get_trading_items():
-		var item_save_data = inventory_data.get(item.good_id)
-		item.stock = item_save_data.get("stock", item.stock)
-		item.cached_stock = item_save_data.get("cached_stock", item.cached_stock)
-		item.last_updated = item_save_data.get("last_updated", item.last_updated)
+		var item_save_data = inventory_data[str(item.good_id)]
+		item.stock = item_save_data.stock
+		item.cached_stock = item_save_data.cached_stock
+		item.last_updated = item_save_data.last_updated
 
 
 func _serialize_town_save_data(town: Town) -> Dictionary:
