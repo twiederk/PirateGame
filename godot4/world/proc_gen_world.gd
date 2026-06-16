@@ -210,11 +210,13 @@ func generate_towns() -> Array[Town]:
 		var town = _create_town(HaborTownResource, town_name, coast_arr.pick_random())
 		towns.add_child(town)
 		
+	@warning_ignore("integer_division")
 	for i in range(max_cities / 2):
 		var town_name = FarmTownResource.name + " " + str(i)
 		var town = _create_town(FarmTownResource, town_name, farm_arr.pick_random())
 		towns.add_child(town)
 
+	@warning_ignore("integer_division")
 	for i in range(max_cities / 2):
 		var town_name = WoodCampTownResource.name + " " + str(i)
 		var town = _create_town(WoodCampTownResource, town_name, tree_arr.pick_random())
