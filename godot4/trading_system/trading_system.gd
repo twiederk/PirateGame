@@ -11,7 +11,8 @@ var accumulator: float = 0.0
 
 var goods: Dictionary = {
 	1: preload("res://trading_system/good_fish.tres"),
-	2: preload("res://trading_system/good_grain.tres")
+	2: preload("res://trading_system/good_grain.tres"),
+	3: preload("res://trading_system/good_wood.tres"),
 }
 
 

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cld1u8ymg8ifj" path="res://world/town_resource.gd" id="1_ny4qs"]
 [ext_resource type="Script" uid="uid://drlt6i2k3ur3t" path="res://trading_system/good_resource.gd" id="1_stjd0"]
 [ext_resource type="Resource" uid="uid://3lb33c18mc5y" path="res://trading_system/good_grain.tres" id="2_fkte8"]
+[ext_resource type="Resource" uid="uid://daxne7tam2tsn" path="res://trading_system/good_wood.tres" id="3_asym5"]
 [ext_resource type="Resource" uid="uid://d15n0bl0yx702" path="res://trading_system/good_fish.tres" id="3_bu32f"]
 [ext_resource type="Script" uid="uid://bs8dbntnkgu15" path="res://trading_system/ship_resource.gd" id="5_rosyo"]
 [ext_resource type="Resource" uid="uid://edons74dmifg" path="res://trading_system/ship_boat.tres" id="6_asym5"]
@@ -13,6 +14,6 @@ script = ExtResource("1_ny4qs")
 name = "Hafen"
 background_color = Color(0, 0, 1, 1)
 produces = Array[ExtResource("1_stjd0")]([ExtResource("3_bu32f")])
-consumes = Array[ExtResource("1_stjd0")]([ExtResource("2_fkte8")])
+consumes = Array[ExtResource("1_stjd0")]([ExtResource("2_fkte8"), ExtResource("3_asym5")])
 ships = Array[ExtResource("5_rosyo")]([ExtResource("6_asym5"), ExtResource("7_iffr2")])
 metadata/_custom_type_script = "uid://cld1u8ymg8ifj"

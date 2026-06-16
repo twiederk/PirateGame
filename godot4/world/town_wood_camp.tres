@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TownResource" format=3 uid="uid://dwh4xfk026w7d"]
+
+[ext_resource type="Script" uid="uid://drlt6i2k3ur3t" path="res://trading_system/good_resource.gd" id="1_3c3bg"]
+[ext_resource type="Script" uid="uid://cld1u8ymg8ifj" path="res://world/town_resource.gd" id="2_51k1t"]
+[ext_resource type="Resource" uid="uid://3lb33c18mc5y" path="res://trading_system/good_grain.tres" id="2_vlta0"]
+[ext_resource type="Script" uid="uid://bs8dbntnkgu15" path="res://trading_system/ship_resource.gd" id="3_mwmg1"]
+[ext_resource type="Resource" uid="uid://d15n0bl0yx702" path="res://trading_system/good_fish.tres" id="3_tkykr"]
+[ext_resource type="Resource" uid="uid://daxne7tam2tsn" path="res://trading_system/good_wood.tres" id="4_vhduj"]
+
+[resource]
+script = ExtResource("2_51k1t")
+name = "Holzfällerlager"
+background_color = Color(0.36078432, 0.2509804, 0.2, 1)
+produces = Array[ExtResource("1_3c3bg")]([ExtResource("4_vhduj")])
+consumes = Array[ExtResource("1_3c3bg")]([ExtResource("2_vlta0"), ExtResource("3_tkykr")])
+metadata/_custom_type_script = "uid://cld1u8ymg8ifj"

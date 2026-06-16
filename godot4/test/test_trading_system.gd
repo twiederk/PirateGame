@@ -2,6 +2,8 @@ extends GutTest
 
 const GOOD_FISH = preload("res://trading_system/good_fish.tres")
 const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
+const GOOD_WOOD = preload("res://trading_system/good_wood.tres")
+
 const TOWN_HABOR = preload("res://world/town_habor.tres")
 const TOWN_FARM = preload("res://world/town_farm.tres")
 
@@ -128,6 +130,7 @@ func test_update_town_habor():
 	town.town_resource = TOWN_HABOR
 	town.add_trading_item(TradingItem.new(GOOD_FISH, 50))
 	town.add_trading_item(TradingItem.new(GOOD_GRAIN, 10))
+	town.add_trading_item(TradingItem.new(GOOD_WOOD, 10))
 	
 	# act
 	trading_system.update_town(town)
@@ -135,6 +138,7 @@ func test_update_town_habor():
 	# assert
 	assert_eq(town.get_trading_item(1).stock, 55, "Fish is produced in habor")
 	assert_eq(town.get_trading_item(2).stock, 7, "Grain is consumed in habor")
+	assert_eq(town.get_trading_item(3).stock, 7, "Wood is consumed in habor")
 	
 	# tear down
 	town.free()
@@ -146,11 +150,13 @@ func test_simulation():
 	habor.town_resource = TOWN_HABOR
 	habor.add_trading_item(TradingItem.new(GOOD_FISH, 50))
 	habor.add_trading_item(TradingItem.new(GOOD_GRAIN, 10))
+	habor.add_trading_item(TradingItem.new(GOOD_WOOD, 10))
 	
 	var farm = Town.new()
 	farm.town_resource = TOWN_FARM
 	farm.add_trading_item(TradingItem.new(GOOD_FISH, 10))
 	farm.add_trading_item(TradingItem.new(GOOD_GRAIN, 50))
+	farm.add_trading_item(TradingItem.new(GOOD_WOOD, 10))
 	
 	# act
 	trading_system.simulation(trading_system.SIMULATION_STEP, [habor, farm])
@@ -158,8 +164,10 @@ func test_simulation():
 	# assert
 	assert_eq(habor.get_trading_item(1).stock, 55, "Fish is produced in habor")
 	assert_eq(habor.get_trading_item(2).stock, 7, "Grain is consumed in habor")
+	assert_eq(habor.get_trading_item(3).stock, 7, "Wood is consumed in habor")
 	assert_eq(farm.get_trading_item(1).stock, 7, "Fish is consumed in farm")
 	assert_eq(farm.get_trading_item(2).stock, 55, "Grain is produced in farm")
+	assert_eq(farm.get_trading_item(3).stock, 7, "Wood is consumed in farm")
 	
 	# tear down
 	habor.free()
