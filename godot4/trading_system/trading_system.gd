@@ -89,3 +89,12 @@ func sell(player: Player, player_trading_item: TradingItem, town_trading_item: T
 	player_trading_item.stock -= amount
 	town_trading_item.stock += amount
 	return "Ware verkauft."
+
+
+func get_save_data() -> Dictionary:
+	var trading_system_data = {
+			"current_game_time": current_game_time,
+			"accumulator": accumulator
+		}
+	return { "trading_system": trading_system_data }
+	
