@@ -18,7 +18,8 @@ var gold : int
 var cargo_capacity : int = 20
 var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
-		2: TradingItem.new(load("res://trading_system/good_grain.tres"))
+		2: TradingItem.new(load("res://trading_system/good_grain.tres")),
+		3: TradingItem.new(load("res://trading_system/good_wood.tres")),
 	}
 
 @onready var wanderer_animation_tree = $WandererSprite2D/WandererAnimationTree

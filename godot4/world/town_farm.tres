@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cld1u8ymg8ifj" path="res://world/town_resource.gd" id="1_f2cn8"]
 [ext_resource type="Resource" uid="uid://3lb33c18mc5y" path="res://trading_system/good_grain.tres" id="2_mxsn0"]
 [ext_resource type="Resource" uid="uid://d15n0bl0yx702" path="res://trading_system/good_fish.tres" id="2_sgx3r"]
+[ext_resource type="Resource" uid="uid://daxne7tam2tsn" path="res://trading_system/good_wood.tres" id="3_cixlv"]
 [ext_resource type="Script" uid="uid://bs8dbntnkgu15" path="res://trading_system/ship_resource.gd" id="5_sgx3r"]
 
 [resource]
@@ -11,5 +12,5 @@ script = ExtResource("1_f2cn8")
 name = "Bauernhof"
 background_color = Color(0.30828562, 0.3673456, 0.01934423, 1)
 produces = Array[ExtResource("1_4i0du")]([ExtResource("2_mxsn0")])
-consumes = Array[ExtResource("1_4i0du")]([ExtResource("2_sgx3r")])
+consumes = Array[ExtResource("1_4i0du")]([ExtResource("2_sgx3r"), ExtResource("3_cixlv")])
 metadata/_custom_type_script = "uid://cld1u8ymg8ifj"

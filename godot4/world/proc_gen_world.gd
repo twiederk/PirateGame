@@ -9,6 +9,7 @@ extends Node2D
 const TownScene = preload("res://world/town.tscn")
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
+const WoodCampTownResource = preload("res://world/town_wood_camp.tres")
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -206,9 +207,14 @@ func generate_towns() -> Array[Town]:
 		var town = _create_town(HaborTownResource, town_name, coast_arr.pick_random())
 		towns.add_child(town)
 		
-	for i in range(max_cities):
+	for i in range(max_cities / 2):
 		var town_name = FarmTownResource.name + " " + str(i)
 		var town = _create_town(FarmTownResource, town_name, grass_arr.pick_random())
+		towns.add_child(town)
+
+	for i in range(max_cities / 2):
+		var town_name = WoodCampTownResource.name + " " + str(i)
+		var town = _create_town(WoodCampTownResource, town_name, grass_arr.pick_random())
 		towns.add_child(town)
 
 	return get_towns()
