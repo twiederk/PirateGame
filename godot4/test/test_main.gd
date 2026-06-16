@@ -24,7 +24,9 @@ func test_seed_new_game():
 func test_seed_load_game():
 	# arrange
 	SaveManager.load_game_state = {
-		"world_seed": 24680
+		"world": {
+			"seed_value": 24680
+		}
 	}
 	
 	# act

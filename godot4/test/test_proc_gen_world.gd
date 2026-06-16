@@ -55,7 +55,7 @@ func test_set_save_data():
 			"towns": [
 				{
 					"inventory": {
-						1: {
+						"1": {
 							"stock": 50,
 							"cached_stock": 45,
 							"last_updated": 1234.5,
