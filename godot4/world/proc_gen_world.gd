@@ -45,6 +45,7 @@ var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
 var dirt_arr: Array[Vector2i] = []
 var cliff_arr: Array[Vector2i] = []
+var tree_arr: Array[Vector2i] = []
 
 var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
@@ -119,6 +120,7 @@ func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -
 	#setting trees where there are no cliffs
 	if (tree_noise_val > TREE_CHANCE) and (noise_val > FIELD_LEVEL) and (noise_val < CLIFF_LEVEL):
 		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILE)
+		tree_arr.append(curr_pos)
 
 
 func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
@@ -201,6 +203,7 @@ func generate_towns() -> Array[Town]:
 	@warning_ignore("integer_division")
 	var max_cities = int(width / city_denstity)
 	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * get_tile_size()))
+	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
 	
 	for i in range(max_cities):
 		var town_name = HaborTownResource.name + " " + str(i)
@@ -209,12 +212,12 @@ func generate_towns() -> Array[Town]:
 		
 	for i in range(max_cities / 2):
 		var town_name = FarmTownResource.name + " " + str(i)
-		var town = _create_town(FarmTownResource, town_name, grass_arr.pick_random())
+		var town = _create_town(FarmTownResource, town_name, farm_arr.pick_random())
 		towns.add_child(town)
 
 	for i in range(max_cities / 2):
 		var town_name = WoodCampTownResource.name + " " + str(i)
-		var town = _create_town(WoodCampTownResource, town_name, grass_arr.pick_random())
+		var town = _create_town(WoodCampTownResource, town_name, tree_arr.pick_random())
 		towns.add_child(town)
 
 	return get_towns()
