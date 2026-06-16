@@ -169,6 +169,7 @@ func set_save_data(save_data: Dictionary) -> void:
 		var resource_path = player_data.ship.resource_path
 		equip_ship(load(resource_path))
 	if current_state == State.ON_SHIP:
+		current_state = State.ON_LAND
 		board_ship()
 
 
