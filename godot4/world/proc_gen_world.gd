@@ -144,9 +144,49 @@ func get_tile_size() -> Vector2i:
 
 
 func get_save_data() -> Dictionary:
-	return {"world_seed": seed_value}
-	
-	
+	var world_data = {
+		"seed_value": seed_value
+	}
+	world_data.towns = []
+	for town in get_towns():
+		world_data.towns.append(_serialize_town_save_data(town))
+	return {"world": world_data}
+
+
+func set_save_data(save_data: Dictionary) -> void:
+	var world_data: Dictionary = save_data.world
+	var towns_data: Array = world_data.towns
+	var generated_towns : Array[Town] = get_towns()
+	for i in range(towns_data.size()):
+		var town_data: Dictionary = towns_data[i]
+		_restore_town_inventory_from_save(generated_towns[i], town_data.inventory)
+
+
+func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
+	for item in town.get_trading_items():
+		var item_save_data = inventory_data[str(item.good_id)]
+		item.stock = item_save_data.stock
+		item.cached_stock = item_save_data.cached_stock
+		item.last_updated = item_save_data.last_updated
+
+
+func _serialize_town_save_data(town: Town) -> Dictionary:
+	return {
+		"inventory": _serialize_town_inventory(town)
+	}
+
+
+func _serialize_town_inventory(town: Town) -> Dictionary:
+	var inventory_data: Dictionary = {}
+	for item in town.get_trading_items():
+		inventory_data[item.good_id] = {
+			"stock": item.stock,
+			"cached_stock": item.cached_stock,
+			"last_updated": item.last_updated,
+		}
+	return inventory_data
+
+
 func is_coast(player_position: Vector2) -> bool:
 	var player_position_to_tile = sand_and_grass_layer.local_to_map(player_position)
 	var tile_data : TileData = sand_and_grass_layer.get_cell_tile_data(player_position_to_tile)

@@ -26,11 +26,11 @@ func _ready() -> void:
 	
 	if SaveManager.is_game_loaded():
 		player.set_save_data(SaveManager.load_game_state)
+		proc_gen_world.set_save_data(SaveManager.load_game_state)
+		trading_system.set_save_data(SaveManager.load_game_state)
 	else:
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
-
-
 
 
 func _process(delta):
@@ -54,7 +54,7 @@ func _setup_limits_and_borders() -> void:
 func _get_seed() -> int:
 	if SaveManager.load_game_state.is_empty():
 		return 0
-	return SaveManager.load_game_state.world_seed
+	return SaveManager.load_game_state.world.seed_value
 
 
 func _connect_signals() -> void:
@@ -123,4 +123,4 @@ func _on_town_menu_town_left():
 
 
 func _on_pause_menu_save_button_pressed():
-	SaveManager.save(player, proc_gen_world, 1)
+	SaveManager.save(player, proc_gen_world, trading_system, 1)

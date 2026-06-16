@@ -4,16 +4,19 @@ const SLOT_NUMBER: int = 100
 
 var player: Player = null
 var proc_gen_world: ProcGenWorld = null
+var trading_system: TradingSystem = null
 
 
 func before_each():
 	player = Player.new()
 	proc_gen_world = ProcGenWorld.new()
+	trading_system = TradingSystem.new()
 
 
 func after_each():
 	player.free()
 	proc_gen_world.free()
+	trading_system.free()
 
 
 func test_collect_game_state():
@@ -21,15 +24,24 @@ func test_collect_game_state():
 	player.gold = 321
 	player.position = Vector2(17, 29)
 	proc_gen_world.seed_value = 12345
+	var towns_root = Node2D.new()
+	proc_gen_world.towns = towns_root
+	trading_system.current_game_time = 1234.5
+	trading_system.accumulator = 246.8
 
 	# act
-	var game_state = SaveManager._collect_game_state(player, proc_gen_world)
+	var game_state = SaveManager._collect_game_state(player, proc_gen_world, trading_system)
 
 	# assert
-	assert_eq(game_state["player"]["gold"], 321, "Collected data should include player gold")
-	assert_eq(game_state["player"]["position"]["x"], 17.0, "Collected data should include player position")
-	assert_eq(game_state["player"]["position"]["y"], 29.0, "Collected data should include player position")
-	assert_eq(game_state["world_seed"], 12345, "Collected data should include world seed")
+	assert_eq(game_state.player.gold, 321, "Collected data should include player gold")
+	assert_eq(game_state.player.position.x, 17.0, "Collected data should include player position")
+	assert_eq(game_state.player.position.y, 29.0, "Collected data should include player position")
+	assert_eq(game_state.world.seed_value, 12345, "Collected data should include world seed")
+	assert_eq(game_state.trading_system.current_game_time, 1234.5,"Collected dat should include trading system current game time")
+	assert_eq(game_state.trading_system.accumulator, 246.8, "Collected dat should trading system include accumulator")
+
+	# tear down
+	towns_root.free()
 
 
 func test_save_file():
@@ -67,6 +79,8 @@ func test_save():
 	player.gold = 123
 	player.position = Vector2(45, 67)
 	proc_gen_world.seed_value = 24680
+	var towns_root = Node2D.new()
+	proc_gen_world.towns = towns_root
 
 	var save_path = "user://saves/save_slot_%d.json" % SLOT_NUMBER
 
@@ -74,12 +88,13 @@ func test_save():
 		DirAccess.remove_absolute(save_path)
 
 	# act
-	SaveManager.save(player, proc_gen_world, SLOT_NUMBER)
+	SaveManager.save(player, proc_gen_world, trading_system, SLOT_NUMBER)
 
 	# assert
 	assert_true(FileAccess.file_exists(save_path), "Save file should be created for the target slot")
 
 	# tear down
+	towns_root.free()
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
 
@@ -95,6 +110,10 @@ func test_load():
 				"x": 12,
 				"y": 34,
 			},
+		},
+		"trading_system:": {
+			"current_game_time": 1234.5,
+			"accumulator": 246.8,
 		}
 	}
 

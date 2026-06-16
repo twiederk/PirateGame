@@ -50,14 +50,49 @@ func test_get_save_data():
 	# arrange
 	player.gold = 321
 	player.position = Vector2(17, 29)
+	player.current_state = Player.State.IN_TOWN
+	player.get_trading_item(1).stock = 5
+	player.get_trading_item(2).stock = 7
 
 	# act
 	var save_data = player.get_save_data()
 
 	# assert
-	assert_eq(save_data["player"]["gold"], 321, "Collected data should include player gold")
-	assert_eq(save_data["player"]["position"]["x"], 17.0, "Collected data should include player position")
-	assert_eq(save_data["player"]["position"]["y"], 29.0, "Collected data should include player position")
+	assert_eq(save_data.player.gold, 321, "Collected data should include player gold")
+	assert_eq(save_data.player.position.x, 17.0, "Collected data should include player position")
+	assert_eq(save_data.player.position.y, 29.0, "Collected data should include player position")
+	assert_eq(save_data.player.current_state, Player.State.IN_TOWN, "Collected data should include player current_state")
+	assert_eq(save_data.player.inventory[1].stock, 5, "Collected data should include serialized player inventory stock")
+	assert_eq(save_data.player.inventory[2].stock, 7, "Collected data should include serialized player inventory stock")
+
+
+func test_set_save_data():
+	# arrange
+	player.current_state = Player.State.ON_SHIP
+	player.get_trading_item(1).stock = 100
+	player.get_trading_item(2).stock = 200
+	var save_data = {
+		"player": {
+			"gold": 123,
+			"position": {"x": 11, "y": 13},
+			"current_state": Player.State.IN_TOWN,
+			"inventory": {
+				1: {"stock": 5},
+				2: {"stock": 7},
+			}
+		}
+	}
+
+	# act
+	player.set_save_data(save_data)
+
+	# assert
+	assert_eq(player.current_state, Player.State.IN_TOWN, "set_save_data should restore player current_state")
+	assert_eq(player.gold, 123, "set_save_data should restore player gold")
+	assert_eq(player.position.x, 11.0, "set_save_data should restore player position x")
+	assert_eq(player.position.y, 13.0, "set_save_data should restore player position y")
+	assert_eq(player.get_trading_item(1).stock, 5, "set_save_data should restore inventory stock for key 1")
+	assert_eq(player.get_trading_item(2).stock, 7, "set_save_data should restore inventory stock for key 2")
 
 
 func test_player_owns_ship_returns_false_when_no_ship():
@@ -81,3 +116,11 @@ func test_player_equip_ship_assigns_ship_resource():
 	
 	# tear down
 	sprite2D.free()
+
+
+func test_get_trading_items():
+	# act
+	var trading_items = player.get_trading_items()
+	
+	# assert
+	assert_eq(trading_items.size(), 2, "Player should store a trading item for each good")

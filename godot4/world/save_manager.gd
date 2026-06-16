@@ -3,15 +3,16 @@ extends Node
 var load_game_state : Dictionary = {}
 
 
-func save(player: Player, proc_gen_world: ProcGenWorld, slot_number: int) -> void:
-	var game_state: Dictionary = _collect_game_state(player, proc_gen_world)
+func save(player: Player, proc_gen_world: ProcGenWorld, trading_system: TradingSystem, slot_number: int) -> void:
+	var game_state: Dictionary = _collect_game_state(player, proc_gen_world, trading_system)
 	_save_file(game_state, slot_number)
 
 
-func _collect_game_state(player: Player, proc_gen_world: ProcGenWorld) -> Dictionary:
+func _collect_game_state(player: Player, proc_gen_world: ProcGenWorld, trading_system: TradingSystem) -> Dictionary:
 	var game_state: Dictionary = {}
 	game_state.merge(player.get_save_data(), true)
 	game_state.merge(proc_gen_world.get_save_data(), true)
+	game_state.merge(trading_system.get_save_data(), true)
 	return game_state
 
 
