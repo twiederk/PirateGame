@@ -97,4 +97,10 @@ func get_save_data() -> Dictionary:
 			"accumulator": accumulator
 		}
 	return { "trading_system": trading_system_data }
+
+
+func set_save_data(save_data: Dictionary) -> void:
+	var trading_system = save_data.trading_system
+	current_game_time = trading_system.current_game_time
+	accumulator = trading_system.accumulator
 	
