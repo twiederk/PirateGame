@@ -15,8 +15,8 @@ const WATER_LEVEL: float = 0
 const GRASS_LEVEL: float = 0.2
 const FIELD_LEVEL: float = 0.3
 const CLIFF_LEVEL: float = 0.6
-const TREE_CHANCE: float = 0.9
-const PALM_TREE_CHANCE: float = 0.92
+const TREE_CHANCE: float = 0.0
+const PALM_TREE_CHANCE: float = 0.35
 
 const WORLD_TILE_SET = 0
 
@@ -29,7 +29,7 @@ const COAST_TILE_DATA = "coast"
 
 const SHALLOW_WATER_TILE = Vector2i(0,1)
 const DEEP_WATER_TILE = Vector2i(3,1)
-const TREE_TILE = Vector2i(15,6)
+const TREE_TILE = Vector2i(6,1)
 
 
 var width : int = 200
@@ -38,7 +38,7 @@ var height : int = 200
 var noise : Noise
 var tree_noise : Noise
 
-var random_palm_tree_array = [Vector2i(12, 2), Vector2i(15,2) ]
+var random_palm_tree_array = [Vector2i(7, 1), Vector2i(8,1) ]
 
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
