@@ -91,17 +91,9 @@ Your output should always follow this structure:
 **Test File**: test/test_feature_name.gd
 
 **Test List**:
-```gdscript
-func test_case_1():
-    # arrange
-    # act
-    # assert
-    pass
-
-func test_case_2():
-    pass
+- [ ] test_case_1
+- [ ] test_case_2
 ...
-```
 
 ## Dependencies & Integration Notes
 - Dependency A: Must be completed before Phase 2
