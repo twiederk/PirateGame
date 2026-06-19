@@ -163,7 +163,8 @@ func set_save_data(save_data: Dictionary) -> void:
 	for i in range(towns_data.size()):
 		var town_data: Dictionary = towns_data[i]
 		var current_town = generated_towns[i]
-		current_town.set_visited(town_data.visited)
+		if town_data.has("visited"):
+			current_town.set_visited(town_data.visited)
 		_restore_town_inventory_from_save(current_town, town_data.inventory)
 
 
