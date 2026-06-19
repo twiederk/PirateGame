@@ -7,10 +7,14 @@ signal town_entered(town_resource: TownResource)
 @export var town_resource: TownResource
 
 var town_name: String
+var visited: bool = false
 var _inventory: Dictionary = {}
+
+@onready var name_label = $NameLabel
 
 
 func _ready() -> void:
+	name_label.text = town_name
 	var goods = town_resource.consumes + town_resource.produces
 	for good in goods:
 		var stock = init_stock(good)
@@ -29,10 +33,6 @@ func init_stock(good: GoodResource) -> int:
 func _on_body_entered(body):
 	if body is Player:
 		town_entered.emit(self)
-
-
-func get_town_name() -> String:
-	return town_name
 
 
 func get_background_color() -> Color:
