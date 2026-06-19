@@ -58,6 +58,7 @@ func test_set_save_data():
 		"world": {
 			"towns": [
 				{
+					"visited": true,
 					"inventory": {
 						"1": {
 							"stock": 50,
@@ -74,6 +75,7 @@ func test_set_save_data():
 	proc_gen_world.set_save_data(save_data)
 
 	# assert
+	assert_true(town.visited, "set_save_data should restore visited")
 	assert_eq(town_item.stock, 50, "set_save_data should restore town item stock")
 	assert_eq(town_item.cached_stock, 45, "set_save_data should restore town item cached_stock")
 	assert_eq(town_item.last_updated, 1234.5, "set_save_data should restore town item last_updated")
