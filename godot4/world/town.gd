@@ -17,11 +17,11 @@ func _ready() -> void:
 	name_label.text = town_name
 	var goods = town_resource.consumes + town_resource.produces
 	for good in goods:
-		var stock = init_stock(good)
+		var stock = _init_stock(good)
 		_inventory[good.id] = TradingItem.new(good, stock)
 
 
-func init_stock(good: GoodResource) -> int:
+func _init_stock(good: GoodResource) -> int:
 		var stock = 0
 		if good in town_resource.consumes:
 			stock = 10
@@ -32,6 +32,8 @@ func init_stock(good: GoodResource) -> int:
 
 func _on_body_entered(body):
 	if body is Player:
+		visited = true
+		name_label.visible = visited
 		town_entered.emit(self)
 
 

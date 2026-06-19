@@ -94,6 +94,7 @@ func _clear_trading_rows() -> void:
 	for child in children_to_remove:
 		child.queue_free()
 
+
 func _clear_ship_rows() -> void:
 	var children_to_remove = []
 	for child in ship_item_table.get_children():
