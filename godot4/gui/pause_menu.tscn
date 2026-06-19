@@ -38,7 +38,7 @@ text = "Spiel speichern"
 
 [node name="MenuButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=239051199]
 layout_mode = 2
-text = "Hauptmenu"
+text = "Hauptmenü"
 
 [node name="MessageLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=824645585]
 layout_mode = 2
