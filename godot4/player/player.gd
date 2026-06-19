@@ -10,6 +10,7 @@ const MASK_OCEAN: int = 5
 enum State { ON_LAND, ON_SHIP, IN_TOWN }
 
 var current_state: State = State.ON_LAND
+var _previous_state: State = current_state
 var current_speed: float = LAND_SPEED
 var direction: Vector2 = Vector2.ZERO
 var current_title: String
@@ -104,6 +105,7 @@ func _move_on_land() -> void:
 
 
 func _on_town_tile_town_entered(_town: Town) -> void:
+	_previous_state = current_state
 	current_state = State.IN_TOWN
 
 
@@ -186,3 +188,7 @@ func get_trading_items() -> Array[TradingItem]:
 	var typed: Array[TradingItem] = []
 	typed.assign(_inventory.values())
 	return typed
+
+
+func get_previous_state() -> State:
+	return _previous_state
