@@ -35,7 +35,7 @@ func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
 
 
 func _update_gui() -> void:
-	town_name.text = "Name: " + _town.get_town_name()
+	town_name.text = "Name: " + _town.town_name
 	background.self_modulate = _town.get_background_color()
 	player_gold.text = "Gold: " + number_format.format(_player.gold)
 	player_weight.text = "Laderaum: " + str(_player.get_used_capacity()) + " / " + str(_player.cargo_capacity)
@@ -93,6 +93,7 @@ func _clear_trading_rows() -> void:
 	
 	for child in children_to_remove:
 		child.queue_free()
+
 
 func _clear_ship_rows() -> void:
 	var children_to_remove = []

@@ -9,6 +9,7 @@
 
 [resource]
 script = ExtResource("1_f2cn8")
+type = 1
 name = "Bauernhof"
 background_color = Color(0.30828562, 0.3673456, 0.01934423, 1)
 produces = Array[ExtResource("1_4i0du")]([ExtResource("2_mxsn0")])

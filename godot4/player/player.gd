@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
-const LAND_SPEED : float = 200.0
+const LAND_SPEED: float = 200.0
 
 const MASK_WATER: int = 2
 const MASK_LAND: int = 3
@@ -9,13 +9,14 @@ const MASK_OCEAN: int = 5
 
 enum State { ON_LAND, ON_SHIP, IN_TOWN }
 
-var current_state = State.ON_LAND
-var current_speed : float = LAND_SPEED
-var direction : Vector2 = Vector2.ZERO
+var current_state: State = State.ON_LAND
+var current_speed: float = LAND_SPEED
+var direction: Vector2 = Vector2.ZERO
+var current_title: String
 
-var _ship_resource : ShipResource = null
-var gold : int
-var cargo_capacity : int = 20
+var _ship_resource: ShipResource = null
+var gold: int
+var cargo_capacity: int = 20
 var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
 		2: TradingItem.new(load("res://trading_system/good_grain.tres")),
@@ -28,16 +29,16 @@ var _inventory: Dictionary = {
 @onready var ship_sprite: Sprite2D = $ShipSprite2D
 
 
-func _ready():
+func _ready() -> void:
 	wanderer_animation_tree.active = true
 	ship_animation_tree.active = false
 
 
-func _process(_delta):
+func _process(_delta: float) -> void:
 	_update_animation_parameters()
 
 
-func _physics_process(_delta):
+func _physics_process(_delta: float):
 	if current_state == State.IN_TOWN:
 		return
 
@@ -100,6 +101,7 @@ func _move_on_land() -> void:
 	set_collision_mask_value(MASK_LAND, false)
 	set_collision_mask_value(MASK_WATER, true)
 	set_collision_mask_value(MASK_OCEAN, true)
+
 
 func _on_town_tile_town_entered(_town: Town) -> void:
 	current_state = State.IN_TOWN

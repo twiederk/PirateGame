@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://b7xcipud8gli" path="res://world/world.png" id="1_eevg3"]
 [ext_resource type="Script" uid="uid://vpeeg5213bi4" path="res://world/town.gd" id="1_pwnmr"]
 
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5v6rl"]
 size = Vector2(32, 32)
 
@@ -18,5 +17,15 @@ frame = 96
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1195498840]
 shape = SubResource("RectangleShape2D_5v6rl")
+
+[node name="NameLabel" type="Label" parent="." unique_id=601121114]
+visible = false
+offset_left = -59.0
+offset_top = 16.0
+offset_right = 61.0
+offset_bottom = 39.0
+text = "Townname        "
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

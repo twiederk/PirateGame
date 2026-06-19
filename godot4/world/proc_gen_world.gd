@@ -162,7 +162,10 @@ func set_save_data(save_data: Dictionary) -> void:
 	var generated_towns : Array[Town] = get_towns()
 	for i in range(towns_data.size()):
 		var town_data: Dictionary = towns_data[i]
-		_restore_town_inventory_from_save(generated_towns[i], town_data.inventory)
+		var current_town = generated_towns[i]
+		if town_data.has("visited"):
+			current_town.set_visited(town_data.visited)
+		_restore_town_inventory_from_save(current_town, town_data.inventory)
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
@@ -175,6 +178,7 @@ func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -
 
 func _serialize_town_save_data(town: Town) -> Dictionary:
 	return {
+		"visited": town.get_visited(),
 		"inventory": _serialize_town_inventory(town)
 	}
 
@@ -206,19 +210,19 @@ func generate_towns() -> Array[Town]:
 	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
 	
 	for i in range(max_cities):
-		var town_name = HaborTownResource.name + " " + str(i)
+		var town_name = TownResource.name_dictionary[TownResource.Type.Habor].pick_random()
 		var town = _create_town(HaborTownResource, town_name, coast_arr.pick_random())
 		towns.add_child(town)
 		
 	@warning_ignore("integer_division")
 	for i in range(max_cities / 2):
-		var town_name = FarmTownResource.name + " " + str(i)
+		var town_name = TownResource.name_dictionary[TownResource.Type.Farm].pick_random()
 		var town = _create_town(FarmTownResource, town_name, farm_arr.pick_random())
 		towns.add_child(town)
 
 	@warning_ignore("integer_division")
 	for i in range(max_cities / 2):
-		var town_name = WoodCampTownResource.name + " " + str(i)
+		var town_name = TownResource.name_dictionary[TownResource.Type.Woodcamp].pick_random()
 		var town = _create_town(WoodCampTownResource, town_name, tree_arr.pick_random())
 		towns.add_child(town)
 
