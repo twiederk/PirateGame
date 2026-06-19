@@ -175,6 +175,7 @@ func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -
 
 func _serialize_town_save_data(town: Town) -> Dictionary:
 	return {
+		"visited": town.visited,
 		"inventory": _serialize_town_inventory(town)
 	}
 

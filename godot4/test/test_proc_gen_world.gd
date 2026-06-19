@@ -18,6 +18,7 @@ func test_get_save_data():
 	proc_gen_world.seed_value = 12345
 	var towns_root = Node2D.new()
 	var town = Town.new()
+	town.visited = true
 	var town_item = TradingItem.new(GOOD_FISH, 50)
 	town_item.cached_stock = 45
 	town_item.last_updated = 1234.5
@@ -31,9 +32,12 @@ func test_get_save_data():
 	# assert
 	assert_eq(save_data.world.seed_value, 12345, "Save data should include the world seed")
 	assert_eq(save_data.world.towns.size(), 1, "Save data should include one serialized town")
-	assert_eq(save_data.world.towns[0].inventory[1].stock, 50, "Town inventory stock should be serialized")
-	assert_eq(save_data.world.towns[0].inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
-	assert_eq(save_data.world.towns[0].inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
+	var loaded_town = save_data.world.towns[0]
+	assert_eq(loaded_town.size(), 2, "Save data should include one serialized town")
+	assert_true(loaded_town.visited, "Town visited should be serialized")
+	assert_eq(loaded_town.inventory[1].stock, 50, "Town inventory stock should be serialized")
+	assert_eq(loaded_town.inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
+	assert_eq(loaded_town.inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
 
 	# tear down
 	towns_root.free()
