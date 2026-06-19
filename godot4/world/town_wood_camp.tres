@@ -9,6 +9,7 @@
 
 [resource]
 script = ExtResource("2_51k1t")
+type = 2
 name = "Holzfällerlager"
 background_color = Color(0.36078432, 0.2509804, 0.2, 1)
 produces = Array[ExtResource("1_3c3bg")]([ExtResource("4_vhduj")])
