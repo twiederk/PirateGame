@@ -134,5 +134,13 @@ func test_on_town_tile_town_entered():
 	assert_true(player.in_town(), "Player should be in town after entering a town tile")
 	assert_eq(player.get_previous_state(), Player.State.ON_LAND, "Player should store previous state")
 
+
 func test_on_town_menu_town_left():
-	pass
+	# assert
+	player._previous_state = Player.State.ON_SHIP
+	
+	# act
+	player._on_town_menu_town_left()
+
+	# assert
+	assert_eq(player.current_state, Player.State.ON_SHIP, "Player should return to previous state")

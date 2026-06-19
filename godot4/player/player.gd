@@ -110,7 +110,7 @@ func _on_town_tile_town_entered(_town: Town) -> void:
 
 
 func _on_town_menu_town_left() -> void:
-	current_state = State.ON_LAND
+	current_state = _previous_state
 
 
 func in_town() -> bool:
