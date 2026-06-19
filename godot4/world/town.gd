@@ -7,7 +7,7 @@ signal town_entered(town_resource: TownResource)
 @export var town_resource: TownResource
 
 var town_name: String
-var visited: bool = false
+var _visited: bool = false
 var _inventory: Dictionary = {}
 
 @onready var name_label = $NameLabel
@@ -32,9 +32,18 @@ func _init_stock(good: GoodResource) -> int:
 
 func _on_body_entered(body):
 	if body is Player:
-		visited = true
-		name_label.visible = visited
+		set_visited(true)
 		town_entered.emit(self)
+
+
+func get_visited() -> bool:
+	return _visited
+
+
+func set_visited(visited: bool) -> void:
+	_visited = visited
+	if name_label:
+		name_label.visible = visited
 
 
 func get_background_color() -> Color:
