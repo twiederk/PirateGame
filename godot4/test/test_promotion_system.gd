@@ -2,6 +2,7 @@ extends GutTest
 
 
 const TRADER_RANK_KRAEMER = preload("res://promotion_system/trader_rank_01.tres")
+const TRADER_RANK_HAENDLER = preload("res://promotion_system/trader_rank_02.tres")
 
 var promotion_system: PromotionSystem = null
 var player: Player = null
@@ -25,13 +26,13 @@ func test_get_trader_rank():
 	assert_eq(trader_rank, TRADER_RANK_KRAEMER)
 
 
-#func test_promote_to_haendler_at_500_gold():
-	## arrange
-	#player.current_title = "Krämer"
-	#player.gold = 500
-#
-	## act
-	#promotion_system.evaluate(player)
-#
-	## assert
-	#assert_eq(player.current_title, "Händler", "Player title should be promoted to Händler at 500 gold")
+func test_promote_to_haendler_at_500_gold():
+	# arrange
+	player.trader_rank = TRADER_RANK_KRAEMER
+	player.gold = 500
+
+	# act
+	promotion_system.evaluate(player)
+
+	# assert
+	assert_eq(player.trader_rank, TRADER_RANK_HAENDLER, "Player title should be promoted to Händler at 500 gold")
