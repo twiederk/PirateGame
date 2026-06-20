@@ -13,7 +13,6 @@ var current_state: State = State.ON_LAND
 var _previous_state: State = current_state
 var current_speed: float = LAND_SPEED
 var direction: Vector2 = Vector2.ZERO
-var current_title: String = "Krämer"
 var trader_rank: PrestigeRank = preload("res://promotion_system/trader_rank_01.tres") as PrestigeRank
 
 var _ship_resource: ShipResource = null
@@ -145,7 +144,6 @@ func get_save_data() -> Dictionary:
 			"x": position.x,
 			"y": position.y,
 		},
-		"current_title": current_title,
 		"trader_rank": trader_rank.resource_path,
 		"current_state": current_state,
 		"inventory": _serialize_inventory_stock(),
@@ -168,10 +166,11 @@ func set_save_data(save_data: Dictionary) -> void:
 	var pos_data = player_data.position
 	position = Vector2i(int(pos_data.x), int(pos_data.y))
 	gold = int(player_data.gold)
-	current_title = player_data.get("current_title", "Krämer")
 	current_state = int(player_data.current_state) as State
 	if player_data.has("trader_rank"):
 		trader_rank = load(player_data.trader_rank)
+	else:
+		trader_rank = load("res://promotion_system/trader_rank_01.tres")
 	if player_data.has("inventory"):
 		_restore_inventory_stock(player_data.inventory)
 	if player_data.has("ship"):

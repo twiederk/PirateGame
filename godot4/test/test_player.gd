@@ -2,6 +2,7 @@ extends GutTest
 
 const BOAT:= preload("res://trading_system/ship_boat.tres")
 const TRADER_RANK_KRAEMER = preload("res://promotion_system/trader_rank_01.tres")
+const TRADER_RANK_ZUNFTMEISTER = preload("res://promotion_system/trader_rank_06.tres")
 
 var player: Player = null
 
@@ -16,7 +17,7 @@ func after_each():
 
 func test_player_starts_with_kraemer_rank():
 	# assert
-	assert_eq(player.trader_rank.title, "Krämer", "New player should start with title Krämer")
+	assert_eq(player.trader_rank.title, TRADER_RANK_KRAEMER.title, "New player should start with title Krämer")
 
 
 func test_player_title_serialized_in_save_data():
@@ -32,14 +33,12 @@ func test_player_title_serialized_in_save_data():
 
 func test_player_title_restored_from_save_data():
 	# arrange
-	player.current_title = "Krämer"
 	player.trader_rank = TRADER_RANK_KRAEMER
 	var save_data = {
 		"player": {
 			"gold": 123,
 			"position": {"x": 0, "y": 0},
 			"trader_rank": "res://promotion_system/trader_rank_06.tres",
-			"current_title": "Zunftmeister",
 			"current_state": Player.State.ON_LAND,
 			"inventory": {
 				1: {"stock": 0},
@@ -53,12 +52,12 @@ func test_player_title_restored_from_save_data():
 	player.set_save_data(save_data)
 
 	# assert
-	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player current_title")
+	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player trader_rank")
 
 
 func test_missing_title_in_save_defaults_to_kraemer():
 	# arrange
-	player.current_title = "Kaufmann"
+	player.trader_rank = TRADER_RANK_ZUNFTMEISTER
 	var save_data = {
 		"player": {
 			"gold": 123,
@@ -76,7 +75,7 @@ func test_missing_title_in_save_defaults_to_kraemer():
 	player.set_save_data(save_data)
 
 	# assert
-	assert_eq(player.current_title, "Krämer", "Missing current_title in save should default to Krämer")
+	assert_eq(player.trader_rank.title, TRADER_RANK_KRAEMER.title, "Missing trader_rank in save should default to Krämer")
 
 
 func test_get_used_capacity():
