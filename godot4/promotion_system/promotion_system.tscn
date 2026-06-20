@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bllx8qfja0huk"]
+
+[ext_resource type="Script" uid="uid://cwtucjwee7d74" path="res://promotion_system/promotion_system.gd" id="1_o1lqs"]
+
+[node name="PromotionSystem" type="Node" unique_id=1279130280]
+script = ExtResource("1_o1lqs")
