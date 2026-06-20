@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal gold_changed(player: Player)
+
 const LAND_SPEED: float = 200.0
 
 const MASK_WATER: int = 2
@@ -16,7 +18,10 @@ var direction: Vector2 = Vector2.ZERO
 var trader_rank: PrestigeRank = preload("res://promotion_system/trader_rank_01.tres") as PrestigeRank
 
 var _ship_resource: ShipResource = null
-var gold: int
+var gold: int:
+	set(value):
+		gold = value
+		gold_changed.emit(self)
 var cargo_capacity: int = 20
 var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),

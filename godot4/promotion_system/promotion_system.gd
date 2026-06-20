@@ -1,6 +1,7 @@
 class_name PromotionSystem
 extends Node
 
+signal rank_promoted(new_rank: PrestigeRank)
 
 var trader_ranks: Dictionary = {
 	0: preload("res://promotion_system/trader_rank_01.tres"),
@@ -25,3 +26,4 @@ func evaluate(player: Player) -> void:
 	var new_trader_rank = get_trader_rank(player.gold)
 	if new_trader_rank.is_greater_than(player.trader_rank):
 		player.trader_rank = new_trader_rank
+		rank_promoted.emit(new_trader_rank)
