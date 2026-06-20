@@ -1,6 +1,6 @@
 extends GutTest
 
-var promotion_system = null
+var promotion_system: PromotionSystem = null
 var player: Player = null
 
 
