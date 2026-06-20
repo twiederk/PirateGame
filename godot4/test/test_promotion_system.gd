@@ -14,12 +14,12 @@ func after_each():
 	player.free()
 
 
-func test_get_gold_title():
+func test_get_trader_rank():
 	# act
-	var gold_title = promotion_system.get_gold_title(100)
+	var trader_rank = promotion_system.get_trader_rank(100)
 	
 	# assert
-	assert_eq(gold_title, "Krämer")
+	assert_eq(trader_rank.title, "Krämer")
 
 
 #func test_promote_to_haendler_at_500_gold():

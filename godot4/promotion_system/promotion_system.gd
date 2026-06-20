@@ -2,20 +2,20 @@ class_name PromotionSystem
 extends Node
 
 
-const GOLD_TITLES: Dictionary = {
-	0: "Krämer",
-	500: "Händler",
-	1_000: "Großhändler",
-	2_500: "Kaufmann",
-	5_000: "Großkaufmann",
-	7_500: "Zunftmeister",
-	10_000: "Handelsfürst",
+var trader_ranks: Dictionary = {
+	0: PrestigeRank.new("Krämer", 1),
+	500: PrestigeRank.new("Händler", 1),
+	1_000: PrestigeRank.new("Großhändler", 1),
+	2_500: PrestigeRank.new("Kaufmann", 1),
+	5_000: PrestigeRank.new("Großkaufmann", 1),
+	7_500: PrestigeRank.new("Zunftmeister", 1),
+	10_000: PrestigeRank.new("Handelsfürst", 1),
 }
 
 
-func get_gold_title(gold: int) -> String:
-	var gold_title = GOLD_TITLES[0]
-	for gold_threadhold in GOLD_TITLES:
+func get_trader_rank(gold: int) -> PrestigeRank:
+	var trader_rank = trader_ranks[0]
+	for gold_threadhold in trader_ranks:
 		if gold >= gold_threadhold:
-			gold_title = GOLD_TITLES[gold_threadhold]
-	return gold_title
+			trader_rank = trader_ranks[gold_threadhold]
+	return trader_rank
