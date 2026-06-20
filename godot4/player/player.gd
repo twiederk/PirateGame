@@ -6,7 +6,6 @@ const LAND_SPEED: float = 200.0
 const MASK_WATER: int = 2
 const MASK_LAND: int = 3
 const MASK_OCEAN: int = 5
-const DEFAULT_TITLE: String = "Krämer"
 
 enum State { ON_LAND, ON_SHIP, IN_TOWN }
 
@@ -14,7 +13,7 @@ var current_state: State = State.ON_LAND
 var _previous_state: State = current_state
 var current_speed: float = LAND_SPEED
 var direction: Vector2 = Vector2.ZERO
-var current_title: String = DEFAULT_TITLE
+var current_title: String = "Krämer"
 var trader_rank: PrestigeRank = preload("res://promotion_system/trader_rank_01.tres") as PrestigeRank
 
 var _ship_resource: ShipResource = null
@@ -169,7 +168,7 @@ func set_save_data(save_data: Dictionary) -> void:
 	var pos_data = player_data.position
 	position = Vector2i(int(pos_data.x), int(pos_data.y))
 	gold = int(player_data.gold)
-	current_title = player_data.get("current_title", DEFAULT_TITLE)
+	current_title = player_data.get("current_title", "Krämer")
 	current_state = int(player_data.current_state) as State
 	if player_data.has("trader_rank"):
 		trader_rank = load(player_data.trader_rank)
