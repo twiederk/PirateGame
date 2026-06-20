@@ -13,6 +13,11 @@ func after_each():
 	player.free()
 
 
+func test_player_starts_with_kraemer_title():
+	# assert
+	assert_eq(player.current_title, "Krämer", "New player should start with title Krämer")
+
+
 func test_get_used_capacity():
 	# act
 	var capacity = player.get_used_capacity()

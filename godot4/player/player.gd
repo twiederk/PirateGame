@@ -6,6 +6,7 @@ const LAND_SPEED: float = 200.0
 const MASK_WATER: int = 2
 const MASK_LAND: int = 3
 const MASK_OCEAN: int = 5
+const DEFAULT_TITLE: String = "Krämer"
 
 enum State { ON_LAND, ON_SHIP, IN_TOWN }
 
@@ -13,7 +14,7 @@ var current_state: State = State.ON_LAND
 var _previous_state: State = current_state
 var current_speed: float = LAND_SPEED
 var direction: Vector2 = Vector2.ZERO
-var current_title: String
+var current_title: String = DEFAULT_TITLE
 
 var _ship_resource: ShipResource = null
 var gold: int
