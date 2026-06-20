@@ -167,6 +167,8 @@ func set_save_data(save_data: Dictionary) -> void:
 	var pos_data = player_data.position
 	position = Vector2i(int(pos_data.x), int(pos_data.y))
 	gold = int(player_data.gold)
+	if player_data.has("current_title"):
+		current_title = player_data.current_title
 	current_state = int(player_data.current_state) as State
 	if player_data.has("inventory"):
 		_restore_inventory_stock(player_data.inventory)

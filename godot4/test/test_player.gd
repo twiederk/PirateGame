@@ -29,6 +29,30 @@ func test_player_title_serialized_in_save_data():
 	assert_eq(save_data.player.current_title, "Kaufmann", "Collected data should include player current_title")
 
 
+func test_player_title_restored_from_save_data():
+	# arrange
+	player.current_title = "Krämer"
+	var save_data = {
+		"player": {
+			"gold": 123,
+			"position": {"x": 0, "y": 0},
+			"current_title": "Zunftmeister",
+			"current_state": Player.State.ON_LAND,
+			"inventory": {
+				1: {"stock": 0},
+				2: {"stock": 0},
+				3: {"stock": 0},
+			}
+		}
+	}
+
+	# act
+	player.set_save_data(save_data)
+
+	# assert
+	assert_eq(player.current_title, "Zunftmeister", "set_save_data should restore player current_title")
+
+
 func test_get_used_capacity():
 	# act
 	var capacity = player.get_used_capacity()
