@@ -147,6 +147,7 @@ func get_save_data() -> Dictionary:
 			"y": position.y,
 		},
 		"current_title": current_title,
+		"trader_rank": trader_rank.resource_path,
 		"current_state": current_state,
 		"inventory": _serialize_inventory_stock(),
 	}
@@ -170,6 +171,8 @@ func set_save_data(save_data: Dictionary) -> void:
 	gold = int(player_data.gold)
 	current_title = player_data.get("current_title", DEFAULT_TITLE)
 	current_state = int(player_data.current_state) as State
+	if player_data.has("trader_rank"):
+		trader_rank = load(player_data.trader_rank)
 	if player_data.has("inventory"):
 		_restore_inventory_stock(player_data.inventory)
 	if player_data.has("ship"):
