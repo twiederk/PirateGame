@@ -53,6 +53,29 @@ func test_player_title_restored_from_save_data():
 	assert_eq(player.current_title, "Zunftmeister", "set_save_data should restore player current_title")
 
 
+func test_missing_title_in_save_defaults_to_kraemer():
+	# arrange
+	player.current_title = "Kaufmann"
+	var save_data = {
+		"player": {
+			"gold": 123,
+			"position": {"x": 0, "y": 0},
+			"current_state": Player.State.ON_LAND,
+			"inventory": {
+				1: {"stock": 0},
+				2: {"stock": 0},
+				3: {"stock": 0},
+			}
+		}
+	}
+
+	# act
+	player.set_save_data(save_data)
+
+	# assert
+	assert_eq(player.current_title, "Krämer", "Missing current_title in save should default to Krämer")
+
+
 func test_get_used_capacity():
 	# act
 	var capacity = player.get_used_capacity()
