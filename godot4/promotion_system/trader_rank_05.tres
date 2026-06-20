@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PrestigeRank" format=3 uid="uid://cydgk8jrs5346"]
+
+[ext_resource type="Script" uid="uid://bqueiu857x2bt" path="res://promotion_system/prestige_rank.gd" id="1_aqgte"]
+
+[resource]
+script = ExtResource("1_aqgte")
+title = "Großkaufmann"
+prio = 5
+metadata/_custom_type_script = "uid://bqueiu857x2bt"

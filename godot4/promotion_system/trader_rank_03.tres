@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PrestigeRank" format=3 uid="uid://dcobuw21hc65p"]
+
+[ext_resource type="Script" uid="uid://bqueiu857x2bt" path="res://promotion_system/prestige_rank.gd" id="1_2cylk"]
+
+[resource]
+script = ExtResource("1_2cylk")
+title = "Großhändler"
+prio = 3
+metadata/_custom_type_script = "uid://bqueiu857x2bt"

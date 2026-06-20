@@ -3,13 +3,13 @@ extends Node
 
 
 var trader_ranks: Dictionary = {
-	0: PrestigeRank.new("Krämer", 1),
-	500: PrestigeRank.new("Händler", 1),
-	1_000: PrestigeRank.new("Großhändler", 1),
-	2_500: PrestigeRank.new("Kaufmann", 1),
-	5_000: PrestigeRank.new("Großkaufmann", 1),
-	7_500: PrestigeRank.new("Zunftmeister", 1),
-	10_000: PrestigeRank.new("Handelsfürst", 1),
+	0: preload("res://promotion_system/trader_rank_01.tres"),
+	500: preload("res://promotion_system/trader_rank_02.tres"),
+	1_000: preload("res://promotion_system/trader_rank_03.tres"),
+	2_500: preload("res://promotion_system/trader_rank_04.tres"),
+	5_000: preload("res://promotion_system/trader_rank_05.tres"),
+	7_500: preload("res://promotion_system/trader_rank_06.tres"),
+	10_000: preload("res://promotion_system/trader_rank_07.tres"),
 }
 
 
