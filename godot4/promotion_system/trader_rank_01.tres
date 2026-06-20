@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PrestigeRank" format=3 uid="uid://t245he687y4d"]
+
+[ext_resource type="Script" uid="uid://bqueiu857x2bt" path="res://promotion_system/prestige_rank.gd" id="1_5rxtg"]
+
+[resource]
+script = ExtResource("1_5rxtg")
+title = "Krämer"
+prio = 1
+metadata/_custom_type_script = "uid://bqueiu857x2bt"

@@ -15,6 +15,7 @@ var _previous_state: State = current_state
 var current_speed: float = LAND_SPEED
 var direction: Vector2 = Vector2.ZERO
 var current_title: String = DEFAULT_TITLE
+var trader_rank: PrestigeRank = preload("res://promotion_system/trader_rank_01.tres") as PrestigeRank
 
 var _ship_resource: ShipResource = null
 var gold: int
