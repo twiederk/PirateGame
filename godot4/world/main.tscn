@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://chrrtsgq0q8ro" path="res://gui/debug_screen.tscn" id="7_vrojb"]
 [ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
+[ext_resource type="PackedScene" uid="uid://df87rumi3pir1" path="res://gui/promotion_widget.tscn" id="8_op3e8"]
 [ext_resource type="PackedScene" uid="uid://bllx8qfja0huk" path="res://promotion_system/promotion_system.tscn" id="10_qnd6n"]
 
 [node name="Main" type="Node2D" unique_id=639576338]
@@ -35,6 +36,11 @@ visible = false
 
 [node name="PauseMenu" parent="gui" unique_id=567357806 instance=ExtResource("7_qnd6n")]
 visible = false
+
+[node name="PromotionWidget" parent="gui" unique_id=1964343533 instance=ExtResource("8_op3e8")]
+anchors_preset = 10
+anchor_bottom = 0.0
+grow_vertical = 1
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 

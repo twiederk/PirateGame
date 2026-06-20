@@ -13,6 +13,7 @@ var towns: Array[Town]
 @onready var debug_screen: DebugScreen = $gui/DebugScreen
 @onready var pause_menu = $gui/PauseMenu
 @onready var promotion_system = $PromotionSystem
+@onready var promotion_widget = $gui/PromotionWidget
 
 
 func _ready() -> void:
@@ -130,4 +131,4 @@ func _on_pause_menu_save_button_pressed():
 
 
 func _on_rank_promoted(new_rank: PrestigeRank):
-	print("new rank:" + new_rank.title)
+	promotion_widget.show_promotion(new_rank)
