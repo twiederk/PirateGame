@@ -145,6 +145,7 @@ func get_save_data() -> Dictionary:
 			"x": position.x,
 			"y": position.y,
 		},
+		"current_title": current_title,
 		"current_state": current_state,
 		"inventory": _serialize_inventory_stock(),
 	}
@@ -157,9 +158,7 @@ func get_save_data() -> Dictionary:
 func _serialize_inventory_stock() -> Dictionary:
 	var inventory_data = {}
 	for good_id in _inventory:
-		var item_data = {}
-		item_data.stock = _inventory[good_id].stock
-		inventory_data[good_id] = item_data
+		inventory_data[good_id] = {"stock": _inventory[good_id].stock}
 	return inventory_data
 
 

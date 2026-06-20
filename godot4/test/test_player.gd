@@ -18,6 +18,17 @@ func test_player_starts_with_kraemer_title():
 	assert_eq(player.current_title, "Krämer", "New player should start with title Krämer")
 
 
+func test_player_title_serialized_in_save_data():
+	# arrange
+	player.current_title = "Kaufmann"
+
+	# act
+	var save_data = player.get_save_data()
+
+	# assert
+	assert_eq(save_data.player.current_title, "Kaufmann", "Collected data should include player current_title")
+
+
 func test_get_used_capacity():
 	# act
 	var capacity = player.get_used_capacity()
