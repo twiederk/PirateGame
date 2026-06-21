@@ -1,8 +1,9 @@
 extends GutTest
 
-const BOAT:= preload("res://trading_system/ship_boat.tres")
-const TRADER_RANK_KRAEMER = preload("res://promotion_system/trader_rank_01.tres")
-const TRADER_RANK_ZUNFTMEISTER = preload("res://promotion_system/trader_rank_06.tres")
+const BOAT = preload("res://trading_system/ship_boat.tres")
+const TRADER_RANK_01 = preload("res://promotion_system/trader_rank_01.tres")
+const TRADER_RANK_06 = preload("res://promotion_system/trader_rank_06.tres")
+const SAILER_RANK_01 = preload("res://promotion_system/sailer_rank_01.tres")
 
 var player: Player = null
 
@@ -17,12 +18,18 @@ func after_each():
 
 func test_player_starts_with_kraemer_rank():
 	# assert
-	assert_eq(player.trader_rank.title, TRADER_RANK_KRAEMER.title, "New player should start with title Krämer")
+	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "New player should start with title Krämer")
 
+
+func test_player_starts_with_landratte_rank():
+	# assert
+	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "New player should start with title Landratte")
+
+	
 
 func test_player_title_serialized_in_save_data():
 	# arrange
-	player.trader_rank = TRADER_RANK_KRAEMER
+	player.trader_rank = TRADER_RANK_01
 
 	# act
 	var save_data = player.get_save_data()
@@ -33,7 +40,7 @@ func test_player_title_serialized_in_save_data():
 
 func test_player_title_restored_from_save_data():
 	# arrange
-	player.trader_rank = TRADER_RANK_KRAEMER
+	player.trader_rank = TRADER_RANK_01
 	var save_data = {
 		"player": {
 			"gold": 123,
@@ -57,7 +64,7 @@ func test_player_title_restored_from_save_data():
 
 func test_missing_title_in_save_defaults_to_kraemer():
 	# arrange
-	player.trader_rank = TRADER_RANK_ZUNFTMEISTER
+	player.trader_rank = TRADER_RANK_06
 	var save_data = {
 		"player": {
 			"gold": 123,
@@ -75,7 +82,7 @@ func test_missing_title_in_save_defaults_to_kraemer():
 	player.set_save_data(save_data)
 
 	# assert
-	assert_eq(player.trader_rank.title, TRADER_RANK_KRAEMER.title, "Missing trader_rank in save should default to Krämer")
+	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "Missing trader_rank in save should default to Krämer")
 
 
 func test_get_used_capacity():
