@@ -1,7 +1,6 @@
 class_name TradingSystem
 extends Node
 
-
 const SIMULATION_STEP: float = 30.0
 const PRICE_UPDATE_INTERVAL: float = 10.0
 
@@ -89,6 +88,7 @@ func sell(player: Player, player_trading_item: TradingItem, town_trading_item: T
 	player.gold += total_gain
 	player_trading_item.stock -= amount
 	town_trading_item.stock += amount
+	
 	return "Ware verkauft."
 
 

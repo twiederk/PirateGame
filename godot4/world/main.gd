@@ -12,6 +12,8 @@ var towns: Array[Town]
 @onready var trading_system = $TradingSystem
 @onready var debug_screen: DebugScreen = $gui/DebugScreen
 @onready var pause_menu = $gui/PauseMenu
+@onready var promotion_system = $PromotionSystem
+@onready var promotion_widget = $gui/PromotionWidget
 
 
 func _ready() -> void:
@@ -61,6 +63,8 @@ func _connect_signals() -> void:
 	for town in towns:
 		town.town_entered.connect(_on_town_tile_town_entered)
 		town.town_entered.connect(player._on_town_tile_town_entered)
+	player.gold_changed.connect(promotion_system.evaluate)
+	promotion_system.rank_promoted.connect(_on_rank_promoted)
 
 
 func _input(_event) -> void:
@@ -124,3 +128,7 @@ func _on_town_menu_town_left():
 
 func _on_pause_menu_save_button_pressed():
 	SaveManager.save(player, proc_gen_world, trading_system, 1)
+
+
+func _on_rank_promoted(new_rank: PrestigeRank):
+	promotion_widget.show_promotion(new_rank)

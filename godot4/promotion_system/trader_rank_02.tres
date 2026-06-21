@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PrestigeRank" format=3 uid="uid://c3uq0hnp2gbdd"]
+
+[ext_resource type="Script" uid="uid://bqueiu857x2bt" path="res://promotion_system/prestige_rank.gd" id="1_bves5"]
+
+[resource]
+script = ExtResource("1_bves5")
+title = "Händler"
+prio = 2
+metadata/_custom_type_script = "uid://bqueiu857x2bt"

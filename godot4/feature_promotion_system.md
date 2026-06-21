@@ -34,7 +34,7 @@ The current title must be saved and loaded via SaveManager.
 
 ### Start Title
 
-- Required for this feature: player starts with title Händler.
+- Required for this feature: player starts with title Krämer.
 
 ### Gold-based Promotions
 
@@ -79,7 +79,7 @@ The current title must be saved and loaded via SaveManager.
 
 ### Backward Compatibility
 
-- If old save data has no title field, default to Händler.
+- If old save data has no title field, default to Krämer.
 
 ---
 
@@ -91,16 +91,16 @@ Files:
 - player/player.gd
 
 Tasks:
-1. Add current title field to Player, for example current_title: String = "Händler".
+1. Add current title field to Player, for example current_title: String = "Krämer".
 2. Add helper methods:
    - get_current_title()
    - set_current_title(title: String)
 3. Extend player save data serialization and restore logic with title.
 
 Acceptance:
-- New game player starts as Händler.
+- New game player starts as Krämer.
 - Loading save restores title.
-- Older save without title falls back to Händler.
+- Older save without title falls back to Krämer.
 
 ---
 
@@ -183,7 +183,7 @@ Files:
 Tasks:
 1. Ensure title is part of player save payload.
 2. Ensure load restores exact title value.
-3. Ensure missing title in save defaults to Händler.
+3. Ensure missing title in save defaults to Krämer.
 
 Acceptance:
 - Save/load roundtrip preserves title exactly.
@@ -221,35 +221,13 @@ Test list:
 
 ## Open Questions
 
-1. Start title conflict:
-   - Requirement says start title is Händler.
-   - Idea table also includes 0 -> Krämer.
-   - Proposed MVP decision: start with Händler and keep Krämer out of active rules for now.
-
-2. Title precedence model:
+1. Title precedence model:
    - Should naval titles outrank economic titles, or should one unified rank order be used?
-   - Proposed MVP decision: one explicit unified rank list in PromotionSystem.
+   - Decision: The player just keeps the latest rank he received
 
-3. Localization:
+2. Localization:
    - Promotion message currently hardcoded in German.
-   - Keep as-is for MVP, extract later if localization is introduced.
-
----
-
-## Suggested Rank Order (MVP)
-
-A single ordered list to resolve conflicts consistently:
-
-1. Händler
-2. Großhändler
-3. Kaufmann
-4. Großkaufmann
-5. Zunftmeister
-6. Kapitän
-7. Kapitän zur See
-8. Handelsfürst
-
-Note: This order can be adjusted after gameplay balancing.
+   - Decision: TUse hardcoded German text
 
 ---
 

@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal gold_changed(player: Player)
+
 const LAND_SPEED: float = 200.0
 
 const MASK_WATER: int = 2
@@ -10,12 +12,16 @@ const MASK_OCEAN: int = 5
 enum State { ON_LAND, ON_SHIP, IN_TOWN }
 
 var current_state: State = State.ON_LAND
+var _previous_state: State = current_state
 var current_speed: float = LAND_SPEED
 var direction: Vector2 = Vector2.ZERO
-var current_title: String
+var trader_rank: PrestigeRank = preload("res://promotion_system/trader_rank_01.tres") as PrestigeRank
 
 var _ship_resource: ShipResource = null
-var gold: int
+var gold: int:
+	set(value):
+		gold = value
+		gold_changed.emit(self)
 var cargo_capacity: int = 20
 var _inventory: Dictionary = {
 		1: TradingItem.new(load("res://trading_system/good_fish.tres")),
@@ -104,11 +110,12 @@ func _move_on_land() -> void:
 
 
 func _on_town_tile_town_entered(_town: Town) -> void:
+	_previous_state = current_state
 	current_state = State.IN_TOWN
 
 
 func _on_town_menu_town_left() -> void:
-	current_state = State.ON_LAND
+	current_state = _previous_state
 
 
 func in_town() -> bool:
@@ -142,6 +149,7 @@ func get_save_data() -> Dictionary:
 			"x": position.x,
 			"y": position.y,
 		},
+		"trader_rank": trader_rank.resource_path,
 		"current_state": current_state,
 		"inventory": _serialize_inventory_stock(),
 	}
@@ -154,9 +162,7 @@ func get_save_data() -> Dictionary:
 func _serialize_inventory_stock() -> Dictionary:
 	var inventory_data = {}
 	for good_id in _inventory:
-		var item_data = {}
-		item_data.stock = _inventory[good_id].stock
-		inventory_data[good_id] = item_data
+		inventory_data[good_id] = {"stock": _inventory[good_id].stock}
 	return inventory_data
 
 
@@ -166,6 +172,10 @@ func set_save_data(save_data: Dictionary) -> void:
 	position = Vector2i(int(pos_data.x), int(pos_data.y))
 	gold = int(player_data.gold)
 	current_state = int(player_data.current_state) as State
+	if player_data.has("trader_rank"):
+		trader_rank = load(player_data.trader_rank)
+	else:
+		trader_rank = load("res://promotion_system/trader_rank_01.tres")
 	if player_data.has("inventory"):
 		_restore_inventory_stock(player_data.inventory)
 	if player_data.has("ship"):
@@ -186,3 +196,7 @@ func get_trading_items() -> Array[TradingItem]:
 	var typed: Array[TradingItem] = []
 	typed.assign(_inventory.values())
 	return typed
+
+
+func get_previous_state() -> State:
+	return _previous_state

@@ -1,6 +1,8 @@
 extends GutTest
 
 const BOAT:= preload("res://trading_system/ship_boat.tres")
+const TRADER_RANK_KRAEMER = preload("res://promotion_system/trader_rank_01.tres")
+const TRADER_RANK_ZUNFTMEISTER = preload("res://promotion_system/trader_rank_06.tres")
 
 var player: Player = null
 
@@ -11,6 +13,69 @@ func before_each():
 
 func after_each():
 	player.free()
+
+
+func test_player_starts_with_kraemer_rank():
+	# assert
+	assert_eq(player.trader_rank.title, TRADER_RANK_KRAEMER.title, "New player should start with title Krämer")
+
+
+func test_player_title_serialized_in_save_data():
+	# arrange
+	player.trader_rank = TRADER_RANK_KRAEMER
+
+	# act
+	var save_data = player.get_save_data()
+
+	# assert
+	assert_eq(save_data.player.trader_rank, "res://promotion_system/trader_rank_01.tres", "Collected data should include player trader rank resource")
+
+
+func test_player_title_restored_from_save_data():
+	# arrange
+	player.trader_rank = TRADER_RANK_KRAEMER
+	var save_data = {
+		"player": {
+			"gold": 123,
+			"position": {"x": 0, "y": 0},
+			"trader_rank": "res://promotion_system/trader_rank_06.tres",
+			"current_state": Player.State.ON_LAND,
+			"inventory": {
+				1: {"stock": 0},
+				2: {"stock": 0},
+				3: {"stock": 0},
+			}
+		}
+	}
+
+	# act
+	player.set_save_data(save_data)
+
+	# assert
+	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player trader_rank")
+
+
+func test_missing_title_in_save_defaults_to_kraemer():
+	# arrange
+	player.trader_rank = TRADER_RANK_ZUNFTMEISTER
+	var save_data = {
+		"player": {
+			"gold": 123,
+			"position": {"x": 0, "y": 0},
+			"current_state": Player.State.ON_LAND,
+			"inventory": {
+				1: {"stock": 0},
+				2: {"stock": 0},
+				3: {"stock": 0},
+			}
+		}
+	}
+
+	# act
+	player.set_save_data(save_data)
+
+	# assert
+	assert_eq(player.trader_rank.title, TRADER_RANK_KRAEMER.title, "Missing trader_rank in save should default to Krämer")
 
 
 func test_get_used_capacity():
@@ -124,3 +189,23 @@ func test_get_trading_items():
 	
 	# assert
 	assert_eq(trading_items.size(), 3, "Player should store a trading item for each good")
+
+
+func test_on_town_tile_town_entered():
+	# act
+	player._on_town_tile_town_entered(null)
+
+	# assert
+	assert_true(player.in_town(), "Player should be in town after entering a town tile")
+	assert_eq(player.get_previous_state(), Player.State.ON_LAND, "Player should store previous state")
+
+
+func test_on_town_menu_town_left():
+	# assert
+	player._previous_state = Player.State.ON_SHIP
+	
+	# act
+	player._on_town_menu_town_left()
+
+	# assert
+	assert_eq(player.current_state, Player.State.ON_SHIP, "Player should return to previous state")
