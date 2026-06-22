@@ -26,29 +26,6 @@ func test_player_starts_with_landratte_rank():
 	# assert
 	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "New player should start with title Landratte")
 
-	
-
-func test_trader_rank_serialized_in_save_data():
-	# arrange
-	player.trader_rank = TRADER_RANK_01
-
-	# act
-	var save_data = player.get_save_data()
-
-	# assert
-	assert_eq(save_data.player.trader_rank, "res://promotion_system/trader_rank_01.tres", "Collected data should include player trader rank resource")
-
-
-func test_sailer_rank_serialized_in_save_data():
-	# arrange
-	player.sailer_rank = SAILER_RANK_01
-
-	# act
-	var save_data = player.get_save_data()
-
-	# assert
-	assert_eq(save_data.player.sailer_rank, "res://promotion_system/sailer_rank_01.tres", "Collected data should include player sailer rank resource")
-
 
 func test_set_save_data():
 	# arrange
@@ -86,7 +63,7 @@ func test_set_save_data():
 	assert_eq(player.sailer_rank.title, "Kapitän", "set_save_data should restore player sailer rank")
 
 
-func test_missing_save_data_use_defaults():
+func test_set_save_data_missing_data_use_defaults():
 	# arrange
 	var save_data = {
 		"player": {
@@ -160,6 +137,8 @@ func test_get_save_data():
 	assert_eq(save_data.player.current_state, Player.State.IN_TOWN, "Collected data should include player current_state")
 	assert_eq(save_data.player.inventory[1].stock, 5, "Collected data should include serialized player inventory stock")
 	assert_eq(save_data.player.inventory[2].stock, 7, "Collected data should include serialized player inventory stock")
+	assert_eq(save_data.player.trader_rank, "res://promotion_system/trader_rank_01.tres", "Collected data should include player trader rank resource")
+	assert_eq(save_data.player.sailer_rank, "res://promotion_system/sailer_rank_01.tres", "Collected data should include player sailer rank resource")
 
 
 func test_player_owns_ship_returns_false_when_no_ship():
