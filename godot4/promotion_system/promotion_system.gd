@@ -1,6 +1,7 @@
 class_name PromotionSystem
 extends Node
 
+
 signal rank_promoted(new_rank: PrestigeRank)
 
 var trader_ranks: Dictionary = {
@@ -13,12 +14,12 @@ var trader_ranks: Dictionary = {
 	10_000: preload("res://promotion_system/trader_rank_07.tres"),
 }
 
-
 var sailer_ranks: Dictionary = {
 	0: preload("res://promotion_system/sailer_rank_01.tres"),
 	1: preload("res://promotion_system/sailer_rank_02.tres"),
 	2: preload("res://promotion_system/sailer_rank_03.tres"),
 }
+
 
 func get_trader_rank(gold: int) -> PrestigeRank:
 	var trader_rank = trader_ranks[0]
