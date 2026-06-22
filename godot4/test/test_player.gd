@@ -4,6 +4,7 @@ const BOAT = preload("res://trading_system/ship_boat.tres")
 const TRADER_RANK_01 = preload("res://promotion_system/trader_rank_01.tres")
 const TRADER_RANK_06 = preload("res://promotion_system/trader_rank_06.tres")
 const SAILER_RANK_01 = preload("res://promotion_system/sailer_rank_01.tres")
+const SAILER_RANK_02 = preload("res://promotion_system/sailer_rank_02.tres")
 
 var player: Player = null
 
@@ -85,9 +86,10 @@ func test_set_save_data():
 	assert_eq(player.sailer_rank.title, "Kapitän", "set_save_data should restore player sailer rank")
 
 
-func test_missing_title_in_save_defaults_to_kraemer():
+func test_missing_save_data_use_defaults():
 	# arrange
 	player.trader_rank = TRADER_RANK_06
+	player.trader_rank = SAILER_RANK_02
 	var save_data = {
 		"player": {
 			"gold": 123,
@@ -105,7 +107,8 @@ func test_missing_title_in_save_defaults_to_kraemer():
 	player.set_save_data(save_data)
 
 	# assert
-	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "Missing trader_rank in save should default to Krämer")
+	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "Missing trader_rank in save should default to trader rank 1")
+	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "Missing sailer_rank in save should default to sailer rank 1")
 
 
 func test_get_used_capacity():
