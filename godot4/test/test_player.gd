@@ -17,13 +17,9 @@ func after_each():
 	player.free()
 
 
-func test_player_starts_with_kraemer_rank():
+func test_init():
 	# assert
 	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "New player should start with title Krämer")
-
-
-func test_player_starts_with_landratte_rank():
-	# assert
 	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "New player should start with title Landratte")
 
 
