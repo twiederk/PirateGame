@@ -49,18 +49,23 @@ func test_sailer_rank_serialized_in_save_data():
 	assert_eq(save_data.player.sailer_rank, "res://promotion_system/sailer_rank_01.tres", "Collected data should include player sailer rank resource")
 
 
-func test_player_title_restored_from_save_data():
+func test_set_save_data():
 	# arrange
+	player.current_state = Player.State.ON_SHIP
+	player.get_trading_item(1).stock = 100
+	player.get_trading_item(2).stock = 200
 	player.trader_rank = TRADER_RANK_01
+	player.sailer_rank = SAILER_RANK_01
 	var save_data = {
 		"player": {
 			"gold": 123,
-			"position": {"x": 0, "y": 0},
+			"position": {"x": 11, "y": 13},
 			"trader_rank": "res://promotion_system/trader_rank_06.tres",
-			"current_state": Player.State.ON_LAND,
+			"sailer_rank": "res://promotion_system/sailer_rank_02.tres",
+			"current_state": Player.State.IN_TOWN,
 			"inventory": {
-				1: {"stock": 0},
-				2: {"stock": 0},
+				1: {"stock": 5},
+				2: {"stock": 7},
 				3: {"stock": 0},
 			}
 		}
@@ -70,7 +75,14 @@ func test_player_title_restored_from_save_data():
 	player.set_save_data(save_data)
 
 	# assert
-	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player trader_rank")
+	assert_eq(player.current_state, Player.State.IN_TOWN, "set_save_data should restore player current_state")
+	assert_eq(player.gold, 123, "set_save_data should restore player gold")
+	assert_eq(player.position.x, 11.0, "set_save_data should restore player position x")
+	assert_eq(player.position.y, 13.0, "set_save_data should restore player position y")
+	assert_eq(player.get_trading_item(1).stock, 5, "set_save_data should restore inventory stock for key 1")
+	assert_eq(player.get_trading_item(2).stock, 7, "set_save_data should restore inventory stock for key 2")
+	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player trader rank")
+	assert_eq(player.sailer_rank.title, "Kapitän", "set_save_data should restore player sailer rank")
 
 
 func test_missing_title_in_save_defaults_to_kraemer():
@@ -147,35 +159,6 @@ func test_get_save_data():
 	assert_eq(save_data.player.current_state, Player.State.IN_TOWN, "Collected data should include player current_state")
 	assert_eq(save_data.player.inventory[1].stock, 5, "Collected data should include serialized player inventory stock")
 	assert_eq(save_data.player.inventory[2].stock, 7, "Collected data should include serialized player inventory stock")
-
-
-func test_set_save_data():
-	# arrange
-	player.current_state = Player.State.ON_SHIP
-	player.get_trading_item(1).stock = 100
-	player.get_trading_item(2).stock = 200
-	var save_data = {
-		"player": {
-			"gold": 123,
-			"position": {"x": 11, "y": 13},
-			"current_state": Player.State.IN_TOWN,
-			"inventory": {
-				1: {"stock": 5},
-				2: {"stock": 7},
-			}
-		}
-	}
-
-	# act
-	player.set_save_data(save_data)
-
-	# assert
-	assert_eq(player.current_state, Player.State.IN_TOWN, "set_save_data should restore player current_state")
-	assert_eq(player.gold, 123, "set_save_data should restore player gold")
-	assert_eq(player.position.x, 11.0, "set_save_data should restore player position x")
-	assert_eq(player.position.y, 13.0, "set_save_data should restore player position y")
-	assert_eq(player.get_trading_item(1).stock, 5, "set_save_data should restore inventory stock for key 1")
-	assert_eq(player.get_trading_item(2).stock, 7, "set_save_data should restore inventory stock for key 2")
 
 
 func test_player_owns_ship_returns_false_when_no_ship():
