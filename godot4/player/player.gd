@@ -202,3 +202,7 @@ func get_trading_items() -> Array[TradingItem]:
 
 func get_previous_state() -> State:
 	return _previous_state
+
+
+func get_ship() -> ShipResource:
+	return _ship_resource

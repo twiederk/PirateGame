@@ -29,9 +29,11 @@ func test_get_trader_rank():
 
 
 func test_get_sailer_rank():
-	# act
+	# arrange
 	var ship: ShipResource = ShipResource.new()
 	ship.id = 1
+
+	# act
 	var sailer_rank = promotion_system.get_sailer_rank(ship)
 	
 	# assert
@@ -46,7 +48,7 @@ func test_get_sailer_rank_with_ship_is_null():
 	assert_eq(sailer_rank, SAILER_RANK_01)
 
 
-func test_promote_to_haendler_at_500_gold():
+func test_evaluate_promote_to_trader_rank_02():
 	# arrange
 	player.trader_rank = TRADER_RANK_01
 	player.gold = 500
@@ -55,4 +57,18 @@ func test_promote_to_haendler_at_500_gold():
 	promotion_system.evaluate(player)
 
 	# assert
-	assert_eq(player.trader_rank, TRADER_RANK_02, "Player title should be promoted to Händler at 500 gold")
+	assert_eq(player.trader_rank, TRADER_RANK_02, "Player trader rank should be promoted to trader rank 02")
+
+
+func test_evaluate_promote_to_sailer_rank_02():
+	# arrange
+	player.sailer_rank = SAILER_RANK_01
+	var ship: ShipResource = ShipResource.new()
+	ship.id = 1
+	player._ship_resource = ship
+
+	# act
+	promotion_system.evaluate(player)
+
+	# assert
+	assert_eq(player.sailer_rank, SAILER_RANK_02, "Player sailer rank should be promoted to sailer rank 02")
