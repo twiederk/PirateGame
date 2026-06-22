@@ -9,11 +9,12 @@ var towns: Array[Town]
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
 @onready var town_menu: TownMenu = $gui/TownMenu
-@onready var trading_system = $TradingSystem
+@onready var trading_system: TradingSystem = $TradingSystem
 @onready var debug_screen: DebugScreen = $gui/DebugScreen
-@onready var pause_menu = $gui/PauseMenu
-@onready var promotion_system = $PromotionSystem
-@onready var promotion_widget = $gui/PromotionWidget
+@onready var pause_menu: PauseMenu = $gui/PauseMenu
+@onready var promotion_system: PromotionSystem = $PromotionSystem
+@onready var promotion_widget: PromotionWidget = $gui/PromotionWidget
+@onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
 
 
 func _ready() -> void:
@@ -71,6 +72,7 @@ func _input(_event) -> void:
 	_camera_zoom()
 	_board_ship()
 	_pause_game()
+	_inventory_screen()
 	
 	
 func _camera_zoom() -> void:
@@ -106,6 +108,14 @@ func _is_coast() -> bool:
 	return proc_gen_world.is_coast(player.position)
 
 
+func _inventory_screen() -> void:
+	if Input.is_action_just_pressed("inventory_screen"):
+		if inventory_screen.visible:
+			inventory_screen.hide()
+		else:
+			inventory_screen.show_inventory(player)
+	
+	
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
 	camera.set_limit(SIDE_LEFT, int(west_limit))
 	camera.set_limit(SIDE_RIGHT, int(east_limit))
