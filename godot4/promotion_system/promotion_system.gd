@@ -33,10 +33,10 @@ func get_sailer_rank(ship: ShipResource) -> PrestigeRank:
 	var ship_id = 0
 	if ship != null:
 		ship_id = ship.id
-	var sailer_rank = sailer_ranks[0]
+	var sailer_rank = sailer_ranks[ship_id]
 	for ship_threadhold in sailer_ranks:
 		if ship_id >= ship_threadhold:
-			sailer_rank = sailer_ranks[ship_threadhold]
+			sailer_rank = sailer_ranks[ship_id]
 	return sailer_rank
 
 
