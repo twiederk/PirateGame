@@ -88,8 +88,6 @@ func test_set_save_data():
 
 func test_missing_save_data_use_defaults():
 	# arrange
-	player.trader_rank = TRADER_RANK_06
-	player.trader_rank = SAILER_RANK_02
 	var save_data = {
 		"player": {
 			"gold": 123,

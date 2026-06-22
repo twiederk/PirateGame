@@ -176,12 +176,8 @@ func set_save_data(save_data: Dictionary) -> void:
 	current_state = int(player_data.current_state) as State
 	if player_data.has("trader_rank"):
 		trader_rank = load(player_data.trader_rank)
-	else:
-		trader_rank = load("res://promotion_system/trader_rank_01.tres")
 	if player_data.has("sailer_rank"):
 		sailer_rank = load(player_data.sailer_rank)
-	else:
-		sailer_rank = load("res://promotion_system/sailer_rank_01.tres")
 	if player_data.has("inventory"):
 		_restore_inventory_stock(player_data.inventory)
 	if player_data.has("ship"):
