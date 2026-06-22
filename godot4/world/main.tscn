@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://p4v3vmf7tiha" path="res://world/main.gd" id="1_04q08"]
 [ext_resource type="PackedScene" uid="uid://blu6n1yghidqx" path="res://world/proc_gen_world.tscn" id="2_gu74f"]
 [ext_resource type="PackedScene" uid="uid://nt74txyyhp2d" path="res://player/player.tscn" id="4_op3e8"]
+[ext_resource type="PackedScene" uid="uid://bs5q7us1quc8l" path="res://gui/inventory_screen.tscn" id="5_tp5tb"]
 [ext_resource type="PackedScene" uid="uid://b5rdq1cvlg4uu" path="res://gui/town_menu.tscn" id="5_vid1e"]
 [ext_resource type="PackedScene" uid="uid://qk1seiod0v87" path="res://gui/zoom_widget.tscn" id="7_8q2wj"]
 [ext_resource type="PackedScene" uid="uid://bublk3k17bw7t" path="res://gui/pause_menu.tscn" id="7_qnd6n"]
@@ -26,10 +27,13 @@ position = Vector2(0, -6)
 
 [node name="gui" type="CanvasLayer" parent="." unique_id=2091008981]
 
+[node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
+
 [node name="TownMenu" parent="gui" unique_id=502314466 instance=ExtResource("5_vid1e")]
 visible = false
 
-[node name="ZoomWidget" parent="gui" unique_id=617767706 instance=ExtResource("7_8q2wj")]
+[node name="InventoryScreen" parent="gui" unique_id=398017576 instance=ExtResource("5_tp5tb")]
+visible = false
 
 [node name="DebugScreen" parent="gui" unique_id=92080076 instance=ExtResource("7_vrojb")]
 visible = false

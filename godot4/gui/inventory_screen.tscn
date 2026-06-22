@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://bs5q7us1quc8l"]
+
+[ext_resource type="Script" uid="uid://b5usw0wuv4ddp" path="res://gui/inventory_screen.gd" id="1_2lsc2"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_7acjf"]
+
+[node name="InventoryScreen" type="Control" unique_id=398017576]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2lsc2")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=840019898]
+self_modulate = Color(0.7764706, 0.6039216, 0.3882353, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_7acjf")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=873630924]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=410979745]
+layout_mode = 2
+
+[node name="RankRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=691627656]
+layout_mode = 2
+
+[node name="TraderRankLabel" type="Label" parent="CenterContainer/VBoxContainer/RankRow" unique_id=171987520]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Händler:"
+
+[node name="TraderRank" type="Label" parent="CenterContainer/VBoxContainer/RankRow" unique_id=1495799359]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "TraderRank"
+
+[node name="SailerRankLabel" type="Label" parent="CenterContainer/VBoxContainer/RankRow" unique_id=1704541372]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Seefahrer:"
+
+[node name="SailerRank" type="Label" parent="CenterContainer/VBoxContainer/RankRow" unique_id=1725726833]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "SailerRank"
+
+[node name="StatsRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1038886041]
+layout_mode = 2
+
+[node name="GoldLabel" type="Label" parent="CenterContainer/VBoxContainer/StatsRow" unique_id=625640674]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Gold:"
+
+[node name="Gold" type="Label" parent="CenterContainer/VBoxContainer/StatsRow" unique_id=1306159168]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "1.000"
+
+[node name="CapacityLabel" type="Label" parent="CenterContainer/VBoxContainer/StatsRow" unique_id=1459521571]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Lagerraum:"
+
+[node name="Capacity" type="Label" parent="CenterContainer/VBoxContainer/StatsRow" unique_id=458868498]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "14 / 20"
+
+[node name="ShipRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=743715517]
+layout_mode = 2
+
+[node name="ShipLabel" type="Label" parent="CenterContainer/VBoxContainer/ShipRow" unique_id=1391126405]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Schiff:"
+
+[node name="Ship" type="Label" parent="CenterContainer/VBoxContainer/ShipRow" unique_id=1473318118]
+layout_mode = 2
+text = "Ruderboot"
+
+[node name="InventoryTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1554919295]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/InventoryTable" unique_id=1155440780]
+layout_mode = 2
+
+[node name="FishLabel" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer" unique_id=1791634729]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Fisch"
+
+[node name="Fish" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer" unique_id=422689316]
+layout_mode = 2
+text = "10"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/VBoxContainer/InventoryTable" unique_id=380979939]
+layout_mode = 2
+
+[node name="GrainLabel" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer2" unique_id=699724158]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Korn"
+
+[node name="Grain" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer2" unique_id=109333168]
+layout_mode = 2
+text = "20"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/VBoxContainer/InventoryTable" unique_id=639825116]
+layout_mode = 2
+
+[node name="WoodLabel" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer3" unique_id=821133009]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Holz"
+
+[node name="Wood" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer3" unique_id=998535664]
+layout_mode = 2
+text = "30"
