@@ -1,6 +1,7 @@
 class_name PromotionWidget
 extends Control
 
+
 @onready var promotion_label = $PromotionLabel
 @onready var timer = $Timer
 
