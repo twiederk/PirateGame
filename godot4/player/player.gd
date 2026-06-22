@@ -151,6 +151,7 @@ func get_save_data() -> Dictionary:
 			"y": position.y,
 		},
 		"trader_rank": trader_rank.resource_path,
+		"sailer_rank": sailer_rank.resource_path,
 		"current_state": current_state,
 		"inventory": _serialize_inventory_stock(),
 	}

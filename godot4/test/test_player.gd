@@ -27,7 +27,7 @@ func test_player_starts_with_landratte_rank():
 
 	
 
-func test_player_title_serialized_in_save_data():
+func test_trader_rank_serialized_in_save_data():
 	# arrange
 	player.trader_rank = TRADER_RANK_01
 
@@ -36,6 +36,17 @@ func test_player_title_serialized_in_save_data():
 
 	# assert
 	assert_eq(save_data.player.trader_rank, "res://promotion_system/trader_rank_01.tres", "Collected data should include player trader rank resource")
+
+
+func test_sailer_rank_serialized_in_save_data():
+	# arrange
+	player.sailer_rank = SAILER_RANK_01
+
+	# act
+	var save_data = player.get_save_data()
+
+	# assert
+	assert_eq(save_data.player.sailer_rank, "res://promotion_system/sailer_rank_01.tres", "Collected data should include player sailer rank resource")
 
 
 func test_player_title_restored_from_save_data():
