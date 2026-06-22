@@ -22,6 +22,17 @@ func get_trader_rank(gold: int) -> PrestigeRank:
 	return trader_rank
 
 
+func get_sailer_rank(ship: ShipResource) -> PrestigeRank:
+	if ship == null:
+		return load("res://promotion_system/sailer_rank_01.tres")
+	return null
+	#var trader_rank = trader_ranks[0]
+	#for gold_threadhold in trader_ranks:
+		#if gold >= gold_threadhold:
+			#trader_rank = trader_ranks[gold_threadhold]
+	#return trader_rank
+
+
 func evaluate(player: Player) -> void:
 	var new_trader_rank = get_trader_rank(player.gold)
 	if new_trader_rank.is_greater_than(player.trader_rank):
