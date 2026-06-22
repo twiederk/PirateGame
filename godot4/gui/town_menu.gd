@@ -107,8 +107,8 @@ func _clear_ship_rows() -> void:
 
 func _on_buy_ship(ship_resource: ShipResource) -> String:
 	if _player.gold >= ship_resource.price:
-		_player.gold -= ship_resource.price
 		_player.equip_ship(ship_resource)
+		_player.gold -= ship_resource.price
 		_update_gui()
 		return str("Schiff gekauft.")
 	else:

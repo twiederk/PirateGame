@@ -44,7 +44,7 @@ func evaluate(player: Player) -> void:
 	var new_trader_rank = get_trader_rank(player.gold)
 	if new_trader_rank.is_greater_than(player.trader_rank):
 		player.trader_rank = new_trader_rank
-		rank_promoted.emit(new_trader_rank)
+		rank_promoted.emit(new_trader_rank)	
 
 	var new_sailer_rank = get_sailer_rank(player.get_ship())
 	if new_sailer_rank.is_greater_than(player.sailer_rank):
