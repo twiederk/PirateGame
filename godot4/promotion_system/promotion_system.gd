@@ -14,6 +14,12 @@ var trader_ranks: Dictionary = {
 }
 
 
+var sailer_ranks: Dictionary = {
+	0: preload("res://promotion_system/sailer_rank_01.tres"),
+	1: preload("res://promotion_system/sailer_rank_02.tres"),
+	2: preload("res://promotion_system/sailer_rank_03.tres"),
+}
+
 func get_trader_rank(gold: int) -> PrestigeRank:
 	var trader_rank = trader_ranks[0]
 	for gold_threadhold in trader_ranks:
@@ -23,14 +29,14 @@ func get_trader_rank(gold: int) -> PrestigeRank:
 
 
 func get_sailer_rank(ship: ShipResource) -> PrestigeRank:
-	if ship == null:
-		return load("res://promotion_system/sailer_rank_01.tres")
-	return null
-	#var trader_rank = trader_ranks[0]
-	#for gold_threadhold in trader_ranks:
-		#if gold >= gold_threadhold:
-			#trader_rank = trader_ranks[gold_threadhold]
-	#return trader_rank
+	var ship_id = 0
+	if ship != null:
+		ship_id = ship.id
+	var sailer_rank = sailer_ranks[0]
+	for ship_threadhold in sailer_ranks:
+		if ship_id >= ship_threadhold:
+			sailer_rank = sailer_ranks[ship_threadhold]
+	return sailer_rank
 
 
 func evaluate(player: Player) -> void:

@@ -30,6 +30,16 @@ func test_get_trader_rank():
 
 func test_get_sailer_rank():
 	# act
+	var ship: ShipResource = ShipResource.new()
+	ship.id = 1
+	var sailer_rank = promotion_system.get_sailer_rank(ship)
+	
+	# assert
+	assert_eq(sailer_rank, SAILER_RANK_02)
+
+
+func test_get_sailer_rank_with_ship_is_null():
+	# act
 	var sailer_rank = promotion_system.get_sailer_rank(null)
 	
 	# assert
