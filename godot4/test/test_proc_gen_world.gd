@@ -68,6 +68,9 @@ func test_set_save_data():
 	town.add_trading_item(town_item)
 	towns_root.add_child(town)
 	proc_gen_world.towns = towns_root
+	
+	var goods_root = Node2D.new()
+	proc_gen_world.goods = goods_root
 
 	var save_data = {
 		"world": {
@@ -83,6 +86,12 @@ func test_set_save_data():
 						}
 					}
 				}
+			],
+			"goods": [
+				{
+					"resource_path": GOOD_FISH.resource_path,
+					"position": {"x": 10, "y": 20},
+				}
 			]
 		}
 	}
@@ -96,6 +105,11 @@ func test_set_save_data():
 	assert_eq(town_item.stock, 50, "should restore town item stock")
 	assert_eq(town_item.cached_stock, 45, "should restore town item cached_stock")
 	assert_eq(town_item.last_updated, 1234.5, "should restore town item last_updated")
-
+	var goods = proc_gen_world.get_goods()
+	assert_eq(goods.size(), 1, "Should restore goods")
+	var good = goods[0]
+	assert_eq(good.good.resource_path, GOOD_FISH.resource_path, "Should restore good resource of good")
+	assert_eq(good.global_position, Vector2i(10, 20), "Should restore position of good")
+	
 	# tear down
 	towns_root.free()
