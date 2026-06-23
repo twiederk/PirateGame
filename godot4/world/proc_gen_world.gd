@@ -161,7 +161,8 @@ func get_tile_size() -> Vector2i:
 
 func get_save_data() -> Dictionary:
 	var world_data = {
-		"seed_value": seed_value
+		"seed_value": seed_value,
+		"spawn_accumulator": spawn_accumulator,
 	}
 	world_data.towns = []
 	for town in get_towns():

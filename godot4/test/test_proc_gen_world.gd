@@ -15,6 +15,7 @@ func after_each():
 
 func test_get_save_data():
 	# arrange
+	proc_gen_world.spawn_accumulator = 0.5
 	proc_gen_world.seed_value = 12345
 	var towns_root = Node2D.new()
 	var town = Town.new()
@@ -31,6 +32,7 @@ func test_get_save_data():
 
 	# assert
 	assert_eq(save_data.world.seed_value, 12345, "Save data should include the world seed")
+	assert_eq(save_data.world.spawn_accumulator, 0.5, "Save data should include the spawn accumulator")
 	assert_eq(save_data.world.towns.size(), 1, "Save data should include one serialized town")
 	var loaded_town = save_data.world.towns[0]
 	assert_eq(loaded_town.size(), 2, "Save data should include one serialized town")
