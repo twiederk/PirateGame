@@ -42,6 +42,8 @@ const TREE_TILES = [TREE_1_TILE, TREE_2_TILE]
 const PALM_TREE_TILES = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
 const GRASS_TILES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
+const SIMULATION_STEP: float = 30.0
+
 var width : int = 200
 var height : int = 200
 
@@ -56,6 +58,7 @@ var dirt_arr: Array[Vector2i] = []
 var cliff_arr: Array[Vector2i] = []
 var tree_arr: Array[Vector2i] = []
 
+var spawn_accumulator: float = 0.0
 
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
@@ -260,9 +263,19 @@ func generate_goods():
 	var goods_to_generate = max_goods - goods.get_children().size()
 
 	for i in range(goods_to_generate):
+		print("Generating good ", i)
 		var fish: Fish = FishScene.instantiate() 
 		if i % 2 == 0:
 			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
 		else:
 			fish.global_position = shallow_water_arr.pick_random() * get_tile_size()
 		goods.add_child(fish)
+
+
+
+func simulation(delta: float) -> void:
+	print("ProcGenWorld simulation step")
+	spawn_accumulator += delta
+	if spawn_accumulator >= SIMULATION_STEP:
+		generate_goods()
+		spawn_accumulator = 0.0

@@ -16,6 +16,7 @@ var goods: Dictionary = {
 
 
 func simulation(delta: float, towns: Array[Town]) -> void:
+	print("TradingSystem simulation step")
 	advance_time(delta)
 	accumulator += delta
 	while accumulator >= SIMULATION_STEP:
