@@ -10,4 +10,3 @@ func _on_body_entered(body):
 		var player = body as Player
 		player.collect(good, randi_range(1, 5))
 		queue_free()
-		
