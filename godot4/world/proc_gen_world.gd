@@ -48,6 +48,8 @@ var height : int = 200
 var noise : Noise
 var tree_noise : Noise
 
+var deep_water_arr: Array[Vector2i] = []
+var shallow_water_arr: Array[Vector2i] = []
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
 var dirt_arr: Array[Vector2i] = []
@@ -86,7 +88,7 @@ func generate_world(new_seed: int):
 			_place_cliffs(noise_val, curr_pos)
 			_place_water(noise_val, curr_pos)
 			_place_trees(tree_noise_val, noise_val, curr_pos)
-			_place_PALM_TREE_TILES(tree_noise_val, noise_val, curr_pos)
+			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
 			
 	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, SAND_IN_WATER_TERRAIN_SET, TERRAIN)
 	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN_SET, TERRAIN)
@@ -119,9 +121,10 @@ func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
 func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val <= DEEP_WATER_LEVEL:
 		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
+		deep_water_arr.append(curr_pos)
 	elif noise_val <= WATER_LEVEL:
 		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
-
+		shallow_water_arr.append(curr_pos)
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
@@ -130,7 +133,7 @@ func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -
 		tree_arr.append(curr_pos)
 
 
-func _place_PALM_TREE_TILES(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
+func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	# setting palm trees on sand, between water and grass
 	if (noise_val > WATER_LEVEL) and (noise_val < GRASS_LEVEL):
 		if tree_noise_val > PALM_TREE_CHANCE:
@@ -257,7 +260,9 @@ func generate_goods():
 	var goods_to_generate = max_goods - goods.get_children().size()
 
 	for i in range(goods_to_generate):
-		var fish: Fish = FishScene.instantiate()
-		var pos = grass_arr.pick_random()
-		fish.global_position = pos * get_tile_size()
+		var fish: Fish = FishScene.instantiate() 
+		if i % 2 == 0:
+			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
+		else:
+			fish.global_position = shallow_water_arr.pick_random() * get_tile_size()
 		goods.add_child(fish)
