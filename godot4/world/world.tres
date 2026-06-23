@@ -1767,7 +1767,6 @@ texture = ExtResource("1_1bkiy")
 10:19/0 = 0
 10:19/0/terrain_set = 4
 10:19/0/physics_layer_2/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-6:0/0 = 0
 3:1/animation_columns = 3
 3:1/animation_speed = 2.0
 3:1/animation_frame_0/duration = 1.0
@@ -1775,9 +1774,9 @@ texture = ExtResource("1_1bkiy")
 3:1/animation_frame_2/duration = 1.0
 3:1/0 = 0
 3:1/0/physics_layer_3/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-9:0/0 = 0
-10:0/0 = 0
-9:1/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+6:1/0 = 0
 
 [resource]
 physics_layer_0/collision_layer = 2
