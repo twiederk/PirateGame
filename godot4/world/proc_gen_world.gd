@@ -245,3 +245,8 @@ func get_towns() -> Array[Town]:
 	var typed: Array[Town] = []
 	typed.assign(towns.get_children())
 	return typed
+
+
+func generate_goods():
+	@warning_ignore("integer_division")
+	var max_cities = int(width / city_denstity)
