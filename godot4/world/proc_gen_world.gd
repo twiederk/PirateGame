@@ -5,8 +5,11 @@ extends Node2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var seed_value: int = 0
 @export var city_denstity: int = 20
+@export var good_denstity: int = 20
 
 const TownScene = preload("res://world/town.tscn")
+const FishScene = preload("res://world/fish.tscn")
+
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
 const WoodCampTownResource = preload("res://world/town_wood_camp.tres")
@@ -58,6 +61,7 @@ var tree_arr: Array[Vector2i] = []
 @onready var cliff_layer: TileMapLayer = $CliffLayer
 @onready var environment_layer: TileMapLayer = $EnvironmentLayer
 @onready var towns: Node2D = $Towns
+@onready var goods = $Goods
 
 
 func _ready() -> void:
@@ -249,4 +253,11 @@ func get_towns() -> Array[Town]:
 
 func generate_goods():
 	@warning_ignore("integer_division")
-	var max_cities = int(width / city_denstity)
+	var max_goods = int(width / good_denstity)
+	var goods_to_generate = max_goods - goods.get_children().size()
+
+	for i in range(goods_to_generate):
+		var fish: Fish = FishScene.instantiate()
+		var pos = grass_arr.pick_random()
+		fish.global_position = pos * get_tile_size()
+		goods.add_child(fish)
