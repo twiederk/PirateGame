@@ -58,6 +58,7 @@ func test_set_save_data():
 
 	var save_data = {
 		"world": {
+			"spawn_accumulator": 0.5,
 			"towns": [
 				{
 					"visited": true,
@@ -77,10 +78,11 @@ func test_set_save_data():
 	proc_gen_world.set_save_data(save_data)
 
 	# assert
-	assert_true(town.get_visited(), "set_save_data should restore visited")
-	assert_eq(town_item.stock, 50, "set_save_data should restore town item stock")
-	assert_eq(town_item.cached_stock, 45, "set_save_data should restore town item cached_stock")
-	assert_eq(town_item.last_updated, 1234.5, "set_save_data should restore town item last_updated")
+	assert_eq(proc_gen_world.spawn_accumulator, 0.5, "should restore spawn accumulator")
+	assert_true(town.get_visited(), "should restore visited")
+	assert_eq(town_item.stock, 50, "should restore town item stock")
+	assert_eq(town_item.cached_stock, 45, "should restore town item cached_stock")
+	assert_eq(town_item.last_updated, 1234.5, "should restore town item last_updated")
 
 	# tear down
 	towns_root.free()

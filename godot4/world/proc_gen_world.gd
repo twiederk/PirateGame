@@ -172,6 +172,8 @@ func get_save_data() -> Dictionary:
 
 func set_save_data(save_data: Dictionary) -> void:
 	var world_data: Dictionary = save_data.world
+	if world_data.has("spawn_accumulator"):
+		spawn_accumulator = world_data.spawn_accumulator
 	var towns_data: Array = world_data.towns
 	var generated_towns : Array[Town] = get_towns()
 	for i in range(towns_data.size()):
