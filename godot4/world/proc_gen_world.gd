@@ -30,7 +30,7 @@ const COAST_TILE_DATA = "coast"
 
 const SHALLOW_WATER_TILE = Vector2i(0,1)
 const DEEP_WATER_TILE = Vector2i(3,1)
-const TREE_TILE = Vector2i(6,1)
+const TREE_TILE = Vector2i(9,1)
 
 
 var width : int = 200
@@ -39,7 +39,7 @@ var height : int = 200
 var noise : Noise
 var tree_noise : Noise
 
-var random_palm_tree_array = [Vector2i(7, 1), Vector2i(8,1) ]
+var random_palm_tree_array = [Vector2i(9, 0), Vector2i(10,0) ]
 
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
