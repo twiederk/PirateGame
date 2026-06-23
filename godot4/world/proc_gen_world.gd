@@ -263,7 +263,6 @@ func generate_goods():
 	var goods_to_generate = max_goods - goods.get_children().size()
 
 	for i in range(goods_to_generate):
-		print("Generating good ", i)
 		var fish: Fish = FishScene.instantiate() 
 		if i % 2 == 0:
 			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
@@ -274,7 +273,6 @@ func generate_goods():
 
 
 func simulation(delta: float) -> void:
-	print("ProcGenWorld simulation step")
 	spawn_accumulator += delta
 	if spawn_accumulator >= SIMULATION_STEP:
 		generate_goods()
