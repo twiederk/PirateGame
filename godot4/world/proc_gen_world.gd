@@ -177,6 +177,7 @@ func set_save_data(save_data: Dictionary) -> void:
 	var world_data: Dictionary = save_data.world
 	if world_data.has("spawn_accumulator"):
 		spawn_accumulator = world_data.spawn_accumulator
+
 	var towns_data: Array = world_data.towns
 	var generated_towns : Array[Town] = get_towns()
 	for i in range(towns_data.size()):
@@ -185,6 +186,16 @@ func set_save_data(save_data: Dictionary) -> void:
 		if town_data.has("visited"):
 			current_town.set_visited(town_data.visited)
 		_restore_town_inventory_from_save(current_town, town_data.inventory)
+
+	if world_data.has("goods"):
+		var goods_data: Array = world_data.goods
+		for i in range(goods_data.size()):
+			var good_data: Dictionary = goods_data[i]
+			var fish: Fish = FishScene.instantiate()
+			var good_resource = load(good_data.resource_path)
+			fish.good = good_resource
+			var pos = Vector2i(int(good_data.position.x), int(good_data.position.y))
+			fish.global_position = pos
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
