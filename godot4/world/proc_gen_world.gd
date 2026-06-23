@@ -36,8 +36,8 @@ const PALM_TREE_1_TILE = Vector2i(6, 0)
 const PALM_TREE_2_TILE = Vector2i(7, 0)
 
 const TREE_TILES = [TREE_1_TILE, TREE_2_TILE]
-var random_palm_tree_array = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
-var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+const PALM_TREE_TILES = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
+const GRASS_TILES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 var width : int = 200
 var height : int = 200
@@ -82,7 +82,7 @@ func generate_world(new_seed: int):
 			_place_cliffs(noise_val, curr_pos)
 			_place_water(noise_val, curr_pos)
 			_place_trees(tree_noise_val, noise_val, curr_pos)
-			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
+			_place_PALM_TREE_TILES(tree_noise_val, noise_val, curr_pos)
 			
 	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, SAND_IN_WATER_TERRAIN_SET, TERRAIN)
 	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN_SET, TERRAIN)
@@ -104,7 +104,7 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val > GRASS_LEVEL:
 		grass_arr.append(curr_pos)
 		if noise_val > FIELD_LEVEL:
-			farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, random_grass_tile_arr.pick_random())
+			farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, GRASS_TILES.pick_random())
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
@@ -126,11 +126,11 @@ func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -
 		tree_arr.append(curr_pos)
 
 
-func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
+func _place_PALM_TREE_TILES(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	# setting palm trees on sand, between water and grass
 	if (noise_val > WATER_LEVEL) and (noise_val < GRASS_LEVEL):
 		if tree_noise_val > PALM_TREE_CHANCE:
-			environment_layer.set_cell(curr_pos, WORLD_TILE_SET, random_palm_tree_array.pick_random())
+			environment_layer.set_cell(curr_pos, WORLD_TILE_SET, PALM_TREE_TILES.pick_random())
 
 
 func _generate_seed() -> void:
