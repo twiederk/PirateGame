@@ -167,6 +167,9 @@ func get_save_data() -> Dictionary:
 	world_data.towns = []
 	for town in get_towns():
 		world_data.towns.append(_serialize_town_save_data(town))
+	world_data.goods = []
+	for good in get_goods():
+		world_data.goods.append(_serialize_good_save_data(good))
 	return {"world": world_data}
 
 
@@ -198,6 +201,15 @@ func _serialize_town_save_data(town: Town) -> Dictionary:
 		"inventory": _serialize_town_inventory(town)
 	}
 
+
+func _serialize_good_save_data(good: Fish) -> Dictionary:
+	return {
+		"resource_path": good.good.resource_path,
+		"position": {
+			"x": good.position.x,
+			"y": good.position.y,
+		}
+	}
 
 func _serialize_town_inventory(town: Town) -> Dictionary:
 	var inventory_data: Dictionary = {}
@@ -257,6 +269,12 @@ func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i)
 func get_towns() -> Array[Town]:
 	var typed: Array[Town] = []
 	typed.assign(towns.get_children())
+	return typed
+
+
+func get_goods() -> Array[Fish]:
+	var typed: Array[Fish] = []
+	typed.assign(goods.get_children())
 	return typed
 
 

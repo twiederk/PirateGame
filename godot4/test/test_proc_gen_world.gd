@@ -26,6 +26,13 @@ func test_get_save_data():
 	town.add_trading_item(town_item)
 	towns_root.add_child(town)
 	proc_gen_world.towns = towns_root
+	
+	var goods_root = Node2D.new()
+	var fish = Fish.new()
+	fish.good = GOOD_FISH
+	fish.global_position = Vector2i(10, 20)
+	goods_root.add_child(fish)
+	proc_gen_world.goods = goods_root
 
 	# act
 	var save_data = proc_gen_world.get_save_data()
@@ -40,9 +47,15 @@ func test_get_save_data():
 	assert_eq(loaded_town.inventory[1].stock, 50, "Town inventory stock should be serialized")
 	assert_eq(loaded_town.inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
 	assert_eq(loaded_town.inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
+	var loaded_fish = save_data.world.goods[0]
+	assert_not_null(loaded_fish)
+	assert_eq(loaded_fish.resource_path, GOOD_FISH.resource_path, "Should store good resouce path")
+	assert_eq(loaded_fish.position.x, 10.0, "Should store x position")
+	assert_eq(loaded_fish.position.y, 20.0, "Should store y position")
 
 	# tear down
 	towns_root.free()
+	goods_root.free()
 
 
 func test_set_save_data():
