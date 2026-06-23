@@ -30,10 +30,14 @@ const COAST_TILE_DATA = "coast"
 
 const SHALLOW_WATER_TILE = Vector2i(0,1)
 const DEEP_WATER_TILE = Vector2i(3,1)
-const TREE_TILE = Vector2i(6,1)
+const TREE_1_TILE = Vector2i(6,1)
+const TREE_2_TILE = Vector2i(7,1)
 const PALM_TREE_1_TILE = Vector2i(6, 0)
 const PALM_TREE_2_TILE = Vector2i(7, 0)
 
+const TREE_TILES = [TREE_1_TILE, TREE_2_TILE]
+var random_palm_tree_array = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
+var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 var width : int = 200
 var height : int = 200
@@ -41,15 +45,12 @@ var height : int = 200
 var noise : Noise
 var tree_noise : Noise
 
-var random_palm_tree_array = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
-
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
 var dirt_arr: Array[Vector2i] = []
 var cliff_arr: Array[Vector2i] = []
 var tree_arr: Array[Vector2i] = []
 
-var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
@@ -121,7 +122,7 @@ func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
 	if (tree_noise_val > TREE_CHANCE) and (noise_val > FIELD_LEVEL) and (noise_val < CLIFF_LEVEL):
-		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILE)
+		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILES.pick_random())
 		tree_arr.append(curr_pos)
 
 
