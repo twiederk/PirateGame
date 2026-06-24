@@ -32,6 +32,7 @@ func _ready() -> void:
 		proc_gen_world.set_save_data(SaveManager.load_game_state)
 		trading_system.set_save_data(SaveManager.load_game_state)
 	else:
+		proc_gen_world.generate_goods()
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
 
@@ -40,6 +41,7 @@ func _process(delta):
 	if player.in_town():
 		return
 	trading_system.simulation(delta, towns)
+	proc_gen_world.simulation(delta)
 
 
 func _setup_limits_and_borders() -> void:

@@ -5,6 +5,9 @@ const TRADER_RANK_01 = preload("res://promotion_system/trader_rank_01.tres")
 const TRADER_RANK_06 = preload("res://promotion_system/trader_rank_06.tres")
 const SAILER_RANK_01 = preload("res://promotion_system/sailer_rank_01.tres")
 const SAILER_RANK_02 = preload("res://promotion_system/sailer_rank_02.tres")
+const GOOD_FISH = preload("res://trading_system/good_fish.tres")
+const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
+
 
 var player: Player = null
 
@@ -186,3 +189,26 @@ func test_on_town_menu_town_left():
 
 	# assert
 	assert_eq(player.current_state, Player.State.ON_SHIP, "Player should return to previous state")
+
+
+func test_collect_fish():
+	# assert
+	player.get_trading_item(GOOD_GRAIN.id).stock = 17
+	
+	# act
+	player.collect(GOOD_FISH, 5)
+	
+	# assert
+	var fish_stock = player.get_trading_item(GOOD_FISH.id).stock
+	assert_eq(fish_stock, 3, "Should only collect amount which is free in storeroom")
+
+
+func test_get_free_capacity():
+	# assert
+	player.get_trading_item(GOOD_GRAIN.id).stock = 17
+
+	# act
+	var result = player.get_free_capacity()
+	
+	# assert
+	assert_eq(result, 3, "Should have free capacity of 3")

@@ -206,3 +206,14 @@ func get_previous_state() -> State:
 
 func get_ship() -> ShipResource:
 	return _ship_resource
+
+
+func collect(good: GoodResource, amount: int) -> void:
+	var free_space = get_free_capacity()
+	var collectable_amount = min(amount, free_space)
+	var trading_item = get_trading_item(good.id)
+	trading_item.stock += collectable_amount
+
+
+func get_free_capacity():
+	return cargo_capacity - get_used_capacity()

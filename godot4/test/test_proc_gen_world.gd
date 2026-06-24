@@ -15,6 +15,7 @@ func after_each():
 
 func test_get_save_data():
 	# arrange
+	proc_gen_world.spawn_accumulator = 0.5
 	proc_gen_world.seed_value = 12345
 	var towns_root = Node2D.new()
 	var town = Town.new()
@@ -25,12 +26,20 @@ func test_get_save_data():
 	town.add_trading_item(town_item)
 	towns_root.add_child(town)
 	proc_gen_world.towns = towns_root
+	
+	var goods_root = Node2D.new()
+	var fish = Fish.new()
+	fish.good = GOOD_FISH
+	fish.global_position = Vector2i(10, 20)
+	goods_root.add_child(fish)
+	proc_gen_world.goods = goods_root
 
 	# act
 	var save_data = proc_gen_world.get_save_data()
 
 	# assert
 	assert_eq(save_data.world.seed_value, 12345, "Save data should include the world seed")
+	assert_eq(save_data.world.spawn_accumulator, 0.5, "Save data should include the spawn accumulator")
 	assert_eq(save_data.world.towns.size(), 1, "Save data should include one serialized town")
 	var loaded_town = save_data.world.towns[0]
 	assert_eq(loaded_town.size(), 2, "Save data should include one serialized town")
@@ -38,9 +47,15 @@ func test_get_save_data():
 	assert_eq(loaded_town.inventory[1].stock, 50, "Town inventory stock should be serialized")
 	assert_eq(loaded_town.inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
 	assert_eq(loaded_town.inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
+	var loaded_fish = save_data.world.goods[0]
+	assert_not_null(loaded_fish)
+	assert_eq(loaded_fish.resource_path, GOOD_FISH.resource_path, "Should store good resouce path")
+	assert_eq(loaded_fish.position.x, 10.0, "Should store x position")
+	assert_eq(loaded_fish.position.y, 20.0, "Should store y position")
 
 	# tear down
 	towns_root.free()
+	goods_root.free()
 
 
 func test_set_save_data():
@@ -53,9 +68,13 @@ func test_set_save_data():
 	town.add_trading_item(town_item)
 	towns_root.add_child(town)
 	proc_gen_world.towns = towns_root
+	
+	var goods_root = Node2D.new()
+	proc_gen_world.goods = goods_root
 
 	var save_data = {
 		"world": {
+			"spawn_accumulator": 0.5,
 			"towns": [
 				{
 					"visited": true,
@@ -67,6 +86,12 @@ func test_set_save_data():
 						}
 					}
 				}
+			],
+			"goods": [
+				{
+					"resource_path": GOOD_FISH.resource_path,
+					"position": {"x": 10, "y": 20},
+				}
 			]
 		}
 	}
@@ -75,10 +100,17 @@ func test_set_save_data():
 	proc_gen_world.set_save_data(save_data)
 
 	# assert
-	assert_true(town.get_visited(), "set_save_data should restore visited")
-	assert_eq(town_item.stock, 50, "set_save_data should restore town item stock")
-	assert_eq(town_item.cached_stock, 45, "set_save_data should restore town item cached_stock")
-	assert_eq(town_item.last_updated, 1234.5, "set_save_data should restore town item last_updated")
-
+	assert_eq(proc_gen_world.spawn_accumulator, 0.5, "should restore spawn accumulator")
+	assert_true(town.get_visited(), "should restore visited")
+	assert_eq(town_item.stock, 50, "should restore town item stock")
+	assert_eq(town_item.cached_stock, 45, "should restore town item cached_stock")
+	assert_eq(town_item.last_updated, 1234.5, "should restore town item last_updated")
+	var goods = proc_gen_world.get_goods()
+	assert_eq(goods.size(), 1, "Should restore goods")
+	var good = goods[0]
+	assert_eq(good.good.resource_path, GOOD_FISH.resource_path, "Should restore good resource of good")
+	assert_eq(good.global_position, Vector2(10, 20), "Should restore position of good")
+	
 	# tear down
 	towns_root.free()
+	goods_root.free()

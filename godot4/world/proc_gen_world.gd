@@ -5,8 +5,11 @@ extends Node2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var seed_value: int = 0
 @export var city_denstity: int = 20
+@export var good_denstity: int = 20
 
 const TownScene = preload("res://world/town.tscn")
+const FishScene = preload("res://world/fish.tscn")
+
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
 const WoodCampTownResource = preload("res://world/town_wood_camp.tres")
@@ -30,8 +33,16 @@ const COAST_TILE_DATA = "coast"
 
 const SHALLOW_WATER_TILE = Vector2i(0,1)
 const DEEP_WATER_TILE = Vector2i(3,1)
-const TREE_TILE = Vector2i(6,1)
+const TREE_1_TILE = Vector2i(6,1)
+const TREE_2_TILE = Vector2i(7,1)
+const PALM_TREE_1_TILE = Vector2i(6, 0)
+const PALM_TREE_2_TILE = Vector2i(7, 0)
 
+const TREE_TILES = [TREE_1_TILE, TREE_2_TILE]
+const PALM_TREE_TILES = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
+const GRASS_TILES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+
+const SIMULATION_STEP: float = 30.0
 
 var width : int = 200
 var height : int = 200
@@ -39,15 +50,15 @@ var height : int = 200
 var noise : Noise
 var tree_noise : Noise
 
-var random_palm_tree_array = [Vector2i(7, 1), Vector2i(8,1) ]
-
+var deep_water_arr: Array[Vector2i] = []
+var shallow_water_arr: Array[Vector2i] = []
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
 var dirt_arr: Array[Vector2i] = []
 var cliff_arr: Array[Vector2i] = []
 var tree_arr: Array[Vector2i] = []
 
-var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+var spawn_accumulator: float = 0.0
 
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
@@ -55,6 +66,7 @@ var random_grass_tile_arr: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Ve
 @onready var cliff_layer: TileMapLayer = $CliffLayer
 @onready var environment_layer: TileMapLayer = $EnvironmentLayer
 @onready var towns: Node2D = $Towns
+@onready var goods = $Goods
 
 
 func _ready() -> void:
@@ -101,7 +113,7 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val > GRASS_LEVEL:
 		grass_arr.append(curr_pos)
 		if noise_val > FIELD_LEVEL:
-			farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, random_grass_tile_arr.pick_random())
+			farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, GRASS_TILES.pick_random())
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
@@ -112,14 +124,15 @@ func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
 func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val <= DEEP_WATER_LEVEL:
 		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
+		deep_water_arr.append(curr_pos)
 	elif noise_val <= WATER_LEVEL:
 		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
-
+		shallow_water_arr.append(curr_pos)
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
 	if (tree_noise_val > TREE_CHANCE) and (noise_val > FIELD_LEVEL) and (noise_val < CLIFF_LEVEL):
-		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILE)
+		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILES.pick_random())
 		tree_arr.append(curr_pos)
 
 
@@ -127,7 +140,7 @@ func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector
 	# setting palm trees on sand, between water and grass
 	if (noise_val > WATER_LEVEL) and (noise_val < GRASS_LEVEL):
 		if tree_noise_val > PALM_TREE_CHANCE:
-			environment_layer.set_cell(curr_pos, WORLD_TILE_SET, random_palm_tree_array.pick_random())
+			environment_layer.set_cell(curr_pos, WORLD_TILE_SET, PALM_TREE_TILES.pick_random())
 
 
 func _generate_seed() -> void:
@@ -148,16 +161,23 @@ func get_tile_size() -> Vector2i:
 
 func get_save_data() -> Dictionary:
 	var world_data = {
-		"seed_value": seed_value
+		"seed_value": seed_value,
+		"spawn_accumulator": spawn_accumulator,
 	}
 	world_data.towns = []
 	for town in get_towns():
 		world_data.towns.append(_serialize_town_save_data(town))
+	world_data.goods = []
+	for good in get_goods():
+		world_data.goods.append(_serialize_good_save_data(good))
 	return {"world": world_data}
 
 
 func set_save_data(save_data: Dictionary) -> void:
 	var world_data: Dictionary = save_data.world
+	if world_data.has("spawn_accumulator"):
+		spawn_accumulator = world_data.spawn_accumulator
+
 	var towns_data: Array = world_data.towns
 	var generated_towns : Array[Town] = get_towns()
 	for i in range(towns_data.size()):
@@ -166,6 +186,17 @@ func set_save_data(save_data: Dictionary) -> void:
 		if town_data.has("visited"):
 			current_town.set_visited(town_data.visited)
 		_restore_town_inventory_from_save(current_town, town_data.inventory)
+
+	if world_data.has("goods"):
+		var goods_data: Array = world_data.goods
+		for i in range(goods_data.size()):
+			var good_data: Dictionary = goods_data[i]
+			var fish: Fish = FishScene.instantiate()
+			var good_resource = load(good_data.resource_path)
+			fish.good = good_resource
+			var pos = Vector2i(int(good_data.position.x), int(good_data.position.y))
+			fish.global_position = pos
+			goods.add_child(fish)
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
@@ -182,6 +213,15 @@ func _serialize_town_save_data(town: Town) -> Dictionary:
 		"inventory": _serialize_town_inventory(town)
 	}
 
+
+func _serialize_good_save_data(good: Fish) -> Dictionary:
+	return {
+		"resource_path": good.good.resource_path,
+		"position": {
+			"x": good.position.x,
+			"y": good.position.y,
+		}
+	}
 
 func _serialize_town_inventory(town: Town) -> Dictionary:
 	var inventory_data: Dictionary = {}
@@ -242,3 +282,31 @@ func get_towns() -> Array[Town]:
 	var typed: Array[Town] = []
 	typed.assign(towns.get_children())
 	return typed
+
+
+func get_goods() -> Array[Fish]:
+	var typed: Array[Fish] = []
+	typed.assign(goods.get_children())
+	return typed
+
+
+func generate_goods():
+	@warning_ignore("integer_division")
+	var max_goods = int(width / good_denstity)
+	var goods_to_generate = max_goods - goods.get_children().size()
+
+	for i in range(goods_to_generate):
+		var fish: Fish = FishScene.instantiate() 
+		if i % 2 == 0:
+			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
+		else:
+			fish.global_position = shallow_water_arr.pick_random() * get_tile_size()
+		goods.add_child(fish)
+
+
+
+func simulation(delta: float) -> void:
+	spawn_accumulator += delta
+	if spawn_accumulator >= SIMULATION_STEP:
+		generate_goods()
+		spawn_accumulator = 0.0
