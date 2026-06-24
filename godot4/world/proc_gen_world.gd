@@ -5,7 +5,7 @@ extends Node2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var seed_value: int = 0
 @export var city_denstity: int = 20
-@export var good_denstity: int = 20
+@export var good_denstity: int = 8
 
 const TownScene = preload("res://world/town.tscn")
 const FishScene = preload("res://world/fish.tscn")
@@ -297,10 +297,10 @@ func generate_goods():
 
 	for i in range(goods_to_generate):
 		var fish: Fish = FishScene.instantiate() 
-		if i % 2 == 0:
-			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
-		else:
+		if i % 3 == 0:
 			fish.global_position = shallow_water_arr.pick_random() * get_tile_size()
+		else:
+			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
 		goods.add_child(fish)
 
 
