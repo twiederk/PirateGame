@@ -196,6 +196,7 @@ func set_save_data(save_data: Dictionary) -> void:
 			fish.good = good_resource
 			var pos = Vector2i(int(good_data.position.x), int(good_data.position.y))
 			fish.global_position = pos
+			goods.add_child(fish)
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:

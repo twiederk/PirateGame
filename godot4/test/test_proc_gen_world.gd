@@ -109,7 +109,8 @@ func test_set_save_data():
 	assert_eq(goods.size(), 1, "Should restore goods")
 	var good = goods[0]
 	assert_eq(good.good.resource_path, GOOD_FISH.resource_path, "Should restore good resource of good")
-	assert_eq(good.global_position, Vector2i(10, 20), "Should restore position of good")
+	assert_eq(good.global_position, Vector2(10, 20), "Should restore position of good")
 	
 	# tear down
 	towns_root.free()
+	goods_root.free()
