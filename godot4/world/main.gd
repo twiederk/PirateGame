@@ -13,7 +13,6 @@ var towns: Array[Town]
 @onready var debug_screen: DebugScreen = $gui/DebugScreen
 @onready var pause_menu: PauseMenu = $gui/PauseMenu
 @onready var promotion_system: PromotionSystem = $PromotionSystem
-@onready var promotion_widget: PromotionWidget = $gui/PromotionWidget
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
 @onready var message_widget: MessageWidget = $gui/MessageWidget
 
