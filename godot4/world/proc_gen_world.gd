@@ -290,7 +290,7 @@ func get_goods() -> Array[Fish]:
 	return typed
 
 
-func generate_goods(message_widget: MessageWidget):
+func generate_goods():
 	@warning_ignore("integer_division")
 	var max_goods = int(width / good_denstity)
 	var goods_to_generate = max_goods - goods.get_children().size()
@@ -301,13 +301,11 @@ func generate_goods(message_widget: MessageWidget):
 			fish.global_position = shallow_water_arr.pick_random() * get_tile_size()
 		else:
 			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
-		fish.good_collected.connect(message_widget._on_good_collected)
 		goods.add_child(fish)
 
 
-
-func simulation(delta: float, message_widget: MessageWidget) -> void:
+func simulation(delta: float) -> void:
 	spawn_accumulator += delta
 	if spawn_accumulator >= SIMULATION_STEP:
-		generate_goods(message_widget)
+		generate_goods()
 		spawn_accumulator = 0.0

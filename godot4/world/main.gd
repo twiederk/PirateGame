@@ -42,7 +42,7 @@ func _process(delta):
 	if player.in_town():
 		return
 	trading_system.simulation(delta, towns)
-	proc_gen_world.simulation(delta, message_widget)
+	proc_gen_world.simulation(delta)
 
 
 func _setup_limits_and_borders() -> void:

@@ -49,6 +49,7 @@ anchor_bottom = 0.0
 grow_vertical = 1
 
 [node name="MessageWidget" parent="gui" unique_id=1487095003 instance=ExtResource("10_tp5tb")]
+visible = false
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
