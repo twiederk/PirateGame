@@ -28,7 +28,7 @@ func _ready() -> void:
 	
 	if SaveManager.is_game_loaded():
 		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state)
-		proc_gen_world.set_save_data(SaveManager.load_game_state)
+		ProcGenWorldSerializer.new().set_save_data( proc_gen_world, SaveManager.load_game_state)
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
 	else:
 		proc_gen_world.generate_goods()
