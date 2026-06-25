@@ -26,3 +26,20 @@ func test_get_save_data():
 	assert_true(save_data.has("trading_system"), "Save data should contain trading_system section")
 	assert_eq(save_data.trading_system.current_game_time, 123.5, "Should persist current_game_time")
 	assert_eq(save_data.trading_system.accumulator, 17.25, "Should persist accumulator")
+
+
+func test_set_save_data():
+	# arrange
+	var save_data = {
+		"trading_system": {
+			"current_game_time": 456.75,
+			"accumulator": 9.5,
+		}
+	}
+
+	# act
+	trading_system_serializer.set_save_data(trading_system, save_data)
+
+	# assert
+	assert_eq(trading_system.current_game_time, 456.75, "Should restore current_game_time from save data")
+	assert_eq(trading_system.accumulator, 9.5, "Should restore accumulator from save data")

@@ -171,20 +171,3 @@ func test_simulation():
 	# tear down
 	habor.free()
 	farm.free()
-
-
-func test_set_save_data():
-	# arrange
-	var save_data = {
-		"trading_system": {
-			"current_game_time": 456.75,
-			"accumulator": 9.5,
-		}
-	}
-
-	# act
-	trading_system.set_save_data(save_data)
-
-	# assert
-	assert_eq(trading_system.current_game_time, 456.75, "Should restore current_game_time from save data")
-	assert_eq(trading_system.accumulator, 9.5, "Should restore accumulator from save data")
