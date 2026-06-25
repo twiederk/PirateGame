@@ -7,7 +7,7 @@ extends Control
 
 
 func show_promotion(new_rank: PrestigeRank) -> void:
-	promotion_label.text = "Du hat den neuen Titel: " + new_rank.title + " erhalten!" 
+	promotion_label.text = "Du hast den neuen Titel: " + new_rank.title + " erhalten!" 
 	timer.start()
 	show()
 

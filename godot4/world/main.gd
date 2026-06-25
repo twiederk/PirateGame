@@ -22,7 +22,6 @@ func _ready() -> void:
 	var world_seed = _get_seed()
 	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
-	_connect_signals()
 	_setup_limits_and_borders()
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
@@ -36,13 +35,14 @@ func _ready() -> void:
 		proc_gen_world.generate_goods()
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
+	_connect_signals()
 
 
 func _process(delta):
 	if player.in_town():
 		return
 	trading_system.simulation(delta, towns)
-	proc_gen_world.simulation(delta)
+	proc_gen_world.simulation(delta, message_widget)
 
 
 func _setup_limits_and_borders() -> void:
