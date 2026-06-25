@@ -27,7 +27,7 @@ func _ready() -> void:
 	zoom_widget.set_zoom(camera.zoom)
 	
 	if SaveManager.is_game_loaded():
-		player.set_save_data(SaveManager.load_game_state)
+		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state)
 		proc_gen_world.set_save_data(SaveManager.load_game_state)
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
 	else:
