@@ -12,12 +12,16 @@
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
 [ext_resource type="PackedScene" uid="uid://df87rumi3pir1" path="res://gui/promotion_widget.tscn" id="8_op3e8"]
 [ext_resource type="PackedScene" uid="uid://bllx8qfja0huk" path="res://promotion_system/promotion_system.tscn" id="10_qnd6n"]
+[ext_resource type="PackedScene" uid="uid://c3frnlmdfd5oo" path="res://gui/message_widget.tscn" id="10_tp5tb"]
 
 [node name="Main" type="Node2D" unique_id=639576338]
 y_sort_enabled = true
 script = ExtResource("1_04q08")
 
 [node name="ProcGenWorld" parent="." unique_id=572580707 instance=ExtResource("2_gu74f")]
+seed_value = 0
+city_denstity = 20
+good_denstity = 8
 
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
 position = Vector2(736, 410)
@@ -46,6 +50,8 @@ visible = false
 anchors_preset = 10
 anchor_bottom = 0.0
 grow_vertical = 1
+
+[node name="MessageWidget" parent="gui" unique_id=1487095003 instance=ExtResource("10_tp5tb")]
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 

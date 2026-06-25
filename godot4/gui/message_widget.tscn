@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://c3frnlmdfd5oo"]
+
+[ext_resource type="Script" uid="uid://d755bnt6qyuc" path="res://gui/message_widget.gd" id="1_cku88"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_uy7c8"]
+
+[node name="MessageWidget" type="Control" unique_id=1964343533]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cku88")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2043194394]
+self_modulate = Color(0.39, 0.41599995, 0.78, 1)
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+texture = SubResource("CanvasTexture_uy7c8")
+
+[node name="MessageLabel" type="Label" parent="." unique_id=827947631]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -142.5
+offset_top = 3.0
+offset_right = 142.5
+offset_bottom = 26.0
+grow_horizontal = 2
+text = "Nachricht"
+horizontal_alignment = 1
+
+[node name="Timer" type="Timer" parent="." unique_id=1479832711]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

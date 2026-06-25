@@ -15,6 +15,7 @@ var towns: Array[Town]
 @onready var promotion_system: PromotionSystem = $PromotionSystem
 @onready var promotion_widget: PromotionWidget = $gui/PromotionWidget
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
+@onready var message_widget: MessageWidget = $gui/MessageWidget
 
 
 func _ready() -> void:
