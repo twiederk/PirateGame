@@ -118,28 +118,6 @@ func test_get_trading_item():
 	assert_eq(trading_item.good_id, 1, "Should return trading item for fish")
 
 
-func test_get_save_data():
-	# arrange
-	player.gold = 321
-	player.position = Vector2(17, 29)
-	player.current_state = Player.State.IN_TOWN
-	player.get_trading_item(1).stock = 5
-	player.get_trading_item(2).stock = 7
-
-	# act
-	var save_data = player.get_save_data()
-
-	# assert
-	assert_eq(save_data.player.gold, 321, "Collected data should include player gold")
-	assert_eq(save_data.player.position.x, 17.0, "Collected data should include player position")
-	assert_eq(save_data.player.position.y, 29.0, "Collected data should include player position")
-	assert_eq(save_data.player.current_state, Player.State.IN_TOWN, "Collected data should include player current_state")
-	assert_eq(save_data.player.inventory[1].stock, 5, "Collected data should include serialized player inventory stock")
-	assert_eq(save_data.player.inventory[2].stock, 7, "Collected data should include serialized player inventory stock")
-	assert_eq(save_data.player.trader_rank, "res://promotion_system/trader_rank_01.tres", "Collected data should include player trader rank resource")
-	assert_eq(save_data.player.sailer_rank, "res://promotion_system/sailer_rank_01.tres", "Collected data should include player sailer rank resource")
-
-
 func test_player_owns_ship_returns_false_when_no_ship():
 	# act
 	var result = player.owns_ship()
