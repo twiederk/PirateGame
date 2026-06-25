@@ -144,4 +144,5 @@ func _on_pause_menu_save_button_pressed():
 
 
 func _on_rank_promoted(new_rank: PrestigeRank):
-	promotion_widget.show_promotion(new_rank)
+	var message = str("Du hast den neuen Titel: ", new_rank.title, " erhalten!")
+	MessageBus.message_send.emit(message, Color.CORNFLOWER_BLUE)
