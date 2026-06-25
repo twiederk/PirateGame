@@ -1,11 +1,13 @@
 class_name ProcGenWorld
 extends Node2D
 
+@export var width : int = 200
+@export var height : int = 200
+@export var seed_value: int = 0
+@export var town_percentage: float = 0.05
+@export var good_percentage: float = 0.125
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
-@export var seed_value: int = 0
-@export var city_denstity: int = 20
-@export var good_denstity: int = 8
 
 const TownScene = preload("res://world/town.tscn")
 const FishScene = preload("res://world/fish.tscn")
@@ -43,9 +45,6 @@ const PALM_TREE_TILES = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
 const GRASS_TILES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 const SIMULATION_STEP: float = 30.0
-
-var width : int = 200
-var height : int = 200
 
 var noise : Noise
 var tree_noise : Noise
@@ -244,24 +243,21 @@ func is_coast(player_position: Vector2) -> bool:
 
 
 func generate_towns() -> Array[Town]:
-	@warning_ignore("integer_division")
-	var max_cities = int(width / city_denstity)
+	var max_cities = int(width * town_percentage)
 	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * get_tile_size()))
 	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
 	
-	for i in range(max_cities):
+	for i in range(max_cities * 1.0):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Habor].pick_random()
 		var town = _create_town(HaborTownResource, town_name, coast_arr.pick_random())
 		towns.add_child(town)
 		
-	@warning_ignore("integer_division")
-	for i in range(max_cities / 2):
+	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Farm].pick_random()
 		var town = _create_town(FarmTownResource, town_name, farm_arr.pick_random())
 		towns.add_child(town)
 
-	@warning_ignore("integer_division")
-	for i in range(max_cities / 2):
+	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Woodcamp].pick_random()
 		var town = _create_town(WoodCampTownResource, town_name, tree_arr.pick_random())
 		towns.add_child(town)
@@ -291,8 +287,7 @@ func get_goods() -> Array[Fish]:
 
 
 func generate_goods():
-	@warning_ignore("integer_division")
-	var max_goods = int(width / good_denstity)
+	var max_goods = int(width * good_percentage)
 	var goods_to_generate = max_goods - goods.get_children().size()
 
 	for i in range(goods_to_generate):
