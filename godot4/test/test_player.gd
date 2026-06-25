@@ -24,31 +24,6 @@ func test_init():
 	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "New player should start with title Landratte")
 
 
-
-
-func test_set_save_data_missing_data_use_defaults():
-	# arrange
-	var save_data = {
-		"player": {
-			"gold": 123,
-			"position": {"x": 0, "y": 0},
-			"current_state": Player.State.ON_LAND,
-			"inventory": {
-				1: {"stock": 0},
-				2: {"stock": 0},
-				3: {"stock": 0},
-			}
-		}
-	}
-
-	# act
-	player.set_save_data(save_data)
-
-	# assert
-	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "Missing trader_rank in save should default to trader rank 1")
-	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "Missing sailer_rank in save should default to sailer rank 1")
-
-
 func test_get_used_capacity():
 	# act
 	var capacity = player.get_used_capacity()

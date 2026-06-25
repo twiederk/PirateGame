@@ -143,57 +143,6 @@ func equip_ship(ship_resource: ShipResource) -> void:
 	ship_sprite.texture = ship_resource.texture
 
 
-func get_save_data() -> Dictionary:
-	var player_data = {
-		"gold": gold,
-		"position": {
-			"x": position.x,
-			"y": position.y,
-		},
-		"trader_rank": trader_rank.resource_path,
-		"sailer_rank": sailer_rank.resource_path,
-		"current_state": current_state,
-		"inventory": _serialize_inventory_stock(),
-	}
-	if _ship_resource != null:
-		player_data.ship = {"resource_path": _ship_resource.resource_path}
-
-	return {"player": player_data}
-
-
-func _serialize_inventory_stock() -> Dictionary:
-	var inventory_data = {}
-	for good_id in _inventory:
-		inventory_data[good_id] = {"stock": _inventory[good_id].stock}
-	return inventory_data
-
-
-func set_save_data(save_data: Dictionary) -> void:
-	var player_data = save_data.player
-	var pos_data = player_data.position
-	position = Vector2i(int(pos_data.x), int(pos_data.y))
-	gold = int(player_data.gold)
-	current_state = int(player_data.current_state) as State
-	if player_data.has("trader_rank"):
-		trader_rank = load(player_data.trader_rank)
-	if player_data.has("sailer_rank"):
-		sailer_rank = load(player_data.sailer_rank)
-	if player_data.has("inventory"):
-		_restore_inventory_stock(player_data.inventory)
-	if player_data.has("ship"):
-		var resource_path = player_data.ship.resource_path
-		equip_ship(load(resource_path))
-	if current_state == State.ON_SHIP:
-		current_state = State.ON_LAND
-		board_ship()
-
-
-func _restore_inventory_stock(inventory_data: Dictionary) -> void:
-	for good_id in inventory_data:
-		var item_data = inventory_data[good_id]
-		get_trading_item(int(good_id)).stock = int(item_data.stock)
-
-
 func get_trading_items() -> Array[TradingItem]:
 	var typed: Array[TradingItem] = []
 	typed.assign(_inventory.values())

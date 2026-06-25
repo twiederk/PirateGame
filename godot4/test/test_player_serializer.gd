@@ -75,3 +75,26 @@ func test_set_save_data():
 	assert_eq(player.get_trading_item(2).stock, 7, "set_save_data should restore inventory stock for key 2")
 	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player trader rank")
 	assert_eq(player.sailer_rank.title, "Kapitän", "set_save_data should restore player sailer rank")
+
+
+func test_set_save_data_missing_data_use_defaults():
+	# arrange
+	var save_data = {
+		"player": {
+			"gold": 123,
+			"position": {"x": 0, "y": 0},
+			"current_state": Player.State.ON_LAND,
+			"inventory": {
+				1: {"stock": 0},
+				2: {"stock": 0},
+				3: {"stock": 0},
+			}
+		}
+	}
+
+	# act
+	player_serializer.set_save_data(player, save_data)
+
+	# assert
+	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "Missing trader_rank in save should default to trader rank 1")
+	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "Missing sailer_rank in save should default to sailer rank 1")
