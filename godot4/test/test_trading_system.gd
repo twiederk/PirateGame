@@ -78,7 +78,7 @@ func test_get_price_stock_high():
 	var price = trading_system.get_price(fish_item)
 	
 	# assert
-	assert_eq(price, GOOD_FISH.base_price * 0.5, "Should have halve of base price when stock is high")
+	assert_eq(price, int(GOOD_FISH.base_price * 0.5), "Should have halve of base price when stock is high")
 
 
 func test_player_buys_fish_in_habor():
