@@ -10,11 +10,13 @@ extends Node2D
 @export var tree_noise_texture : NoiseTexture2D
 
 const TownScene = preload("res://world/town.tscn")
-const FishScene = preload("res://world/fish.tscn")
+const GoodScene = preload("res://world/good.tscn")
 
 const HaborTownResource = preload("res://world/town_habor.tres")
 const FarmTownResource = preload("res://world/town_farm.tres")
 const WoodCampTownResource = preload("res://world/town_wood_camp.tres")
+
+const GOOD_FISH = preload("res://trading_system/good_fish.tres")
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -190,12 +192,12 @@ func set_save_data(save_data: Dictionary) -> void:
 		var goods_data: Array = world_data.goods
 		for i in range(goods_data.size()):
 			var good_data: Dictionary = goods_data[i]
-			var fish: Fish = FishScene.instantiate()
+			var good: Good = GoodScene.instantiate()
 			var good_resource = load(good_data.resource_path)
-			fish.good = good_resource
+			good.good_resource = good_resource
 			var pos = Vector2i(int(good_data.position.x), int(good_data.position.y))
-			fish.global_position = pos
-			goods.add_child(fish)
+			good.global_position = pos
+			goods.add_child(good)
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
@@ -213,9 +215,9 @@ func _serialize_town_save_data(town: Town) -> Dictionary:
 	}
 
 
-func _serialize_good_save_data(good: Fish) -> Dictionary:
+func _serialize_good_save_data(good: Good) -> Dictionary:
 	return {
-		"resource_path": good.good.resource_path,
+		"resource_path": good.good_resource.resource_path,
 		"position": {
 			"x": good.position.x,
 			"y": good.position.y,
@@ -280,8 +282,8 @@ func get_towns() -> Array[Town]:
 	return typed
 
 
-func get_goods() -> Array[Fish]:
-	var typed: Array[Fish] = []
+func get_goods() -> Array[Good]:
+	var typed: Array[Good] = []
 	typed.assign(goods.get_children())
 	return typed
 
@@ -291,12 +293,13 @@ func generate_goods():
 	var goods_to_generate = max_goods - goods.get_children().size()
 
 	for i in range(goods_to_generate):
-		var fish: Fish = FishScene.instantiate() 
+		var good: Good = GoodScene.instantiate() 
+		good.good_resource = GOOD_FISH
 		if i % 3 == 0:
-			fish.global_position = shallow_water_arr.pick_random() * get_tile_size()
+			good.global_position = shallow_water_arr.pick_random() * get_tile_size()
 		else:
-			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
-		goods.add_child(fish)
+			good.global_position = deep_water_arr.pick_random() * get_tile_size()
+		goods.add_child(good)
 
 
 func simulation(delta: float) -> void:

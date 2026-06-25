@@ -28,10 +28,10 @@ func test_get_save_data():
 	proc_gen_world.towns = towns_root
 	
 	var goods_root = Node2D.new()
-	var fish = Fish.new()
-	fish.good = GOOD_FISH
-	fish.global_position = Vector2i(10, 20)
-	goods_root.add_child(fish)
+	var good = Good.new()
+	good.good_resource = GOOD_FISH
+	good.global_position = Vector2i(10, 20)
+	goods_root.add_child(good)
 	proc_gen_world.goods = goods_root
 
 	# act
@@ -108,7 +108,7 @@ func test_set_save_data():
 	var goods = proc_gen_world.get_goods()
 	assert_eq(goods.size(), 1, "Should restore goods")
 	var good = goods[0]
-	assert_eq(good.good.resource_path, GOOD_FISH.resource_path, "Should restore good resource of good")
+	assert_eq(good.good_resource.resource_path, GOOD_FISH.resource_path, "Should restore good resource of good")
 	assert_eq(good.global_position, Vector2(10, 20), "Should restore position of good")
 	
 	# tear down
