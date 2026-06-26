@@ -15,8 +15,7 @@ var _ship_resource: ShipResource
 
 func _ready():
 	ship_name.text = _ship_resource.name
-	@warning_ignore("integer_division")
-	ship_speed.text = str(int(_ship_resource.speed / 10))
+	ship_speed.text = str(int(_ship_resource.speed * 0.1))
 	ship_price.text = number_format.format(_ship_resource.price)
 	
 

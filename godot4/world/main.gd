@@ -13,28 +13,28 @@ var towns: Array[Town]
 @onready var debug_screen: DebugScreen = $gui/DebugScreen
 @onready var pause_menu: PauseMenu = $gui/PauseMenu
 @onready var promotion_system: PromotionSystem = $PromotionSystem
-@onready var promotion_widget: PromotionWidget = $gui/PromotionWidget
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
+@onready var message_widget: MessageWidget = $gui/MessageWidget
 
 
 func _ready() -> void:
 	var world_seed = _get_seed()
 	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
-	_connect_signals()
 	_setup_limits_and_borders()
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
 	zoom_widget.set_zoom(camera.zoom)
 	
 	if SaveManager.is_game_loaded():
-		player.set_save_data(SaveManager.load_game_state)
-		proc_gen_world.set_save_data(SaveManager.load_game_state)
-		trading_system.set_save_data(SaveManager.load_game_state)
+		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state)
+		ProcGenWorldSerializer.new().set_save_data( proc_gen_world, SaveManager.load_game_state)
+		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
 	else:
 		proc_gen_world.generate_goods()
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
+	_connect_signals()
 
 
 func _process(delta):
@@ -68,6 +68,7 @@ func _connect_signals() -> void:
 		town.town_entered.connect(player._on_town_tile_town_entered)
 	player.gold_changed.connect(promotion_system.evaluate)
 	promotion_system.rank_promoted.connect(_on_rank_promoted)
+	inventory_screen.active_ship_selected.connect(_on_inventory_ship_selected)
 
 
 func _input(_event) -> void:
@@ -143,4 +144,10 @@ func _on_pause_menu_save_button_pressed():
 
 
 func _on_rank_promoted(new_rank: PrestigeRank):
-	promotion_widget.show_promotion(new_rank)
+	var message = str("Du hast den neuen Titel: ", new_rank.title, " erhalten!")
+	MessageBus.message_send.emit(message, Color.CORNFLOWER_BLUE)
+
+
+func _on_inventory_ship_selected(ship_resource: ShipResource) -> void:
+	if player.set_active_ship(ship_resource):
+		inventory_screen.show_inventory(player)

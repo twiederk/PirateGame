@@ -7,4 +7,5 @@ script = ExtResource("1_sdckk")
 id = 2
 name = "Korn"
 base_price = 15
+frame = 9
 metadata/_custom_type_script = "uid://drlt6i2k3ur3t"

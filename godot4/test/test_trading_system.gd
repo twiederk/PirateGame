@@ -78,8 +78,7 @@ func test_get_price_stock_high():
 	var price = trading_system.get_price(fish_item)
 	
 	# assert
-	@warning_ignore("integer_division")
-	assert_eq(price, GOOD_FISH.base_price / 2, "Should have halve of base price when stock is high")
+	assert_eq(price, int(GOOD_FISH.base_price * 0.5), "Should have halve of base price when stock is high")
 
 
 func test_player_buys_fish_in_habor():
@@ -172,34 +171,3 @@ func test_simulation():
 	# tear down
 	habor.free()
 	farm.free()
-
-
-func test_get_save_data():
-	# arrange
-	trading_system.current_game_time = 123.5
-	trading_system.accumulator = 17.25
-
-	# act
-	var save_data = trading_system.get_save_data()
-
-	# assert
-	assert_true(save_data.has("trading_system"), "Save data should contain trading_system section")
-	assert_eq(save_data.trading_system.current_game_time, 123.5, "Should persist current_game_time")
-	assert_eq(save_data.trading_system.accumulator, 17.25, "Should persist accumulator")
-
-
-func test_set_save_data():
-	# arrange
-	var save_data = {
-		"trading_system": {
-			"current_game_time": 456.75,
-			"accumulator": 9.5,
-		}
-	}
-
-	# act
-	trading_system.set_save_data(save_data)
-
-	# assert
-	assert_eq(trading_system.current_game_time, 456.75, "Should restore current_game_time from save data")
-	assert_eq(trading_system.accumulator, 9.5, "Should restore accumulator from save data")

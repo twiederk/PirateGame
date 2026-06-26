@@ -39,17 +39,21 @@ static var name_dictionary: Dictionary = {
 		"Kempten"
 	],
 	Type.Woodcamp: [
-		"Eberswalde",
-		"Baiersbronn",
-		"Freudenstadt",
-		"Triberg",
-		"Tharandt",
-		"Clausthal-Zellerfeld",
-		"Ilmenau",
-		"Suhl",
-		"Winterberg",
-		"Sankt Andreasberg",
-		"Schmallenberg"
+		"Freiburg",
+		"Karlsruhe",
+		"Stuttgart",
+		"Wiesbaden",
+		"Darmstadt",
+		"Kassel",
+		"Göttingen",
+		"Jena",
+		"Gera",
+		"Pforzheim",
+		"Siegen",
+		"Iserlohn",
+		"Hagen",
+		"Remscheid",
+		"Wuppertal",
 	],
 	
 }

@@ -1,18 +1,26 @@
 class_name ProcGenWorld
 extends Node2D
 
+@export var width : int = 200
+@export var height : int = 200
+@export var seed_value: int = 0
+@export var town_percentage: float = 0.05
+@export var fish_percentage: float = 0.125
+@export var grain_percentage: float = 0.05
+@export var wood_percentage: float = 0.05
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
-@export var seed_value: int = 0
-@export var city_denstity: int = 20
-@export var good_denstity: int = 20
 
 const TownScene = preload("res://world/town.tscn")
-const FishScene = preload("res://world/fish.tscn")
+const GoodScene = preload("res://world/good.tscn")
 
-const HaborTownResource = preload("res://world/town_habor.tres")
-const FarmTownResource = preload("res://world/town_farm.tres")
-const WoodCampTownResource = preload("res://world/town_wood_camp.tres")
+const TOWN_HABOR = preload("res://world/town_habor.tres")
+const TOWN_FARM = preload("res://world/town_farm.tres")
+const TOWN_WOOD_CAMP = preload("res://world/town_wood_camp.tres")
+
+const GOOD_FISH = preload("res://trading_system/good_fish.tres")
+const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
+const GOOD_WOOD = preload("res://trading_system/good_wood.tres")
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -43,9 +51,6 @@ const PALM_TREE_TILES = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
 const GRASS_TILES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 const SIMULATION_STEP: float = 30.0
-
-var width : int = 200
-var height : int = 200
 
 var noise : Noise
 var tree_noise : Noise
@@ -101,7 +106,7 @@ func generate_world(new_seed: int):
 func get_starting_position() -> Vector2i:
 	if grass_arr.is_empty():
 		return Vector2i.ZERO
-	return grass_arr.pick_random() * water_layer.tile_set.tile_size
+	return grass_arr.pick_random() * get_tile_size()
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
@@ -159,81 +164,6 @@ func get_tile_size() -> Vector2i:
 	return water_layer.tile_set.tile_size
 
 
-func get_save_data() -> Dictionary:
-	var world_data = {
-		"seed_value": seed_value,
-		"spawn_accumulator": spawn_accumulator,
-	}
-	world_data.towns = []
-	for town in get_towns():
-		world_data.towns.append(_serialize_town_save_data(town))
-	world_data.goods = []
-	for good in get_goods():
-		world_data.goods.append(_serialize_good_save_data(good))
-	return {"world": world_data}
-
-
-func set_save_data(save_data: Dictionary) -> void:
-	var world_data: Dictionary = save_data.world
-	if world_data.has("spawn_accumulator"):
-		spawn_accumulator = world_data.spawn_accumulator
-
-	var towns_data: Array = world_data.towns
-	var generated_towns : Array[Town] = get_towns()
-	for i in range(towns_data.size()):
-		var town_data: Dictionary = towns_data[i]
-		var current_town = generated_towns[i]
-		if town_data.has("visited"):
-			current_town.set_visited(town_data.visited)
-		_restore_town_inventory_from_save(current_town, town_data.inventory)
-
-	if world_data.has("goods"):
-		var goods_data: Array = world_data.goods
-		for i in range(goods_data.size()):
-			var good_data: Dictionary = goods_data[i]
-			var fish: Fish = FishScene.instantiate()
-			var good_resource = load(good_data.resource_path)
-			fish.good = good_resource
-			var pos = Vector2i(int(good_data.position.x), int(good_data.position.y))
-			fish.global_position = pos
-			goods.add_child(fish)
-
-
-func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
-	for item in town.get_trading_items():
-		var item_save_data = inventory_data[str(item.good_id)]
-		item.stock = item_save_data.stock
-		item.cached_stock = item_save_data.cached_stock
-		item.last_updated = item_save_data.last_updated
-
-
-func _serialize_town_save_data(town: Town) -> Dictionary:
-	return {
-		"visited": town.get_visited(),
-		"inventory": _serialize_town_inventory(town)
-	}
-
-
-func _serialize_good_save_data(good: Fish) -> Dictionary:
-	return {
-		"resource_path": good.good.resource_path,
-		"position": {
-			"x": good.position.x,
-			"y": good.position.y,
-		}
-	}
-
-func _serialize_town_inventory(town: Town) -> Dictionary:
-	var inventory_data: Dictionary = {}
-	for item in town.get_trading_items():
-		inventory_data[item.good_id] = {
-			"stock": item.stock,
-			"cached_stock": item.cached_stock,
-			"last_updated": item.last_updated,
-		}
-	return inventory_data
-
-
 func is_coast(player_position: Vector2) -> bool:
 	var player_position_to_tile = sand_and_grass_layer.local_to_map(player_position)
 	var tile_data : TileData = sand_and_grass_layer.get_cell_tile_data(player_position_to_tile)
@@ -244,26 +174,23 @@ func is_coast(player_position: Vector2) -> bool:
 
 
 func generate_towns() -> Array[Town]:
-	@warning_ignore("integer_division")
-	var max_cities = int(width / city_denstity)
+	var max_cities = int(width * town_percentage)
 	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * get_tile_size()))
 	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
 	
-	for i in range(max_cities):
+	for i in range(max_cities * 1.0):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Habor].pick_random()
-		var town = _create_town(HaborTownResource, town_name, coast_arr.pick_random())
+		var town = _create_town(TOWN_HABOR, town_name, coast_arr.pick_random())
 		towns.add_child(town)
 		
-	@warning_ignore("integer_division")
-	for i in range(max_cities / 2):
+	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Farm].pick_random()
-		var town = _create_town(FarmTownResource, town_name, farm_arr.pick_random())
+		var town = _create_town(TOWN_FARM, town_name, farm_arr.pick_random())
 		towns.add_child(town)
 
-	@warning_ignore("integer_division")
-	for i in range(max_cities / 2):
+	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Woodcamp].pick_random()
-		var town = _create_town(WoodCampTownResource, town_name, tree_arr.pick_random())
+		var town = _create_town(TOWN_WOOD_CAMP, town_name, tree_arr.pick_random())
 		towns.add_child(town)
 
 	return get_towns()
@@ -284,26 +211,31 @@ func get_towns() -> Array[Town]:
 	return typed
 
 
-func get_goods() -> Array[Fish]:
-	var typed: Array[Fish] = []
+func get_goods() -> Array[Good]:
+	var typed: Array[Good] = []
 	typed.assign(goods.get_children())
 	return typed
 
 
+func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
+	return get_goods().filter(func(good): return good.good_resource == good_resource)
+
+
 func generate_goods():
-	@warning_ignore("integer_division")
-	var max_goods = int(width / good_denstity)
-	var goods_to_generate = max_goods - goods.get_children().size()
-
-	for i in range(goods_to_generate):
-		var fish: Fish = FishScene.instantiate() 
-		if i % 2 == 0:
-			fish.global_position = deep_water_arr.pick_random() * get_tile_size()
-		else:
-			fish.global_position = shallow_water_arr.pick_random() * get_tile_size()
-		goods.add_child(fish)
+	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
+	_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.33), shallow_water_arr)
+	_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.66), deep_water_arr)
+	_generate_goods_of_type(GOOD_GRAIN, int(width * grain_percentage), farm_arr)
+	_generate_goods_of_type(GOOD_WOOD, int(width * wood_percentage), tree_arr)
 
 
+func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positions: Array[Vector2i]) -> void:
+	var good_to_generate = max_good - get_goods_by_type(good_resource).size()
+	for i in range(good_to_generate):
+		var good: Good = GoodScene.instantiate() 
+		good.good_resource = good_resource
+		good.global_position = positions.pick_random() * get_tile_size()
+		goods.add_child(good)
 
 func simulation(delta: float) -> void:
 	spawn_accumulator += delta

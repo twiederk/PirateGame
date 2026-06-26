@@ -105,11 +105,17 @@ func _clear_ship_rows() -> void:
 		child.queue_free()
 
 
-func _on_buy_ship(ship_resource: ShipResource) -> String:
-	if _player.gold >= ship_resource.price:
-		_player.equip_ship(ship_resource)
-		_player.gold -= ship_resource.price
-		_update_gui()
-		return str("Schiff gekauft.")
-	else:
+func _on_buy_ship(ship_resource: ShipResource) -> void:
+	message.text = _buy_ship(ship_resource)
+	
+	
+func _buy_ship(ship_resource: ShipResource) -> String:
+	if _player.gold < ship_resource.price:
 		return "Nicht genug Gold."
+		
+	if not _player.add_ship(ship_resource):
+		return "Schiff wird bereits besessen."
+		
+	_player.gold -= ship_resource.price
+	_update_gui()
+	return "Schiff gekauft."
