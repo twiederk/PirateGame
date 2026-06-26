@@ -96,6 +96,9 @@ text = "Schiff:"
 layout_mode = 2
 text = "Ruderboot"
 
+[node name="ShipButtons" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1567000011]
+layout_mode = 2
+
 [node name="InventoryTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1554919295]
 layout_mode = 2
 

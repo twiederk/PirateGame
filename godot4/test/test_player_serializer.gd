@@ -5,6 +5,8 @@ const TRADER_RANK_01 = preload("res://promotion_system/trader_rank_01.tres")
 const TRADER_RANK_06 = preload("res://promotion_system/trader_rank_06.tres")
 const SAILER_RANK_01 = preload("res://promotion_system/sailer_rank_01.tres")
 const SAILER_RANK_02 = preload("res://promotion_system/sailer_rank_02.tres")
+const BOAT = preload("res://trading_system/ship_boat.tres")
+const SAILING = preload("res://trading_system/ship_sailing.tres")
 
 var player: Player = null
 var player_serializer = null
@@ -24,6 +26,8 @@ func test_get_save_data():
 	player.gold = 321
 	player.position = Vector2(17, 29)
 	player.current_state = Player.State.IN_TOWN
+	player.add_ship(BOAT)
+	player.add_ship(SAILING)
 	player.get_trading_item(1).stock = 5
 	player.get_trading_item(2).stock = 7
 
@@ -39,6 +43,8 @@ func test_get_save_data():
 	assert_eq(save_data.player.inventory[2].stock, 7, "Collected data should include serialized player inventory stock")
 	assert_eq(save_data.player.trader_rank, "res://promotion_system/trader_rank_01.tres", "Collected data should include player trader rank resource")
 	assert_eq(save_data.player.sailer_rank, "res://promotion_system/sailer_rank_01.tres", "Collected data should include player sailer rank resource")
+	assert_eq(save_data.player.ships.size(), 2, "Collected data should include serialized owned ships")
+	assert_eq(save_data.player.current_ship_index, 1, "Collected data should include active ship index")
 
 
 func test_set_save_data():
@@ -55,6 +61,11 @@ func test_set_save_data():
 			"trader_rank": "res://promotion_system/trader_rank_06.tres",
 			"sailer_rank": "res://promotion_system/sailer_rank_02.tres",
 			"current_state": Player.State.IN_TOWN,
+			"ships": [
+				{"resource_path": "res://trading_system/ship_boat.tres"},
+				{"resource_path": "res://trading_system/ship_sailing.tres"},
+			],
+			"current_ship_index": 1,
 			"inventory": {
 				1: {"stock": 5},
 				2: {"stock": 7},
@@ -75,6 +86,8 @@ func test_set_save_data():
 	assert_eq(player.get_trading_item(2).stock, 7, "set_save_data should restore inventory stock for key 2")
 	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player trader rank")
 	assert_eq(player.sailer_rank.title, "Kapitän", "set_save_data should restore player sailer rank")
+	assert_eq(player.get_ships().size(), 2, "set_save_data should restore all owned ships")
+	assert_eq(player.get_ship().resource_path, "res://trading_system/ship_sailing.tres", "set_save_data should restore active ship by index")
 
 
 func test_set_save_data_missing_data_use_defaults():
@@ -98,3 +111,28 @@ func test_set_save_data_missing_data_use_defaults():
 	# assert
 	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "Missing trader_rank in save should default to trader rank 1")
 	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "Missing sailer_rank in save should default to sailer rank 1")
+
+
+func test_set_save_data_legacy_ship_field_migrates_to_ships_array():
+	# arrange
+	var save_data = {
+		"player": {
+			"gold": 123,
+			"position": {"x": 0, "y": 0},
+			"current_state": Player.State.ON_LAND,
+			"ship": {"resource_path": "res://trading_system/ship_boat.tres"},
+			"inventory": {
+				1: {"stock": 0},
+				2: {"stock": 0},
+				3: {"stock": 0},
+			}
+		}
+	}
+
+	# act
+	player_serializer.set_save_data(player, save_data)
+
+	# assert
+	assert_eq(player.get_ships().size(), 1, "Legacy ship save should restore one owned ship")
+	assert_eq(player._current_ship_index, 0, "Legacy ship save should set active ship index to 0")
+	assert_eq(player.get_ship().resource_path, "res://trading_system/ship_boat.tres", "Legacy ship save should set active ship")

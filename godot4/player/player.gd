@@ -18,7 +18,8 @@ var direction: Vector2 = Vector2.ZERO
 var trader_rank: PrestigeRank = preload("res://promotion_system/trader_rank_01.tres") as PrestigeRank
 var sailer_rank: PrestigeRank = preload("res://promotion_system/sailer_rank_01.tres") as PrestigeRank
 
-var _ship_resource: ShipResource = null
+var _ship_resources: Array[ShipResource] = []
+var _current_ship_index: int = -1
 var gold: int:
 	set(value):
 		gold = value
@@ -72,11 +73,49 @@ func _update_animation_parameters():
 
 
 func owns_ship() -> bool:
-	return _ship_resource != null
+	return not _ship_resources.is_empty()
+
+
+func add_ship(ship_resource: ShipResource) -> bool:
+	if ship_resource == null:
+		return false
+	for existing_ship in _ship_resources:
+		if existing_ship.id == ship_resource.id:
+			return false
+	_ship_resources.append(ship_resource)
+	_set_active_ship_index(_ship_resources.size() - 1)
+	return true
+
+
+func set_active_ship(ship_resource: ShipResource) -> bool:
+	if ship_resource == null:
+		return false
+	if current_state == State.ON_SHIP:
+		return false
+	for i in _ship_resources.size():
+		if _ship_resources[i].id == ship_resource.id:
+			_set_active_ship_index(i)
+			return true
+	return false
+
+
+func _set_active_ship_index(index: int) -> void:
+	if not _is_valid_ship_index(index):
+		_current_ship_index = -1
+		return
+	_current_ship_index = index
+	if ship_sprite != null:
+		ship_sprite.texture = _ship_resources[index].texture
+
+
+func _is_valid_ship_index(index: int) -> bool:
+	return index >= 0 and index < _ship_resources.size()
 
 
 func board_ship() -> void:
 	if not owns_ship():
+		return
+	if get_ship() == null:
 		return
 	
 	wanderer_sprite.visible = !wanderer_sprite.visible
@@ -92,11 +131,14 @@ func board_ship() -> void:
 
 
 func _move_on_ship() -> void:
+	var active_ship = get_ship()
+	if active_ship == null:
+		return
 	current_state = State.ON_SHIP
-	current_speed = _ship_resource.speed
+	current_speed = active_ship.speed
 	set_collision_mask_value(MASK_LAND, true)
 	set_collision_mask_value(MASK_WATER, false)
-	if _ship_resource.ocean_going:
+	if active_ship.ocean_going:
 		set_collision_mask_value(MASK_OCEAN, false)
 	else:
 		set_collision_mask_value(MASK_OCEAN, true)
@@ -139,8 +181,15 @@ func get_trading_item(good_id: int) -> TradingItem:
 
 
 func equip_ship(ship_resource: ShipResource) -> void:
-	_ship_resource = ship_resource
-	ship_sprite.texture = ship_resource.texture
+	if ship_resource == null:
+		return
+	if set_active_ship(ship_resource):
+		return
+	for existing_ship in _ship_resources:
+		if existing_ship.id == ship_resource.id:
+			return
+	_ship_resources.append(ship_resource)
+	_set_active_ship_index(_ship_resources.size() - 1)
 
 
 func get_trading_items() -> Array[TradingItem]:
@@ -154,7 +203,13 @@ func get_previous_state() -> State:
 
 
 func get_ship() -> ShipResource:
-	return _ship_resource
+	if not _is_valid_ship_index(_current_ship_index):
+		return null
+	return _ship_resources[_current_ship_index]
+
+
+func get_ships() -> Array[ShipResource]:
+	return _ship_resources
 
 
 func collect(good: GoodResource, amount: int) -> void:

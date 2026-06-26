@@ -1,6 +1,7 @@
 extends GutTest
 
 const BOAT = preload("res://trading_system/ship_boat.tres")
+const SAILING = preload("res://trading_system/ship_sailing.tres")
 const TRADER_RANK_01 = preload("res://promotion_system/trader_rank_01.tres")
 const SAILER_RANK_01 = preload("res://promotion_system/sailer_rank_01.tres")
 const GOOD_FISH = preload("res://trading_system/good_fish.tres")
@@ -74,7 +75,8 @@ func test_player_equip_ship_assigns_ship_resource():
 	player.equip_ship(BOAT)
 
 	# assert
-	assert_eq(player._ship_resource, BOAT, "Player should store the provided ShipResource when equipped")
+	assert_eq(player.get_ship(), BOAT, "Player should set the provided ShipResource as active ship when equipped")
+	assert_eq(player.get_ships().size(), 1, "Player should add equipped ship to owned ships")
 	
 	# tear down
 	sprite2D.free()
@@ -129,3 +131,67 @@ func test_get_free_capacity():
 	
 	# assert
 	assert_eq(result, 3, "Should have free capacity of 3")
+
+
+func test_player_starts_with_empty_ship_list():
+	# act
+	var ships = player.get_ships()
+
+	# assert
+	assert_eq(ships.size(), 0, "New player should start with no owned ships")
+
+
+func test_player_starts_with_current_ship_index_minus_one():
+	# act
+	var current_ship_index = player._current_ship_index
+
+	# assert
+	assert_eq(current_ship_index, -1, "New player should have no active ship index")
+
+
+func test_owns_ship_true_when_ship_list_contains_ship():
+	# arrange
+	player._ship_resources.append(BOAT)
+
+	# act
+	var result = player.owns_ship()
+
+	# assert
+	assert_true(result, "Should report that the player owns a ship when at least one ship is owned")
+
+
+func test_add_ship_rejects_duplicate_ship_type():
+	# arrange
+	player._ship_resources.append(BOAT)
+
+	# act
+	var result = player.add_ship(BOAT)
+
+	# assert
+	assert_false(result, "Should reject buying the same ship type twice")
+	assert_eq(player.get_ships().size(), 1, "Should keep only one ship entry for a ship type")
+
+
+func test_add_ship_sets_new_ship_as_active():
+	# act
+	var result_first = player.add_ship(BOAT)
+	var result_second = player.add_ship(SAILING)
+
+	# assert
+	assert_true(result_first, "Should add first ship")
+	assert_true(result_second, "Should add second ship")
+	assert_eq(player.get_ship(), SAILING, "Should set last purchased ship as active ship")
+
+
+func test_set_active_ship_fails_while_on_ship():
+	# arrange
+	player.add_ship(BOAT)
+	player.add_ship(SAILING)
+	player.current_state = Player.State.ON_SHIP
+
+	# act
+	var result = player.set_active_ship(BOAT)
+
+	# assert
+	assert_false(result, "Should prevent changing active ship while player is on ship")
+	assert_eq(player.get_ship(), SAILING, "Should keep current active ship unchanged")

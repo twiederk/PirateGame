@@ -288,8 +288,6 @@ Backward read support:
 - `test_owns_ship_false_when_ship_list_is_empty`
 - `test_add_ship_adds_ship_to_list`
 - `test_add_ship_sets_first_ship_as_active`
-- `test_set_active_ship_by_index_updates_active_ship`
-- `test_set_active_ship_by_index_rejects_invalid_index`
 - `test_get_active_ship_returns_null_when_no_ship`
 - `test_get_ship_wrapper_returns_active_ship`
 - `test_equip_ship_wrapper_adds_or_activates_ship`

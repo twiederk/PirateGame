@@ -68,6 +68,7 @@ func _connect_signals() -> void:
 		town.town_entered.connect(player._on_town_tile_town_entered)
 	player.gold_changed.connect(promotion_system.evaluate)
 	promotion_system.rank_promoted.connect(_on_rank_promoted)
+	inventory_screen.active_ship_selected.connect(_on_inventory_ship_selected)
 
 
 func _input(_event) -> void:
@@ -145,3 +146,8 @@ func _on_pause_menu_save_button_pressed():
 func _on_rank_promoted(new_rank: PrestigeRank):
 	var message = str("Du hast den neuen Titel: ", new_rank.title, " erhalten!")
 	MessageBus.message_send.emit(message, Color.CORNFLOWER_BLUE)
+
+
+func _on_inventory_ship_selected(ship_resource: ShipResource) -> void:
+	if player.set_active_ship(ship_resource):
+		inventory_screen.show_inventory(player)

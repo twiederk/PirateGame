@@ -65,7 +65,8 @@ func test_evaluate_promote_to_sailer_rank_02():
 	player.sailer_rank = SAILER_RANK_01
 	var ship: ShipResource = ShipResource.new()
 	ship.id = 1
-	player._ship_resource = ship
+	player._ship_resources.append(ship)
+	player._current_ship_index = 0
 
 	# act
 	promotion_system.evaluate(player)
