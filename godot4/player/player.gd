@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal gold_changed(player: Player)
 
 const LAND_SPEED: float = 200.0
+const NO_SHIP: int = -1
 
 const MASK_WATER: int = 2
 const MASK_LAND: int = 3
@@ -19,7 +20,7 @@ var trader_rank: PrestigeRank = preload("res://promotion_system/trader_rank_01.t
 var sailer_rank: PrestigeRank = preload("res://promotion_system/sailer_rank_01.tres") as PrestigeRank
 
 var _ship_resources: Array[ShipResource] = []
-var _current_ship_index: int = -1
+var _current_ship_index: int = NO_SHIP
 var gold: int:
 	set(value):
 		gold = value
@@ -77,8 +78,6 @@ func owns_ship() -> bool:
 
 
 func add_ship(ship_resource: ShipResource) -> bool:
-	if ship_resource == null:
-		return false
 	for existing_ship in _ship_resources:
 		if existing_ship.id == ship_resource.id:
 			return false
@@ -100,16 +99,10 @@ func set_active_ship(ship_resource: ShipResource) -> bool:
 
 
 func _set_active_ship_index(index: int) -> void:
-	if not _is_valid_ship_index(index):
-		_current_ship_index = -1
-		return
 	_current_ship_index = index
 	if ship_sprite != null:
 		ship_sprite.texture = _ship_resources[index].texture
 
-
-func _is_valid_ship_index(index: int) -> bool:
-	return index >= 0 and index < _ship_resources.size()
 
 
 func board_ship() -> void:
@@ -203,7 +196,7 @@ func get_previous_state() -> State:
 
 
 func get_ship() -> ShipResource:
-	if not _is_valid_ship_index(_current_ship_index):
+	if _current_ship_index == NO_SHIP:
 		return null
 	return _ship_resources[_current_ship_index]
 
