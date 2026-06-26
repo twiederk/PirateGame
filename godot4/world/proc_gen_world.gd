@@ -6,8 +6,8 @@ extends Node2D
 @export var seed_value: int = 0
 @export var town_percentage: float = 0.05
 @export var fish_percentage: float = 0.125
-@export var grain_percentage: float = 0.125
-@export var wood_percentage: float = 0.125
+@export var grain_percentage: float = 0.05
+@export var wood_percentage: float = 0.05
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 
@@ -106,7 +106,7 @@ func generate_world(new_seed: int):
 func get_starting_position() -> Vector2i:
 	if grass_arr.is_empty():
 		return Vector2i.ZERO
-	return grass_arr.pick_random() * water_layer.tile_set.tile_size
+	return grass_arr.pick_random() * get_tile_size()
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
@@ -223,34 +223,19 @@ func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
 
 func generate_goods():
 	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
+	_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.33), shallow_water_arr)
+	_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.66), deep_water_arr)
+	_generate_goods_of_type(GOOD_GRAIN, int(width * grain_percentage), farm_arr)
+	_generate_goods_of_type(GOOD_WOOD, int(width * wood_percentage), tree_arr)
 
-	var max_fish = int(width * fish_percentage)
-	var fish_to_generate = max_fish - get_goods_by_type(GOOD_FISH).size()
-	for i in range(fish_to_generate):
+
+func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positions: Array[Vector2i]) -> void:
+	var good_to_generate = max_good - get_goods_by_type(good_resource).size()
+	for i in range(good_to_generate):
 		var good: Good = GoodScene.instantiate() 
-		good.good_resource = GOOD_FISH
-		if i % 3 == 0:
-			good.global_position = shallow_water_arr.pick_random() * get_tile_size()
-		else:
-			good.global_position = deep_water_arr.pick_random() * get_tile_size()
+		good.good_resource = good_resource
+		good.global_position = positions.pick_random() * get_tile_size()
 		goods.add_child(good)
-
-	var max_grain = int(width * grain_percentage)
-	var grain_to_generate = max_grain - get_goods_by_type(GOOD_GRAIN).size()
-	for i in range(grain_to_generate):
-		var good: Good = GoodScene.instantiate() 
-		good.good_resource = GOOD_GRAIN
-		good.global_position = farm_arr.pick_random() * get_tile_size()
-		goods.add_child(good)
-
-	var max_wood = int(width * wood_percentage)
-	var wood_to_generate = max_wood - get_goods_by_type(GOOD_WOOD).size()
-	for i in range(wood_to_generate):
-		var good: Good = GoodScene.instantiate() 
-		good.good_resource = GOOD_WOOD
-		good.global_position = tree_arr.pick_random() * get_tile_size()
-		goods.add_child(good)
-
 
 func simulation(delta: float) -> void:
 	spawn_accumulator += delta
