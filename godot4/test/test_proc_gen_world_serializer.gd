@@ -140,12 +140,6 @@ func test_set_save_data_missing_data_use_defaults():
 						"1": { }
 					}
 				}
-			],
-			"goods": [
-				{
-					"resource_path": GOOD_FISH.resource_path,
-					"position": {"x": 10, "y": 20},
-				}
 			]
 		}
 	}
@@ -154,16 +148,12 @@ func test_set_save_data_missing_data_use_defaults():
 	proc_gen_world_serializer.set_save_data(proc_gen_world, save_data)
 
 	# assert
-	assert_eq(proc_gen_world.spawn_accumulator, 0.0, "should use default value for accumulator")
-	assert_false(town.get_visited(), "should use default value for visited")
-	assert_eq(town_item.stock, 0, "should use default value for town item stock")
-	assert_eq(town_item.cached_stock, 0, "should use default value for town item cached_stock")
-	assert_eq(town_item.last_updated, 0.0, "should use default value for town item last_updated")
-	var goods = proc_gen_world.get_goods()
-	assert_eq(goods.size(), 1, "Should restore goods")
-	var good = goods[0]
-	assert_eq(good.good_resource.resource_path, GOOD_FISH.resource_path, "Should restore good resource of good")
-	assert_eq(good.global_position, Vector2(10, 20), "Should restore position of good")
+	assert_eq(proc_gen_world.spawn_accumulator, 0.0, "Should use default value for accumulator")
+	assert_false(town.get_visited(), "Should use default value for visited")
+	assert_eq(town_item.stock, 0, "Should use default value for town item stock")
+	assert_eq(town_item.cached_stock, 0, "Should use default value for town item cached_stock")
+	assert_eq(town_item.last_updated, 0.0, "Should use default value for town item last_updated")
+	assert_eq(proc_gen_world.get_goods().size(), 0, "Should not create goods")
 	
 	# tear down
 	towns_root.free()
