@@ -146,7 +146,7 @@ func test_player_starts_with_current_ship_index_minus_one():
 	var current_ship_index = player._current_ship_index
 
 	# assert
-	assert_eq(current_ship_index, -1, "New player should have no active ship index")
+	assert_eq(current_ship_index, Player.NO_SHIP, "New player should have no active ship index")
 
 
 func test_owns_ship_true_when_ship_list_contains_ship():

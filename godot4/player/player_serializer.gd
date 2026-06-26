@@ -46,7 +46,7 @@ func set_save_data(player: Player, save_data: Dictionary) -> void:
 	if player_data.has("inventory"):
 		_restore_inventory_stock(player, player_data.inventory)
 	player._ship_resources.clear()
-	player._current_ship_index = -1
+	player._current_ship_index = Player.NO_SHIP
 	if player_data.has("ships"):
 		_restore_ships(player, player_data)
 	elif player_data.has("ship"):
