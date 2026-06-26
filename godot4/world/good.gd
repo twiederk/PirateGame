@@ -2,9 +2,14 @@ class_name Good
 extends Area2D
 
 @export var good_resource: GoodResource
+@onready var sprite_2d = $Sprite2D
 
 
-func _on_body_entered(body):
+func _ready() -> void:
+	sprite_2d.frame = good_resource.frame
+
+
+func _on_body_entered(body) -> void:
 	if not body is Player:
 		return
 

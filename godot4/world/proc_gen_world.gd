@@ -5,7 +5,9 @@ extends Node2D
 @export var height : int = 200
 @export var seed_value: int = 0
 @export var town_percentage: float = 0.05
-@export var good_percentage: float = 0.125
+@export var fish_percentage: float = 0.125
+@export var grain_percentage: float = 0.125
+@export var wood_percentage: float = 0.125
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 
@@ -17,6 +19,8 @@ const TOWN_FARM = preload("res://world/town_farm.tres")
 const TOWN_WOOD_CAMP = preload("res://world/town_wood_camp.tres")
 
 const GOOD_FISH = preload("res://trading_system/good_fish.tres")
+const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
+const GOOD_WOOD = preload("res://trading_system/good_wood.tres")
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -213,17 +217,38 @@ func get_goods() -> Array[Good]:
 	return typed
 
 
-func generate_goods():
-	var max_goods = int(width * good_percentage)
-	var goods_to_generate = max_goods - goods.get_children().size()
+func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
+	return get_goods().filter(func(good): return good.good_resource == good_resource)
 
-	for i in range(goods_to_generate):
+
+func generate_goods():
+	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
+
+	var max_fish = int(width * fish_percentage)
+	var fish_to_generate = max_fish - get_goods_by_type(GOOD_FISH).size()
+	for i in range(fish_to_generate):
 		var good: Good = GoodScene.instantiate() 
 		good.good_resource = GOOD_FISH
 		if i % 3 == 0:
 			good.global_position = shallow_water_arr.pick_random() * get_tile_size()
 		else:
 			good.global_position = deep_water_arr.pick_random() * get_tile_size()
+		goods.add_child(good)
+
+	var max_grain = int(width * grain_percentage)
+	var grain_to_generate = max_grain - get_goods_by_type(GOOD_GRAIN).size()
+	for i in range(grain_to_generate):
+		var good: Good = GoodScene.instantiate() 
+		good.good_resource = GOOD_GRAIN
+		good.global_position = farm_arr.pick_random() * get_tile_size()
+		goods.add_child(good)
+
+	var max_wood = int(width * wood_percentage)
+	var wood_to_generate = max_wood - get_goods_by_type(GOOD_WOOD).size()
+	for i in range(wood_to_generate):
+		var good: Good = GoodScene.instantiate() 
+		good.good_resource = GOOD_WOOD
+		good.global_position = tree_arr.pick_random() * get_tile_size()
 		goods.add_child(good)
 
 
