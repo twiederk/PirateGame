@@ -254,14 +254,11 @@ func generate_raiders() -> void:
 		var raider: Raider = RaiderScene.instantiate() 
 		raider.global_position = grass_arr.pick_random() * get_tile_size()
 		raiders.add_child(raider)
-	
-	
-	var raider = RaiderScene.instantiate()
-	raiders.add_child(raider)
 
 
 func simulation(delta: float) -> void:
 	spawn_accumulator += delta
 	if spawn_accumulator >= SIMULATION_STEP:
 		generate_goods()
+		generate_raiders()
 		spawn_accumulator = 0.0
