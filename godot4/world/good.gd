@@ -13,6 +13,10 @@ func _on_body_entered(body) -> void:
 	if not body is Player:
 		return
 
+	if body.get_free_capacity() <= 0:
+		MessageBus.message_send.emit("Du hast keinen Platz mehr im Laderaum.")
+		return
+
 	var player = body as Player
 	var amount = randi_range(1, 5)
 	player.collect(good_resource, amount)
