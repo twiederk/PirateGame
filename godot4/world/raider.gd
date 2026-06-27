@@ -71,9 +71,6 @@ func _on_robbery_zone_body_entered(body) -> void:
 func _rob_player() -> void:
 	if player == null:
 		return
-	
-	player.gold -= int(player.gold * 0.5)
-	for trading_item in player.get_trading_items():
-		trading_item.stock = int(trading_item.stock * 0.5)
-	
+	player.lose_gold(0.5)
+	player.lose_goods(0.5)	
 	MessageBus.message_send.emit("Räuberangriff! Du verlierst die Hälfte deines Goldes und deiner Waren.")
