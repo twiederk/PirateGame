@@ -219,6 +219,12 @@ func get_goods() -> Array[Good]:
 	return typed
 
 
+func get_raiders() -> Array[Raider]:
+	var typed: Array[Raider] = []
+	typed.assign(raiders.get_children())
+	return typed
+
+
 func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
 	return get_goods().filter(func(good): return good.good_resource == good_resource)
 

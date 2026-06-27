@@ -2,7 +2,7 @@ class_name Raider
 extends CharacterBody2D
 
 
-const SPEED: float = 220.0
+const SPEED: float = 200.0
 
 enum State { IDLE, CHASE }
 
