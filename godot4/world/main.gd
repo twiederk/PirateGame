@@ -35,7 +35,6 @@ func _ready() -> void:
 		proc_gen_world.generate_raiders()
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
-		proc_gen_world.raiders.get_children()[0].position = player.position + Vector2(320, 320)
 	_connect_signals()
 
 

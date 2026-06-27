@@ -8,6 +8,7 @@ extends Node2D
 @export var fish_percentage: float = 0.125
 @export var grain_percentage: float = 0.05
 @export var wood_percentage: float = 0.05
+@export var raider_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 
@@ -238,8 +239,8 @@ func generate_goods():
 
 
 func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positions: Array[Vector2i]) -> void:
-	var good_to_generate = max_good - get_goods_by_type(good_resource).size()
-	for i in range(good_to_generate):
+	var goods_to_generate = max_good - get_goods_by_type(good_resource).size()
+	for i in range(goods_to_generate):
 		var good: Good = GoodScene.instantiate() 
 		good.good_resource = good_resource
 		good.global_position = positions.pick_random() * get_tile_size()
@@ -247,6 +248,14 @@ func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positio
 
 
 func generate_raiders() -> void:
+	var max_raiders = int(width * raider_percentage)
+	var raiders_to_generate = max_raiders - get_raiders().size()
+	for i in range(raiders_to_generate):
+		var raider: Raider = RaiderScene.instantiate() 
+		raider.global_position = grass_arr.pick_random() * get_tile_size()
+		raiders.add_child(raider)
+	
+	
 	var raider = RaiderScene.instantiate()
 	raiders.add_child(raider)
 
