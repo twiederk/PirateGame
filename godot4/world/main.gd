@@ -37,7 +37,7 @@ func _ready() -> void:
 	_connect_signals()
 
 
-func _process(delta):
+func _physics_process(delta):
 	if player.in_town():
 		return
 	trading_system.simulation(delta, towns)
@@ -116,10 +116,12 @@ func _inventory_screen() -> void:
 		if inventory_screen.visible:
 			inventory_screen.hide()
 			player.set_physics_process(true)
+			set_physics_process(true)
 		else:
 			inventory_screen.show_inventory(player)
 			player.velocity = Vector2.ZERO
 			player.set_physics_process(false)
+			set_physics_process(false)
 	
 	
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
