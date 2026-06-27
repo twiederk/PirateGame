@@ -115,8 +115,11 @@ func _inventory_screen() -> void:
 	if Input.is_action_just_pressed("inventory_screen"):
 		if inventory_screen.visible:
 			inventory_screen.hide()
+			player.set_physics_process(true)
 		else:
 			inventory_screen.show_inventory(player)
+			player.velocity = Vector2.ZERO
+			player.set_physics_process(false)
 	
 	
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
