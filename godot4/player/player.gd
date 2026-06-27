@@ -104,7 +104,6 @@ func _set_active_ship_index(index: int) -> void:
 		ship_sprite.texture = _ship_resources[index].texture
 
 
-
 func board_ship() -> void:
 	if not owns_ship():
 		return
@@ -214,3 +213,12 @@ func collect(good: GoodResource, amount: int) -> void:
 
 func get_free_capacity():
 	return cargo_capacity - get_used_capacity()
+
+
+func lose_gold(loss_percentage: float) -> void:
+	gold -= int(gold * loss_percentage)
+	
+	
+func lose_goods(loss_percentage: float) -> void:
+	for trading_item in get_trading_items():
+		trading_item.stock = int(trading_item.stock * loss_percentage)

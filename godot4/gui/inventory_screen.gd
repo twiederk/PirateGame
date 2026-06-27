@@ -48,6 +48,7 @@ func _create_ship_buttons(player: Player) -> void:
 		button.disabled = player.current_state == Player.State.ON_SHIP
 		button.pressed.connect(_on_ship_button_pressed.bind(ship_resource))
 		ship_buttons.add_child(button)
+		button.grab_focus()
 
 
 func _on_ship_button_pressed(ship_resource: ShipResource) -> void:

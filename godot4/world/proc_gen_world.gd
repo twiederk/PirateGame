@@ -8,11 +8,13 @@ extends Node2D
 @export var fish_percentage: float = 0.125
 @export var grain_percentage: float = 0.05
 @export var wood_percentage: float = 0.05
+@export var raider_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 
 const TownScene = preload("res://world/town.tscn")
 const GoodScene = preload("res://world/good.tscn")
+const RaiderScene = preload("res://world/raider.tscn")
 
 const TOWN_HABOR = preload("res://world/town_habor.tres")
 const TOWN_FARM = preload("res://world/town_farm.tres")
@@ -72,6 +74,7 @@ var spawn_accumulator: float = 0.0
 @onready var environment_layer: TileMapLayer = $EnvironmentLayer
 @onready var towns: Node2D = $Towns
 @onready var goods = $Goods
+@onready var raiders = $Raiders
 
 
 func _ready() -> void:
@@ -217,6 +220,12 @@ func get_goods() -> Array[Good]:
 	return typed
 
 
+func get_raiders() -> Array[Raider]:
+	var typed: Array[Raider] = []
+	typed.assign(raiders.get_children())
+	return typed
+
+
 func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
 	return get_goods().filter(func(good): return good.good_resource == good_resource)
 
@@ -230,15 +239,26 @@ func generate_goods():
 
 
 func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positions: Array[Vector2i]) -> void:
-	var good_to_generate = max_good - get_goods_by_type(good_resource).size()
-	for i in range(good_to_generate):
+	var goods_to_generate = max_good - get_goods_by_type(good_resource).size()
+	for i in range(goods_to_generate):
 		var good: Good = GoodScene.instantiate() 
 		good.good_resource = good_resource
 		good.global_position = positions.pick_random() * get_tile_size()
 		goods.add_child(good)
 
+
+func generate_raiders() -> void:
+	var max_raiders = int(width * raider_percentage)
+	var raiders_to_generate = max_raiders - get_raiders().size()
+	for i in range(raiders_to_generate):
+		var raider: Raider = RaiderScene.instantiate() 
+		raider.global_position = grass_arr.pick_random() * get_tile_size()
+		raiders.add_child(raider)
+
+
 func simulation(delta: float) -> void:
 	spawn_accumulator += delta
 	if spawn_accumulator >= SIMULATION_STEP:
 		generate_goods()
+		generate_raiders()
 		spawn_accumulator = 0.0
