@@ -449,6 +449,8 @@ height = 20.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_h2gax"]
 radius = 300.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h2gax"]
+
 [node name="Raider" type="CharacterBody2D" unique_id=2021988774]
 y_sort_enabled = true
 collision_mask = 11
@@ -481,9 +483,18 @@ position = Vector2(-1, -10)
 shape = SubResource("CapsuleShape2D_yni73")
 
 [node name="DetectionZone" type="Area2D" parent="." unique_id=662936520]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=35336230]
 shape = SubResource("CircleShape2D_h2gax")
 
+[node name="RobberyZone" type="Area2D" parent="." unique_id=395016086]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RobberyZone" unique_id=1866742627]
+position = Vector2(-1, -10)
+shape = SubResource("CapsuleShape2D_h2gax")
+
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
 [connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]
+[connection signal="body_entered" from="RobberyZone" to="." method="_on_robbery_zone_body_entered"]
