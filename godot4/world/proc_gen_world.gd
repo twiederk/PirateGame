@@ -13,6 +13,7 @@ extends Node2D
 
 const TownScene = preload("res://world/town.tscn")
 const GoodScene = preload("res://world/good.tscn")
+const RaiderScene = preload("res://world/raider.tscn")
 
 const TOWN_HABOR = preload("res://world/town_habor.tres")
 const TOWN_FARM = preload("res://world/town_farm.tres")
@@ -72,6 +73,7 @@ var spawn_accumulator: float = 0.0
 @onready var environment_layer: TileMapLayer = $EnvironmentLayer
 @onready var towns: Node2D = $Towns
 @onready var goods = $Goods
+@onready var raiders = $Raiders
 
 
 func _ready() -> void:
@@ -236,6 +238,13 @@ func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positio
 		good.good_resource = good_resource
 		good.global_position = positions.pick_random() * get_tile_size()
 		goods.add_child(good)
+
+
+func generate_raiders() -> void:
+	var raider = RaiderScene.instantiate()
+	raiders.add_child(raider)
+	
+	
 
 func simulation(delta: float) -> void:
 	spawn_accumulator += delta

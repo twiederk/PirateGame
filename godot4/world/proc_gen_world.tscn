@@ -52,3 +52,5 @@ tile_set = ExtResource("2_btogb")
 z_index = 1
 
 [node name="Goods" type="Node2D" parent="." unique_id=624860065]
+
+[node name="Raiders" type="Node2D" parent="." unique_id=1607928999]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dx4ohypanuh4j"]
 
 [ext_resource type="Script" uid="uid://bu6d745yjdoe3" path="res://world/raider.gd" id="1_etc2l"]
-[ext_resource type="Texture2D" uid="uid://cg66nflhxk3as" path="res://player/player_spritesheet.png" id="2_4nodc"]
+[ext_resource type="Texture2D" uid="uid://ty8c3xdfaokn" path="res://world/raider_spritesheet.png" id="2_h2gax"]
 
 [sub_resource type="Animation" id="Animation_mqw7g"]
 length = 0.001
@@ -453,7 +453,7 @@ script = ExtResource("1_etc2l")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=364959174]
 position = Vector2(0, -10)
-texture = ExtResource("2_4nodc")
+texture = ExtResource("2_h2gax")
 hframes = 4
 vframes = 9
 frame = 1

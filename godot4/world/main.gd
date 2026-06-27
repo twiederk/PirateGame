@@ -32,8 +32,10 @@ func _ready() -> void:
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
 	else:
 		proc_gen_world.generate_goods()
+		proc_gen_world.generate_raiders()
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
+		proc_gen_world.raiders.get_children()[0].position = player.position + Vector2(160, 160)
 	_connect_signals()
 
 
