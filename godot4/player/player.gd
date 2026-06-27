@@ -104,7 +104,6 @@ func _set_active_ship_index(index: int) -> void:
 		ship_sprite.texture = _ship_resources[index].texture
 
 
-
 func board_ship() -> void:
 	if not owns_ship():
 		return
