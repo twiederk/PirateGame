@@ -2,10 +2,14 @@ class_name Raider
 extends CharacterBody2D
 
 
-const LAND_SPEED: float = 200.0
+const SPEED: float = 150.0
 
-var current_speed: float = LAND_SPEED
+enum State { IDLE, CHASE }
+
+
 var direction: Vector2 = Vector2.ZERO
+var player: Player = null
+var current_state: State = State.IDLE
 
 
 @onready var animation_player = $Sprite2D/AnimationPlayer
@@ -21,6 +25,11 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(_delta: float):
+	if current_state == State.IDLE:
+		return
+	
+	direction = (player.global_position - global_position).normalized()
+	velocity = direction * SPEED
 	move_and_slide()
 
 
@@ -35,3 +44,17 @@ func _update_animation_parameters():
 	if direction != Vector2.ZERO:
 		animation_tree["parameters/idle/blend_position"] = direction
 		animation_tree["parameters/walk/blend_position"] = direction
+
+
+func _on_detection_zone_body_entered(body):
+	if not body is Player:
+		return
+	player = body as Player
+	current_state = State.CHASE
+
+
+func _on_detection_zone_body_exited(body):
+	if not body is Player:
+		return
+	player = null
+	current_state = State.IDLE
