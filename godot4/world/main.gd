@@ -35,7 +35,7 @@ func _ready() -> void:
 		proc_gen_world.generate_raiders()
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
-		proc_gen_world.raiders.get_children()[0].position = player.position + Vector2(160, 160)
+		proc_gen_world.raiders.get_children()[0].position = player.position + Vector2(320, 320)
 	_connect_signals()
 
 
@@ -136,6 +136,7 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 func _on_town_tile_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
+	remove_chasing_raiders()
 	town_menu.init(town, player, trading_system)
 	town_menu.show()
 
@@ -158,3 +159,10 @@ func _on_rank_promoted(new_rank: PrestigeRank):
 func _on_inventory_ship_selected(ship_resource: ShipResource) -> void:
 	if player.set_active_ship(ship_resource):
 		inventory_screen.show_inventory(player)
+
+
+func remove_chasing_raiders() -> void:
+	var raiders = proc_gen_world.get_raiders()
+	for raider in raiders:
+		if raider.current_state == Raider.State.CHASE:
+			raider.queue_free()

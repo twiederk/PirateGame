@@ -249,8 +249,7 @@ func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positio
 func generate_raiders() -> void:
 	var raider = RaiderScene.instantiate()
 	raiders.add_child(raider)
-	
-	
+
 
 func simulation(delta: float) -> void:
 	spawn_accumulator += delta
