@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://de50ueimpqlub" path="res://world/mini_map.gd" id="1_7ghdb"]
 [ext_resource type="Texture2D" uid="uid://b7xcipud8gli" path="res://world/world.png" id="2_8las8"]
-[ext_resource type="Script" uid="uid://cq851kl1dqo83" path="res://world/map_texture_rect.gd" id="2_44d6o"]
+[ext_resource type="Script" uid="uid://cq851kl1dqo83" path="res://world/mini_map_texture_rect.gd" id="2_44d6o"]
 
 [node name="MiniMap" type="Control" unique_id=555707718]
 layout_mode = 3

@@ -23,10 +23,6 @@ func _ready() -> void:
 	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
 	_setup_limits_and_borders()
-	var minimap_image = proc_gen_world.generate_minimap()
-	print(str("Minimap: ", str(minimap_image.get_width()), " x ", str(minimap_image.get_height())))
-	mini_map.set_image(minimap_image)
-	#mini_map.texture = ImageTexture.create_from_image(minimap_image)
 
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
@@ -42,6 +38,13 @@ func _ready() -> void:
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
 	_connect_signals()
+
+	var minimap_image = proc_gen_world.generate_minimap()
+	print(str("Minimap: ", str(minimap_image.get_width()), " x ", str(minimap_image.get_height())))
+	mini_map.set_image(minimap_image)
+	mini_map.set_player_position(player.position * 2 / 16)
+	#mini_map.texture = ImageTexture.create_from_image(minimap_image)
+
 
 
 func _physics_process(delta):
