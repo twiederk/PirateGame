@@ -44,6 +44,15 @@ visible = false
 [node name="MessageWidget" parent="gui" unique_id=1487095003 instance=ExtResource("10_tp5tb")]
 visible = false
 
+[node name="MiniMap" type="TextureRect" parent="gui" unique_id=1112779613]
+custom_minimum_size = Vector2(200, 200)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
 [node name="TradingSystem" parent="." unique_id=1145605249 instance=ExtResource("8_04q08")]

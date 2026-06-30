@@ -265,6 +265,8 @@ func simulation(delta: float) -> void:
 
 
 func generate_minimap() -> Image:
-	var image: Image = Image.create_empty(256, 256, false, Image.FORMAT_RGBA8)
-	image.fill(Color.RED)
-	return image
+	var minimap: Image = Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
+	minimap.fill(Color.BLACK)
+	for pos in deep_water_arr:
+		minimap.set_pixelv(pos, Color.DARK_BLUE)
+	return minimap
