@@ -266,8 +266,15 @@ func simulation(delta: float) -> void:
 func generate_minimap() -> Image:
 	var minimap: Image = Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
 	minimap.fill(Color.BLACK)
-	for pos in deep_water_arr:
-		minimap.set_pixelv(pos, Color.DARK_BLUE)
-	for pos in shallow_water_arr:
-		minimap.set_pixelv(pos, Color.DODGER_BLUE)
+	draw_pixels(minimap, deep_water_arr, Color.DARK_BLUE)
+	draw_pixels(minimap, shallow_water_arr, Color.DODGER_BLUE)
 	return minimap
+
+#var sand_arr: Array[Vector2i] = []
+#var grass_arr: Array[Vector2i] = []
+#var cliff_arr: Array[Vector2i] = []
+#var tree_arr: Array[Vector2i] = []
+
+func draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> void:
+	for pos in positions:
+		minimap.set_pixelv(pos, color)
