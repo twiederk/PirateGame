@@ -1,6 +1,8 @@
 class_name MiniMap
-extends TextureRect
+extends Control
+
+@onready var map_texture_rect = $MapTextureRect
 
 
-func _draw():
-	draw_circle(Vector2(100, 100), 5, Color.RED)
+func set_image(minimap_image: Image) -> void:
+	map_texture_rect.texture = ImageTexture.create_from_image(minimap_image)

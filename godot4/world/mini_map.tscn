@@ -1,17 +1,27 @@
 [gd_scene format=3 uid="uid://dw2dfudbj1nle"]
 
 [ext_resource type="Script" uid="uid://de50ueimpqlub" path="res://world/mini_map.gd" id="1_7ghdb"]
+[ext_resource type="Texture2D" uid="uid://b7xcipud8gli" path="res://world/world.png" id="2_8las8"]
+[ext_resource type="Script" uid="uid://cq851kl1dqo83" path="res://world/map_texture_rect.gd" id="2_44d6o"]
 
-[node name="MiniMap" type="TextureRect" unique_id=774006348]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -100.0
-offset_right = 100.0
-offset_bottom = 100.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MiniMap" type="Control" unique_id=555707718]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("1_7ghdb")
+
+[node name="MapTextureRect" type="TextureRect" parent="." unique_id=774006348]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 400.0
+script = ExtResource("2_44d6o")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=600396290]
+position = Vector2(-80, -80)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_8las8")
+hframes = 10
+vframes = 12
+frame = 96
