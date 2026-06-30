@@ -61,7 +61,6 @@ var deep_water_arr: Array[Vector2i] = []
 var shallow_water_arr: Array[Vector2i] = []
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
-var dirt_arr: Array[Vector2i] = []
 var cliff_arr: Array[Vector2i] = []
 var tree_arr: Array[Vector2i] = []
 
@@ -269,4 +268,6 @@ func generate_minimap() -> Image:
 	minimap.fill(Color.BLACK)
 	for pos in deep_water_arr:
 		minimap.set_pixelv(pos, Color.DARK_BLUE)
+	for pos in shallow_water_arr:
+		minimap.set_pixelv(pos, Color.DODGER_BLUE)
 	return minimap
