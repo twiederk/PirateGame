@@ -15,7 +15,7 @@ var towns: Array[Town]
 @onready var promotion_system: PromotionSystem = $PromotionSystem
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
 @onready var message_widget: MessageWidget = $gui/MessageWidget
-@onready var mini_map: TextureRect = $gui/MiniMap
+@onready var mini_map: MiniMap = $gui/MiniMap
 
 
 func _ready() -> void:
@@ -23,10 +23,10 @@ func _ready() -> void:
 	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
 	_setup_limits_and_borders()
-	var minimap_image = proc_gen_world.generate_minimap_2()
+	var minimap_image = proc_gen_world.generate_minimap()
 	print(str("Minimap: ", str(minimap_image.get_width()), " x ", str(minimap_image.get_height())))
-	#mini_map.set_image(minimap_image)
-	mini_map.texture = ImageTexture.create_from_image(minimap_image)
+	mini_map.set_image(minimap_image)
+	#mini_map.texture = ImageTexture.create_from_image(minimap_image)
 
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
