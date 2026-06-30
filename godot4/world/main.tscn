@@ -46,6 +46,7 @@ visible = false
 visible = false
 
 [node name="MiniMap" parent="gui" unique_id=555707718 instance=ExtResource("10_8q2wj")]
+visible = false
 custom_minimum_size = Vector2(400, 400)
 offset_left = -100.0
 offset_top = -100.0

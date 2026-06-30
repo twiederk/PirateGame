@@ -86,6 +86,7 @@ func _input(_event) -> void:
 	_board_ship()
 	_pause_game()
 	_inventory_screen()
+	_minimap()
 	
 	
 func _camera_zoom() -> void:
@@ -132,8 +133,13 @@ func _inventory_screen() -> void:
 			player.velocity = Vector2.ZERO
 			player.set_physics_process(false)
 			set_physics_process(false)
-	
-	
+
+
+func _minimap() -> void:
+	if Input.is_action_just_pressed("minimap"):
+		mini_map.visible = !mini_map.visible
+
+
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
 	camera.set_limit(SIDE_LEFT, int(west_limit))
 	camera.set_limit(SIDE_RIGHT, int(east_limit))
