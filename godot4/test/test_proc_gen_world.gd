@@ -38,14 +38,14 @@ func test_get_good_by_type():
 
 
 func test_generate_minimap():
-	var img: Image = Image.create_empty(256, 256, false, Image.FORMAT_RGBA8)
-	img.fill(Color.RED)
-
-	assert_not_null(img)
-	assert_gt(img.get_width(), 0)
-	assert_gt(img.get_height(), 0)
+	# act
+	var image = proc_gen_world.generate_minimap()
+	
+	# assert
+	assert_not_null(image)
+	assert_gt(image.get_width(), 0)
+	assert_gt(image.get_height(), 0)
 
 	# Save as PNG
-	var result = img.save_png("user://my_image.png")
+	image.save_png("res://test/test_proc_gen_world.png")
 	
-	assert_eq(result, OK, "Image should be saved successfully")

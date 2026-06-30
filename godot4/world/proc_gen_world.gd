@@ -262,3 +262,9 @@ func simulation(delta: float) -> void:
 		generate_goods()
 		generate_raiders()
 		spawn_accumulator = 0.0
+
+
+func generate_minimap() -> Image:
+	var image: Image = Image.create_empty(256, 256, false, Image.FORMAT_RGBA8)
+	image.fill(Color.RED)
+	return image
