@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dw2dfudbj1nle"]
+
+[ext_resource type="Script" uid="uid://de50ueimpqlub" path="res://world/mini_map.gd" id="1_7ghdb"]
+
+[node name="MiniMap" type="TextureRect" unique_id=774006348]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7ghdb")

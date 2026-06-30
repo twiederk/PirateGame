@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://chrrtsgq0q8ro" path="res://gui/debug_screen.tscn" id="7_vrojb"]
 [ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
+[ext_resource type="PackedScene" uid="uid://dw2dfudbj1nle" path="res://world/mini_map.tscn" id="10_8q2wj"]
 [ext_resource type="PackedScene" uid="uid://bllx8qfja0huk" path="res://promotion_system/promotion_system.tscn" id="10_qnd6n"]
 [ext_resource type="PackedScene" uid="uid://c3frnlmdfd5oo" path="res://gui/message_widget.tscn" id="10_tp5tb"]
 
@@ -44,18 +45,7 @@ visible = false
 [node name="MessageWidget" parent="gui" unique_id=1487095003 instance=ExtResource("10_tp5tb")]
 visible = false
 
-[node name="MiniMap" type="TextureRect" parent="gui" unique_id=1112779613]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -100.0
-offset_right = 100.0
-offset_bottom = 100.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MiniMap" parent="gui" unique_id=774006348 instance=ExtResource("10_8q2wj")]
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
