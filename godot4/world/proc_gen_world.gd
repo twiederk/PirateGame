@@ -268,12 +268,12 @@ func generate_minimap() -> Image:
 	minimap.fill(Color.BLACK)
 	draw_pixels(minimap, deep_water_arr, Color.DARK_BLUE)
 	draw_pixels(minimap, shallow_water_arr, Color.DODGER_BLUE)
+	draw_pixels(minimap, sand_arr, Color.SANDY_BROWN)
+	draw_pixels(minimap, grass_arr, Color.DARK_GREEN)
+	draw_pixels(minimap, cliff_arr, Color.WHITE)
+	draw_pixels(minimap, tree_arr, Color.FOREST_GREEN)
 	return minimap
 
-#var sand_arr: Array[Vector2i] = []
-#var grass_arr: Array[Vector2i] = []
-#var cliff_arr: Array[Vector2i] = []
-#var tree_arr: Array[Vector2i] = []
 
 func draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> void:
 	for pos in positions:
