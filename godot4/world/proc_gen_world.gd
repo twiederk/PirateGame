@@ -294,7 +294,6 @@ func generate_minimap_2() -> Image:
 
 func _draw_pixels_2(minimap: Image, positions: Array[Vector2i], color: Color) -> void:
 	for pos in positions:
-		minimap.set_pixelv(pos, color)
 		var scaled_pos = pos * 2
 		minimap.set_pixelv(scaled_pos, color)
 		minimap.set_pixelv(scaled_pos + Vector2i(1, 0), color)
