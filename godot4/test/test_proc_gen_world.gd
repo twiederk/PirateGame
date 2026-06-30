@@ -35,3 +35,17 @@ func test_get_good_by_type():
 	
 	# tear down
 	good_root.free()
+
+
+func test_generate_minimap():
+	var img: Image = Image.create_empty(256, 256, false, Image.FORMAT_RGBA8)
+	img.fill(Color.RED)
+
+	assert_not_null(img)
+	assert_gt(img.get_width(), 0)
+	assert_gt(img.get_height(), 0)
+
+	# Save as PNG
+	var result = img.save_png("user://my_image.png")
+	
+	assert_eq(result, OK, "Image should be saved successfully")
