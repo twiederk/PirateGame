@@ -178,7 +178,6 @@ func remove_chasing_raiders() -> void:
 
 func _setup_minimap():
 	var minimap_image = proc_gen_world.generate_minimap_2()
-	print(str("Minimap: ", str(minimap_image.get_width()), " x ", str(minimap_image.get_height())))
 	mini_map.set_image(minimap_image)
 	mini_map.center_on_screen()
 	mini_map.set_player_position(player.position * 2 / 16)
