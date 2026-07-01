@@ -2,7 +2,8 @@ class_name MiniMap
 extends Control
 
 
-@onready var map_texture_rect = $MapTextureRect
+@onready var minimap_texture = $MapTextureRect
+@onready var player_sprite = $AnimatedSpriteD
 
 
 func _ready() -> void:
@@ -10,9 +11,9 @@ func _ready() -> void:
 
 
 func set_image(minimap_image: Image) -> void:
-	map_texture_rect.texture = ImageTexture.create_from_image(minimap_image)
-	map_texture_rect.size = minimap_image.get_size()
-	size = map_texture_rect.size
+	minimap_texture.texture = ImageTexture.create_from_image(minimap_image)
+	minimap_texture.size = minimap_image.get_size()
+	size = minimap_texture.size
 
 
 func center_on_screen() -> void:
@@ -20,4 +21,4 @@ func center_on_screen() -> void:
 
 
 func set_player_position(pos: Vector2) -> void:
-	map_texture_rect.player_position = pos
+	player_sprite.position = pos

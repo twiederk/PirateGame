@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://dw2dfudbj1nle"]
 
 [ext_resource type="Script" uid="uid://de50ueimpqlub" path="res://world/mini_map.gd" id="1_7ghdb"]
-[ext_resource type="Texture2D" uid="uid://b7xcipud8gli" path="res://world/world.png" id="2_8las8"]
-[ext_resource type="Script" uid="uid://cq851kl1dqo83" path="res://world/mini_map_texture_rect.gd" id="2_44d6o"]
+[ext_resource type="SpriteFrames" uid="uid://cgujjp0xyqa10" path="res://world/mini_map_player_spriteframes.tres" id="2_8las8"]
 
 [node name="MiniMap" type="Control" unique_id=555707718]
 layout_mode = 3
@@ -23,12 +22,7 @@ script = ExtResource("1_7ghdb")
 layout_mode = 0
 offset_right = 400.0
 offset_bottom = 400.0
-script = ExtResource("2_44d6o")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=600396290]
-position = Vector2(-80, -80)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_8las8")
-hframes = 10
-vframes = 12
-frame = 96
+[node name="AnimatedSpriteD" type="AnimatedSprite2D" parent="." unique_id=27634205]
+sprite_frames = ExtResource("2_8las8")
+autoplay = "default"
