@@ -20,5 +20,5 @@ func center_on_screen() -> void:
 	position = (get_viewport_rect().size - size) * 0.5
 
 
-func set_player_position(pos: Vector2) -> void:
-	player_sprite.position = pos
+func set_player_position(player_position: Vector2) -> void:
+	player_sprite.position = player_position

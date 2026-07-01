@@ -17,6 +17,8 @@ var towns: Array[Town]
 @onready var message_widget: MessageWidget = $gui/MessageWidget
 @onready var mini_map: MiniMap = $gui/MiniMap
 
+const MINIMAP_SCALE: float = 2.0 / 16.0
+
 
 func _ready() -> void:
 	var world_seed = _get_seed()
@@ -132,6 +134,7 @@ func _inventory_screen() -> void:
 func _minimap() -> void:
 	if Input.is_action_just_pressed("minimap"):
 		mini_map.visible = !mini_map.visible
+		mini_map.set_player_position(player.position * MINIMAP_SCALE)
 
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
@@ -180,4 +183,3 @@ func _setup_minimap():
 	var minimap_image = proc_gen_world.generate_minimap_2()
 	mini_map.set_image(minimap_image)
 	mini_map.center_on_screen()
-	mini_map.set_player_position(player.position * 2 / 16)
