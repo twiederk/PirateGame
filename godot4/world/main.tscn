@@ -47,11 +47,11 @@ visible = false
 
 [node name="MiniMap" parent="gui" unique_id=555707718 instance=ExtResource("10_8q2wj")]
 visible = false
-custom_minimum_size = Vector2(400, 400)
-offset_left = -100.0
-offset_top = -100.0
-offset_right = 100.0
-offset_bottom = 100.0
+custom_minimum_size = Vector2(512, 384)
+offset_left = -256.0
+offset_top = -192.0
+offset_right = 256.0
+offset_bottom = 192.0
 
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
