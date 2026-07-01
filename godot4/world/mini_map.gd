@@ -5,6 +5,10 @@ extends Control
 @onready var map_texture_rect = $MapTextureRect
 
 
+func _ready() -> void:
+	get_viewport().size_changed.connect(center_on_screen)
+
+
 func set_image(minimap_image: Image) -> void:
 	map_texture_rect.texture = ImageTexture.create_from_image(minimap_image)
 	map_texture_rect.size = minimap_image.get_size()
