@@ -15,6 +15,7 @@ var towns: Array[Town]
 @onready var promotion_system: PromotionSystem = $PromotionSystem
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
 @onready var message_widget: MessageWidget = $gui/MessageWidget
+@onready var mini_map: MiniMap = $gui/MiniMap
 
 
 func _ready() -> void:
@@ -22,6 +23,7 @@ func _ready() -> void:
 	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
 	_setup_limits_and_borders()
+
 
 	debug_screen.set_seed(proc_gen_world.seed_value)
 	zoom_widget.set_zoom(camera.zoom)
@@ -36,6 +38,7 @@ func _ready() -> void:
 		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
 	_connect_signals()
+	_setup_minimap()
 
 
 func _physics_process(delta):
@@ -77,6 +80,7 @@ func _input(_event) -> void:
 	_board_ship()
 	_pause_game()
 	_inventory_screen()
+	_minimap()
 	
 	
 func _camera_zoom() -> void:
@@ -123,8 +127,14 @@ func _inventory_screen() -> void:
 			player.velocity = Vector2.ZERO
 			player.set_physics_process(false)
 			set_physics_process(false)
-	
-	
+
+
+func _minimap() -> void:
+	if Input.is_action_just_pressed("minimap"):
+		mini_map.visible = !mini_map.visible
+		mini_map.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
+
+
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
 	camera.set_limit(SIDE_LEFT, int(west_limit))
 	camera.set_limit(SIDE_RIGHT, int(east_limit))
@@ -165,3 +175,9 @@ func remove_chasing_raiders() -> void:
 	for raider in raiders:
 		if raider.current_state == Raider.State.CHASE:
 			raider.queue_free()
+
+
+func _setup_minimap():
+	var minimap_image = proc_gen_world.generate_minimap()
+	mini_map.set_image(minimap_image)
+	mini_map.center_on_screen()

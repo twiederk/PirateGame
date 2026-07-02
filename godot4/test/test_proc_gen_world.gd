@@ -35,3 +35,23 @@ func test_get_good_by_type():
 	
 	# tear down
 	good_root.free()
+
+
+func test_generate_minimap():
+	# arrange
+	var towns_root = Node2D.new()
+	proc_gen_world.towns = towns_root
+	
+	# act
+	var image = proc_gen_world.generate_minimap()
+	
+	# assert
+	assert_not_null(image)
+	assert_gt(image.get_width(), 0)
+	assert_gt(image.get_height(), 0)
+
+	# tear down
+	towns_root.free()
+	
+	# image.save_png("res://test/test_proc_gen_world.png")
+	

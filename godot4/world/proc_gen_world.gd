@@ -1,8 +1,8 @@
 class_name ProcGenWorld
 extends Node2D
 
-@export var width : int = 200
-@export var height : int = 200
+@export var width : int = 256
+@export var height : int = 192
 @export var seed_value: int = 0
 @export var town_percentage: float = 0.05
 @export var fish_percentage: float = 0.125
@@ -33,6 +33,8 @@ const TREE_CHANCE: float = 0.0
 const PALM_TREE_CHANCE: float = 0.35
 
 const WORLD_TILE_SET = 0
+const MINIMAP_PLAYER_SCALE: float = 2.0 / 16.0
+const MINIMAP_SCALE: float = 1.0 / 16.0
 
 const GRASS_IN_SAND_TERRAIN_SET: int = 1
 const SAND_IN_WATER_TERRAIN_SET: int = 3
@@ -61,7 +63,6 @@ var deep_water_arr: Array[Vector2i] = []
 var shallow_water_arr: Array[Vector2i] = []
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
-var dirt_arr: Array[Vector2i] = []
 var cliff_arr: Array[Vector2i] = []
 var tree_arr: Array[Vector2i] = []
 
@@ -262,3 +263,44 @@ func simulation(delta: float) -> void:
 		generate_goods()
 		generate_raiders()
 		spawn_accumulator = 0.0
+
+
+func generate_minimap() -> Image:
+	var minimap: Image = Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
+	minimap.fill(Color.BLACK)
+	_draw_world(minimap)
+	_draw_towns(minimap)
+	return minimap
+
+
+func _draw_world(minimap: Image) -> void:
+	_draw_pixels(minimap, deep_water_arr, Color.DARK_BLUE)
+	_draw_pixels(minimap, shallow_water_arr, Color.DODGER_BLUE)
+	_draw_pixels(minimap, sand_arr, Color.SANDY_BROWN)
+	_draw_pixels(minimap, grass_arr, Color.FOREST_GREEN)
+	_draw_pixels(minimap, cliff_arr, Color.WHITE)
+	_draw_pixels(minimap, tree_arr, Color.DARK_GREEN)
+
+
+func _draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> void:
+	for pos in positions:
+		if _is_in_minimap_bounds(minimap, pos):
+			minimap.set_pixelv(pos, color)	
+
+
+func _draw_towns(minimap: Image) -> void:
+	for town in get_towns():
+		var pos = town.position * MINIMAP_SCALE
+		_draw_town(minimap, pos)
+
+
+func _draw_town(minimap: Image, pos: Vector2i) -> void:
+	for x_offset in range(-1, 2):
+		for y_offset in range(-1, 2):
+			var pixel_pos = pos + Vector2i(x_offset, y_offset)
+			if _is_in_minimap_bounds(minimap, pixel_pos):
+				minimap.set_pixelv(pixel_pos, Color.DARK_RED)
+
+
+func _is_in_minimap_bounds(minimap: Image, pixel_pos: Vector2i) -> bool:
+	return pixel_pos.x >= 0 and pixel_pos.y >= 0 and pixel_pos.x < minimap.get_width() and pixel_pos.y < minimap.get_height()
