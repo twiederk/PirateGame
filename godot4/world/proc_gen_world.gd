@@ -33,6 +33,7 @@ const TREE_CHANCE: float = 0.0
 const PALM_TREE_CHANCE: float = 0.35
 
 const WORLD_TILE_SET = 0
+const MINIMAP_SCALE: float = 2.0 / 16.0
 
 const GRASS_IN_SAND_TERRAIN_SET: int = 1
 const SAND_IN_WATER_TERRAIN_SET: int = 3
@@ -266,13 +267,18 @@ func simulation(delta: float) -> void:
 func generate_minimap() -> Image:
 	var minimap: Image = Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
 	minimap.fill(Color.BLACK)
+	_draw_world(minimap)
+	_draw_towns(minimap)
+	return minimap
+
+
+func _draw_world(minimap: Image) -> void:
 	_draw_pixels(minimap, deep_water_arr, Color.DARK_BLUE)
 	_draw_pixels(minimap, shallow_water_arr, Color.DODGER_BLUE)
 	_draw_pixels(minimap, sand_arr, Color.SANDY_BROWN)
 	_draw_pixels(minimap, grass_arr, Color.FOREST_GREEN)
 	_draw_pixels(minimap, cliff_arr, Color.WHITE)
 	_draw_pixels(minimap, tree_arr, Color.DARK_GREEN)
-	return minimap
 
 
 func _draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> void:
@@ -283,13 +289,18 @@ func _draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> v
 func generate_minimap_2() -> Image:
 	var minimap: Image = Image.create_empty(width * 2, height * 2, false, Image.FORMAT_RGBA8)
 	minimap.fill(Color.BLACK)
+	_draw_world_2(minimap)
+	_draw_towns_2(minimap)
+	return minimap
+
+
+func _draw_world_2(minimap: Image) -> void:
 	_draw_pixels_2(minimap, deep_water_arr, Color.DARK_BLUE)
 	_draw_pixels_2(minimap, shallow_water_arr, Color.DODGER_BLUE)
 	_draw_pixels_2(minimap, sand_arr, Color.SANDY_BROWN)
 	_draw_pixels_2(minimap, grass_arr, Color.FOREST_GREEN)
 	_draw_pixels_2(minimap, cliff_arr, Color.WHITE)
 	_draw_pixels_2(minimap, tree_arr, Color.DARK_GREEN)
-	return minimap
 
 
 func _draw_pixels_2(minimap: Image, positions: Array[Vector2i], color: Color) -> void:
@@ -299,3 +310,28 @@ func _draw_pixels_2(minimap: Image, positions: Array[Vector2i], color: Color) ->
 		minimap.set_pixelv(scaled_pos + Vector2i(1, 0), color)
 		minimap.set_pixelv(scaled_pos + Vector2i(0, 1), color)
 		minimap.set_pixelv(scaled_pos + Vector2i(1, 1), color)
+
+
+func _draw_towns(minimap: Image) -> void:
+	for town in get_towns():
+		var pos = town.global_position * MINIMAP_SCALE
+		_draw_town(minimap, pos)
+
+
+func _draw_towns_2(minimap: Image) -> void:
+	print(str("Number of towns: ", get_towns().size()))
+	for town in get_towns():
+		var pos = town.global_position * 2 * MINIMAP_SCALE
+		_draw_town(minimap, pos)
+
+
+func _draw_town(minimap: Image, pos: Vector2i) -> void:
+	minimap.set_pixelv(pos + Vector2i(-1, -1), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(-1, 0), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(-1, 1), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(0, -1), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(0, 0), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(0, 1), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(1, -1), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(1, 0), Color.DARK_RED)
+	minimap.set_pixelv(pos + Vector2i(1, 1), Color.DARK_RED)

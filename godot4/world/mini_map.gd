@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func set_image(minimap_image: Image) -> void:
 	minimap_texture.texture = ImageTexture.create_from_image(minimap_image)
-	minimap_texture.size = minimap_image.get_size()
+	minimap_texture.size = minimap_image.get_size() * 2
 	size = minimap_texture.size
 
 
