@@ -132,7 +132,7 @@ func _inventory_screen() -> void:
 func _minimap() -> void:
 	if Input.is_action_just_pressed("minimap"):
 		mini_map.visible = !mini_map.visible
-		mini_map.set_player_position(player.position * ProcGenWorld.MINIMAP_SCALE)
+		mini_map.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
 
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
