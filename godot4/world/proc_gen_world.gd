@@ -294,12 +294,6 @@ func _draw_towns(minimap: Image) -> void:
 
 
 func _draw_town(minimap: Image, pos: Vector2i) -> void:
-	minimap.set_pixelv(pos + Vector2i(-1, -1), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(-1, 0), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(-1, 1), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(0, -1), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(0, 0), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(0, 1), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(1, -1), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(1, 0), Color.DARK_RED)
-	minimap.set_pixelv(pos + Vector2i(1, 1), Color.DARK_RED)
+	for x_offset in range(-1, 2):
+		for y_offset in range(-1, 2):
+			minimap.set_pixelv(pos + Vector2i(x_offset, y_offset), Color.DARK_RED)
