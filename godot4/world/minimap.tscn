@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dw2dfudbj1nle"]
 
-[ext_resource type="Script" uid="uid://de50ueimpqlub" path="res://world/mini_map.gd" id="1_7ghdb"]
-[ext_resource type="SpriteFrames" uid="uid://cgujjp0xyqa10" path="res://world/mini_map_player_spriteframes.tres" id="2_8las8"]
+[ext_resource type="Script" uid="uid://de50ueimpqlub" path="res://world/minimap.gd" id="1_7ghdb"]
+[ext_resource type="SpriteFrames" uid="uid://cgujjp0xyqa10" path="res://world/minimap_player_spriteframes.tres" id="2_8las8"]
 
 [node name="MiniMap" type="Control" unique_id=555707718]
 layout_mode = 3

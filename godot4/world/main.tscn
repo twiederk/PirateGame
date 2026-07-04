@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://chrrtsgq0q8ro" path="res://gui/debug_screen.tscn" id="7_vrojb"]
 [ext_resource type="PackedScene" uid="uid://0m7pc11fvg2u" path="res://trading_system/trading_system.tscn" id="8_04q08"]
 [ext_resource type="PackedScene" uid="uid://cxg2srcb55bc8" path="res://world/map_borders.tscn" id="8_60vd7"]
-[ext_resource type="PackedScene" uid="uid://dw2dfudbj1nle" path="res://world/mini_map.tscn" id="10_8q2wj"]
+[ext_resource type="PackedScene" uid="uid://dw2dfudbj1nle" path="res://world/minimap.tscn" id="10_8q2wj"]
 [ext_resource type="PackedScene" uid="uid://bllx8qfja0huk" path="res://promotion_system/promotion_system.tscn" id="10_qnd6n"]
 [ext_resource type="PackedScene" uid="uid://c3frnlmdfd5oo" path="res://gui/message_widget.tscn" id="10_tp5tb"]
 
