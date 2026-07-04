@@ -36,6 +36,9 @@ visible = false
 [node name="InventoryScreen" parent="gui" unique_id=398017576 instance=ExtResource("5_tp5tb")]
 visible = false
 
+[node name="MiniMap" parent="gui" unique_id=555707718 instance=ExtResource("10_8q2wj")]
+visible = false
+
 [node name="DebugScreen" parent="gui" unique_id=92080076 instance=ExtResource("7_vrojb")]
 visible = false
 
@@ -45,15 +48,12 @@ visible = false
 [node name="MessageWidget" parent="gui" unique_id=1487095003 instance=ExtResource("10_tp5tb")]
 visible = false
 
-[node name="MiniMap" parent="gui" unique_id=555707718 instance=ExtResource("10_8q2wj")]
-visible = false
-
 [node name="MapBorders" parent="." unique_id=1937348328 instance=ExtResource("8_60vd7")]
 
 [node name="TradingSystem" parent="." unique_id=1145605249 instance=ExtResource("8_04q08")]
 
 [node name="PromotionSystem" parent="." unique_id=1279130280 instance=ExtResource("10_qnd6n")]
 
-[connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
+[connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_left"]
 [connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_left"]
 [connection signal="save_button_pressed" from="gui/PauseMenu" to="." method="_on_pause_menu_save_button_pressed"]

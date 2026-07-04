@@ -73,7 +73,7 @@ func _get_seed() -> int:
 
 func _connect_signals() -> void:
 	for town in towns:
-		town.town_entered.connect(_on_town_tile_town_entered)
+		town.town_entered.connect(_on_town_entered)
 		town.town_entered.connect(player._on_town_entered)
 	player.gold_changed.connect(promotion_system.evaluate)
 	promotion_system.rank_promoted.connect(_on_rank_promoted)
@@ -147,7 +147,7 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 	camera.set_limit(SIDE_BOTTOM, int(south_limit))
 
 
-func _on_town_tile_town_entered(town: Town):
+func _on_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
 	remove_chasing_raiders()
@@ -155,7 +155,7 @@ func _on_town_tile_town_entered(town: Town):
 	town_menu.show()
 
 
-func _on_town_menu_town_left():
+func _on_town_left():
 	proc_gen_world.show()
 	player.show()
 	town_menu.hide()
