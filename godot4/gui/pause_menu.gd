@@ -7,10 +7,16 @@ signal save_button_pressed
 @onready var message_label = $CenterContainer/VBoxContainer/MessageLabel
 
 
+func _input(_event) -> void:
+	if not visible:
+		return
+	if Input.is_action_just_pressed("pause"):
+		get_tree().root.set_input_as_handled()
+		hide_menu()
+
+
 func _on_resume_button_pressed():
-	get_tree().paused = false
-	message_label.text = ""
-	hide()
+	hide_menu()
 
 
 func _on_menu_button_pressed():
@@ -24,8 +30,13 @@ func _on_save_button_pressed():
 	message_label.text = "Spiel gespeichert"
 
 
-
 func show_menu():
 	get_tree().paused = true
 	resume_button.grab_focus()
 	show()
+
+
+func hide_menu():
+	get_tree().paused = false
+	message_label.text = ""
+	hide()

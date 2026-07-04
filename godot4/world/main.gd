@@ -111,7 +111,7 @@ func _camera_zoom() -> void:
 		zoom_widget.set_zoom(camera.zoom)	
 	elif Input.is_action_just_pressed("zoom_reset"):
 		camera.zoom = Vector2(1, 1)
-		zoom_widget.set_zoom(camera.zoom)	
+		zoom_widget.set_zoom(camera.zoom)
 		
 
 
