@@ -1,4 +1,4 @@
-class_name MiniMap
+class_name Minimap
 extends Control
 
 

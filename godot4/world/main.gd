@@ -20,7 +20,7 @@ var towns: Array[Town]
 @onready var promotion_system: PromotionSystem = $PromotionSystem
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
 @onready var message_widget: MessageWidget = $gui/MessageWidget
-@onready var mini_map: MiniMap = $gui/MiniMap
+@onready var minimap: Minimap = $gui/Minimap
 
 
 func _ready() -> void:
@@ -136,8 +136,8 @@ func _inventory_screen() -> void:
 
 func _minimap() -> void:
 	if Input.is_action_just_pressed("minimap"):
-		mini_map.visible = !mini_map.visible
-		mini_map.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
+		minimap.visible = !minimap.visible
+		minimap.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
 
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
@@ -184,5 +184,5 @@ func remove_chasing_raiders() -> void:
 
 func _setup_minimap():
 	var minimap_image = proc_gen_world.generate_minimap()
-	mini_map.set_image(minimap_image)
-	mini_map.center_on_screen()
+	minimap.set_image(minimap_image)
+	minimap.center_on_screen()

@@ -36,7 +36,7 @@ visible = false
 [node name="InventoryScreen" parent="gui" unique_id=398017576 instance=ExtResource("5_tp5tb")]
 visible = false
 
-[node name="MiniMap" parent="gui" unique_id=555707718 instance=ExtResource("10_8q2wj")]
+[node name="Minimap" parent="gui" unique_id=555707718 instance=ExtResource("10_8q2wj")]
 visible = false
 
 [node name="DebugScreen" parent="gui" unique_id=92080076 instance=ExtResource("7_vrojb")]
