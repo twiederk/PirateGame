@@ -285,7 +285,7 @@ func _draw_world(minimap: Image) -> void:
 func _draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> void:
 	for pos in positions:
 		if _is_in_minimap_bounds(minimap, pos):
-			minimap.set_pixelv(pos, color)	
+			minimap.set_pixelv(pos, color)
 
 
 func _draw_towns(minimap: Image) -> void:

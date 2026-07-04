@@ -1,6 +1,11 @@
 class_name Main
 extends Node2D
 
+
+const ZOOM_OUT: float = 0.8
+const ZOOM_IN: float = 1.2
+const ZOOM_STEP: float = 0.1
+
 var towns: Array[Town]
 
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
@@ -15,10 +20,11 @@ var towns: Array[Town]
 @onready var promotion_system: PromotionSystem = $PromotionSystem
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
 @onready var message_widget: MessageWidget = $gui/MessageWidget
-@onready var mini_map: MiniMap = $gui/MiniMap
+@onready var minimap: Minimap = $gui/Minimap
 
 
 func _ready() -> void:
+	PauseManager.clear_all()
 	var world_seed = _get_seed()
 	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
@@ -42,7 +48,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta):
-	if player.in_town():
+	if PauseManager.is_simulation_paused():
 		return
 	trading_system.simulation(delta, towns)
 	proc_gen_world.simulation(delta)
@@ -68,37 +74,44 @@ func _get_seed() -> int:
 
 func _connect_signals() -> void:
 	for town in towns:
-		town.town_entered.connect(_on_town_tile_town_entered)
-		town.town_entered.connect(player._on_town_tile_town_entered)
+		town.town_entered.connect(_on_town_entered)
+		town.town_entered.connect(player._on_town_entered)
 	player.gold_changed.connect(promotion_system.evaluate)
 	promotion_system.rank_promoted.connect(_on_rank_promoted)
 	inventory_screen.active_ship_selected.connect(_on_inventory_ship_selected)
 
 
 func _input(_event) -> void:
-	_camera_zoom()
-	_board_ship()
 	_pause_game()
 	_inventory_screen()
 	_minimap()
+
+	if PauseManager.is_simulation_paused():
+		return
+
+	_camera_zoom()
+	_board_ship()
 	
 	
 func _camera_zoom() -> void:
+	if PauseManager.is_simulation_paused():
+		return
+
 	if Input.is_action_just_pressed("zoom_in"):
-		var zoom_val = camera.zoom.x + 0.1
-		if zoom_val > 2.0:
-			zoom_val = 2.0
+		var zoom_val = camera.zoom.x + ZOOM_STEP
+		if zoom_val > ZOOM_IN:
+			zoom_val = ZOOM_IN
 		camera.zoom = Vector2(zoom_val, zoom_val)
 		zoom_widget.set_zoom(camera.zoom)
 	elif Input.is_action_just_pressed("zoom_out"):
-		var zoom_val = camera.zoom.x - 0.1
-		if zoom_val < 0.5:
-			zoom_val = 0.5
+		var zoom_val = camera.zoom.x - ZOOM_STEP
+		if zoom_val < ZOOM_OUT:
+			zoom_val = ZOOM_OUT
 		camera.zoom = Vector2(zoom_val, zoom_val)
 		zoom_widget.set_zoom(camera.zoom)	
 	elif Input.is_action_just_pressed("zoom_reset"):
 		camera.zoom = Vector2(1, 1)
-		zoom_widget.set_zoom(camera.zoom)	
+		zoom_widget.set_zoom(camera.zoom)
 		
 
 
@@ -117,22 +130,36 @@ func _is_coast() -> bool:
 
 
 func _inventory_screen() -> void:
+	if town_menu.visible:
+		return
+
 	if Input.is_action_just_pressed("inventory_screen"):
 		if inventory_screen.visible:
 			inventory_screen.hide()
-			player.set_physics_process(true)
-			set_physics_process(true)
+			PauseManager.simulation_start()
 		else:
+			if minimap.visible:
+				minimap.hide()
+				PauseManager.simulation_start()
 			inventory_screen.show_inventory(player)
-			player.velocity = Vector2.ZERO
-			player.set_physics_process(false)
-			set_physics_process(false)
+			PauseManager.simulation_stop()
 
 
 func _minimap() -> void:
+	if town_menu.visible:
+		return
+
 	if Input.is_action_just_pressed("minimap"):
-		mini_map.visible = !mini_map.visible
-		mini_map.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
+		if minimap.visible:
+			minimap.hide()
+			PauseManager.simulation_start()
+		else:
+			if inventory_screen.visible:
+				inventory_screen.hide()
+				PauseManager.simulation_start()
+			minimap.show()
+			minimap.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
+			PauseManager.simulation_stop()
 
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
@@ -142,7 +169,8 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 	camera.set_limit(SIDE_BOTTOM, int(south_limit))
 
 
-func _on_town_tile_town_entered(town: Town):
+func _on_town_entered(town: Town):
+	PauseManager.simulation_stop()
 	proc_gen_world.hide()
 	player.hide()
 	remove_chasing_raiders()
@@ -150,7 +178,8 @@ func _on_town_tile_town_entered(town: Town):
 	town_menu.show()
 
 
-func _on_town_menu_town_left():
+func _on_town_left():
+	PauseManager.simulation_start()
 	proc_gen_world.show()
 	player.show()
 	town_menu.hide()
@@ -179,5 +208,5 @@ func remove_chasing_raiders() -> void:
 
 func _setup_minimap():
 	var minimap_image = proc_gen_world.generate_minimap()
-	mini_map.set_image(minimap_image)
-	mini_map.center_on_screen()
+	minimap.set_image(minimap_image)
+	minimap.center_on_screen()

@@ -26,6 +26,11 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if PauseManager.is_simulation_paused():
+		direction = Vector2.ZERO
+		velocity = Vector2.ZERO
+		return
+
 	if current_state == State.IDLE:
 		return
 	

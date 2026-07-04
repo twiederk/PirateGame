@@ -37,10 +37,39 @@ func test_get_good_by_type():
 	good_root.free()
 
 
+func _build_segment(start_x: int, end_x: int, max_y: int) -> Array[Vector2i]:
+	var segment: Array[Vector2i] = []
+	for x in range(start_x, end_x):
+		for y in range(0, max_y):
+			segment.append(Vector2i(x, y))
+	return segment
+
+
 func test_generate_minimap():
 	# arrange
+	var biome_properties = [
+		"deep_water_arr",
+		"shallow_water_arr",
+		"sand_arr",
+		"grass_arr",
+		"cliff_arr",
+		"tree_arr",
+	]
 	var towns_root = Node2D.new()
 	proc_gen_world.towns = towns_root
+
+	var segment_width = int(proc_gen_world.width * (1.0 / 6.0))
+	var start_x = 0
+	for i in range(biome_properties.size()):
+		var town = Town.new()
+		town.position = Vector2(start_x + (segment_width * 0.5), proc_gen_world.height * 0.5) * 16
+		print(str("town.position: ", town.position))
+		towns_root.add_child(town)
+		
+		var end_x = start_x + segment_width
+		proc_gen_world.set(biome_properties[i], _build_segment(start_x, end_x, proc_gen_world.height))
+		start_x = end_x
+
 	
 	# act
 	var image = proc_gen_world.generate_minimap()
@@ -53,5 +82,5 @@ func test_generate_minimap():
 	# tear down
 	towns_root.free()
 	
-	# image.save_png("res://test/test_proc_gen_world.png")
+	image.save_png("res://test/test_proc_gen_world.png")
 	

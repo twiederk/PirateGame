@@ -50,6 +50,10 @@ func _process(_delta: float) -> void:
 func _physics_process(_delta: float):
 	if current_state == State.IN_TOWN:
 		return
+	if PauseManager.is_simulation_paused():
+		direction = Vector2.ZERO
+		velocity = Vector2.ZERO
+		return
 
 	direction = Input.get_vector("left", "right","up","down").normalized()
 	if direction:
@@ -144,12 +148,12 @@ func _move_on_land() -> void:
 	set_collision_mask_value(MASK_OCEAN, true)
 
 
-func _on_town_tile_town_entered(_town: Town) -> void:
+func _on_town_entered(_town: Town) -> void:
 	_previous_state = current_state
 	current_state = State.IN_TOWN
 
 
-func _on_town_menu_town_left() -> void:
+func _on_town_left() -> void:
 	current_state = _previous_state
 
 
