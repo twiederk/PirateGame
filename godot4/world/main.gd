@@ -24,6 +24,7 @@ var towns: Array[Town]
 
 
 func _ready() -> void:
+	PauseManager.clear_all()
 	var world_seed = _get_seed()
 	proc_gen_world.generate_world(world_seed)
 	towns = proc_gen_world.generate_towns()
@@ -47,7 +48,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta):
-	if player.in_town():
+	if PauseManager.is_simulation_paused():
 		return
 	trading_system.simulation(delta, towns)
 	proc_gen_world.simulation(delta)
@@ -81,14 +82,21 @@ func _connect_signals() -> void:
 
 
 func _input(_event) -> void:
-	_camera_zoom()
-	_board_ship()
 	_pause_game()
 	_inventory_screen()
 	_minimap()
+
+	if PauseManager.is_simulation_paused():
+		return
+
+	_camera_zoom()
+	_board_ship()
 	
 	
 func _camera_zoom() -> void:
+	if PauseManager.is_simulation_paused():
+		return
+
 	if Input.is_action_just_pressed("zoom_in"):
 		var zoom_val = camera.zoom.x + ZOOM_STEP
 		if zoom_val > ZOOM_IN:
@@ -122,22 +130,36 @@ func _is_coast() -> bool:
 
 
 func _inventory_screen() -> void:
+	if town_menu.visible:
+		return
+
 	if Input.is_action_just_pressed("inventory_screen"):
 		if inventory_screen.visible:
 			inventory_screen.hide()
-			player.set_physics_process(true)
-			set_physics_process(true)
+			PauseManager.simulation_start()
 		else:
+			if minimap.visible:
+				minimap.hide()
+				PauseManager.simulation_start()
 			inventory_screen.show_inventory(player)
-			player.velocity = Vector2.ZERO
-			player.set_physics_process(false)
-			set_physics_process(false)
+			PauseManager.simulation_stop()
 
 
 func _minimap() -> void:
+	if town_menu.visible:
+		return
+
 	if Input.is_action_just_pressed("minimap"):
-		minimap.visible = !minimap.visible
-		minimap.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
+		if minimap.visible:
+			minimap.hide()
+			PauseManager.simulation_start()
+		else:
+			if inventory_screen.visible:
+				inventory_screen.hide()
+				PauseManager.simulation_start()
+			minimap.show()
+			minimap.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
+			PauseManager.simulation_stop()
 
 
 func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
@@ -148,6 +170,7 @@ func _camera_limits(north_limit: float, south_limit: float, west_limit: float, e
 
 
 func _on_town_entered(town: Town):
+	PauseManager.simulation_stop()
 	proc_gen_world.hide()
 	player.hide()
 	remove_chasing_raiders()
@@ -156,6 +179,7 @@ func _on_town_entered(town: Town):
 
 
 func _on_town_left():
+	PauseManager.simulation_start()
 	proc_gen_world.show()
 	player.show()
 	town_menu.hide()

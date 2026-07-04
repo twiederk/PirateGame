@@ -50,6 +50,10 @@ func _process(_delta: float) -> void:
 func _physics_process(_delta: float):
 	if current_state == State.IN_TOWN:
 		return
+	if PauseManager.is_simulation_paused():
+		direction = Vector2.ZERO
+		velocity = Vector2.ZERO
+		return
 
 	direction = Input.get_vector("left", "right","up","down").normalized()
 	if direction:
