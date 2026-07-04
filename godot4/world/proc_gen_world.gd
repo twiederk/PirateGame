@@ -28,7 +28,7 @@ const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
 const GRASS_LEVEL: float = 0.2
 const FIELD_LEVEL: float = 0.3
-const CLIFF_LEVEL: float = 0.6
+const CLIFF_LEVEL: float = 0.5
 const TREE_CHANCE: float = 0.0
 const PALM_TREE_CHANCE: float = 0.35
 
