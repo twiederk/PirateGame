@@ -1,6 +1,11 @@
 class_name Main
 extends Node2D
 
+
+const ZOOM_OUT: float = 0.8
+const ZOOM_IN: float = 1.2
+const ZOOM_STEP: float = 0.1
+
 var towns: Array[Town]
 
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
@@ -85,15 +90,15 @@ func _input(_event) -> void:
 	
 func _camera_zoom() -> void:
 	if Input.is_action_just_pressed("zoom_in"):
-		var zoom_val = camera.zoom.x + 0.1
-		if zoom_val > 2.0:
-			zoom_val = 2.0
+		var zoom_val = camera.zoom.x + ZOOM_STEP
+		if zoom_val > ZOOM_IN:
+			zoom_val = ZOOM_IN
 		camera.zoom = Vector2(zoom_val, zoom_val)
 		zoom_widget.set_zoom(camera.zoom)
 	elif Input.is_action_just_pressed("zoom_out"):
-		var zoom_val = camera.zoom.x - 0.1
-		if zoom_val < 0.5:
-			zoom_val = 0.5
+		var zoom_val = camera.zoom.x - ZOOM_STEP
+		if zoom_val < ZOOM_OUT:
+			zoom_val = ZOOM_OUT
 		camera.zoom = Vector2(zoom_val, zoom_val)
 		zoom_widget.set_zoom(camera.zoom)	
 	elif Input.is_action_just_pressed("zoom_reset"):
