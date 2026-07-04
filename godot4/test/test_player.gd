@@ -99,12 +99,12 @@ func test_on_town_entered():
 	assert_eq(player.get_previous_state(), Player.State.ON_LAND, "Player should store previous state")
 
 
-func test_on_town_menu_town_left():
+func test_on_town_left():
 	# assert
 	player._previous_state = Player.State.ON_SHIP
 	
 	# act
-	player._on_town_menu_town_left()
+	player._on_town_left()
 
 	# assert
 	assert_eq(player.current_state, Player.State.ON_SHIP, "Player should return to previous state")

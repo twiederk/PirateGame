@@ -55,5 +55,5 @@ visible = false
 [node name="PromotionSystem" parent="." unique_id=1279130280 instance=ExtResource("10_qnd6n")]
 
 [connection signal="town_left" from="gui/TownMenu" to="." method="_on_town_menu_town_left"]
-[connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_menu_town_left"]
+[connection signal="town_left" from="gui/TownMenu" to="Player" method="_on_town_left"]
 [connection signal="save_button_pressed" from="gui/PauseMenu" to="." method="_on_pause_menu_save_button_pressed"]

@@ -149,7 +149,7 @@ func _on_town_entered(_town: Town) -> void:
 	current_state = State.IN_TOWN
 
 
-func _on_town_menu_town_left() -> void:
+func _on_town_left() -> void:
 	current_state = _previous_state
 
 
