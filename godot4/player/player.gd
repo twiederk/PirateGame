@@ -144,7 +144,7 @@ func _move_on_land() -> void:
 	set_collision_mask_value(MASK_OCEAN, true)
 
 
-func _on_town_tile_town_entered(_town: Town) -> void:
+func _on_town_entered(_town: Town) -> void:
 	_previous_state = current_state
 	current_state = State.IN_TOWN
 

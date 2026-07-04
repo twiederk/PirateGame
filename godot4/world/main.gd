@@ -74,7 +74,7 @@ func _get_seed() -> int:
 func _connect_signals() -> void:
 	for town in towns:
 		town.town_entered.connect(_on_town_tile_town_entered)
-		town.town_entered.connect(player._on_town_tile_town_entered)
+		town.town_entered.connect(player._on_town_entered)
 	player.gold_changed.connect(promotion_system.evaluate)
 	promotion_system.rank_promoted.connect(_on_rank_promoted)
 	inventory_screen.active_ship_selected.connect(_on_inventory_ship_selected)

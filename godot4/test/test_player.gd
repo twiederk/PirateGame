@@ -90,9 +90,9 @@ func test_get_trading_items():
 	assert_eq(trading_items.size(), 3, "Player should store a trading item for each good")
 
 
-func test_on_town_tile_town_entered():
+func test_on_town_entered():
 	# act
-	player._on_town_tile_town_entered(null)
+	player._on_town_entered(null)
 
 	# assert
 	assert_true(player.in_town(), "Player should be in town after entering a town tile")
