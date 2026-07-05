@@ -37,17 +37,28 @@ Reasons:
 ## Data Model
 
 ### Fog Grid
-- Represent visited state as a flat boolean array with 192 entries.
-- Keep sector dimensions and world dimensions in the manager.
+The Fog Grid divides the world into a 16x12 grid of sectors (192 total).
+- Each sector tracks one boolean: false=unvisited, true=visited.
+- Visited sectors display normal minimap colors; unvisited render as pure black.
+- Memory footprint: 192 bools ≈ 192 bytes (minimal).
+- Sector size: 16x16 tiles. Grid dimensions: sector_width=16, sector_height=12.
 
 ### Index Mapping
-- Convert world position to sector coordinates.
-- Convert sector coordinates to flat array index.
-- Support reverse mapping for minimap overlay logic.
-- Clamp or reject invalid input consistently.
+Three core conversions:
+1. World position → sector coordinate: sx = floor(x / 16), sy = floor(y / 16).
+2. Sector coordinate → flat index: index = sy * sector_width + sx.
+3. Flat index → sector coordinate: sx = index mod sector_width, sy = floor(index / sector_width).
+
+### Viewport Reveal Method
+To mark all sectors overlapping the camera viewport as visited:
+1. Get camera viewport bounds (world coordinates, includes zoom).
+2. Calculate sector bounds: min_sx = floor(viewport_left / 16), max_sx = floor((viewport_right - 1) / 16), etc.
+3. Clamp bounds to valid grid range (0 to sector_width-1, 0 to sector_height-1).
+4. For each candidate sector in that range, check overlap: sector rect vs viewport rect.
+5. Mark overlapping sectors visited (idempotent—safe to call every frame).
 
 ### Persistence Payload
-- Store visited sectors under world save data.
+- Store visited sectors as flat Array[bool] under world save data.
 - Restore visited sectors after world generation and manager setup.
 - If data is missing, fall back to all-unvisited state (except start sector for new game).
 
