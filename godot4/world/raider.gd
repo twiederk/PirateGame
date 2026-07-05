@@ -1,6 +1,7 @@
 class_name Raider
 extends CharacterBody2D
 
+const FightCloudScene = preload("res://world/fight_cloud.tscn")
 
 const SPEED: float = 200.0
 
@@ -70,6 +71,7 @@ func _on_robbery_zone_body_entered(body) -> void:
 	if not body is Player:
 		return
 	_rob_player()
+	_show_animation()
 	queue_free()
 
 
@@ -79,3 +81,9 @@ func _rob_player() -> void:
 	player.lose_gold(0.5)
 	player.lose_goods(0.5)	
 	MessageBus.message_send.emit("Räuberangriff! Du verlierst die Hälfte deines Goldes und deiner Waren.")
+
+
+func _show_animation() -> void:
+	var fight_cloud = FightCloudScene.instantiate()
+	fight_cloud.position = global_position
+	get_parent().add_child(fight_cloud)
