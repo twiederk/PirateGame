@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://nuy0ptegaa3w"]
+
+[ext_resource type="SpriteFrames" uid="uid://c7x3d4td6o5nm" path="res://world/fight_cloud_sprite_frames.tres" id="1_8qwkl"]
+[ext_resource type="Script" uid="uid://cfk0dkfk6bxf2" path="res://world/fight_cloud.gd" id="1_v4nwq"]
+
+[node name="FightCloud" type="Node2D" unique_id=1527531738]
+script = ExtResource("1_v4nwq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=29960331]
+sprite_frames = ExtResource("1_8qwkl")
+autoplay = "default"
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animation_finished"]

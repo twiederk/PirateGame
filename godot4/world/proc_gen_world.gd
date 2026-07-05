@@ -28,7 +28,7 @@ const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
 const GRASS_LEVEL: float = 0.2
 const FIELD_LEVEL: float = 0.3
-const CLIFF_LEVEL: float = 0.6
+const CLIFF_LEVEL: float = 0.5
 const TREE_CHANCE: float = 0.0
 const PALM_TREE_CHANCE: float = 0.35
 
@@ -55,6 +55,7 @@ const PALM_TREE_TILES = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
 const GRASS_TILES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 const SIMULATION_STEP: float = 30.0
+const INVALID_TILE_POSITION: Vector2i = Vector2i(-1, -1)
 
 var noise : Noise
 var tree_noise : Noise
@@ -242,9 +243,12 @@ func generate_goods():
 func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positions: Array[Vector2i]) -> void:
 	var goods_to_generate = max_good - get_goods_by_type(good_resource).size()
 	for i in range(goods_to_generate):
+		var spawn_position = _pick_hidden_tile_position(positions)
+		if spawn_position == INVALID_TILE_POSITION:
+			continue
 		var good: Good = GoodScene.instantiate() 
 		good.good_resource = good_resource
-		good.global_position = positions.pick_random() * get_tile_size()
+		good.global_position = spawn_position * get_tile_size()
 		goods.add_child(good)
 
 
@@ -252,9 +256,42 @@ func generate_raiders() -> void:
 	var max_raiders = int(width * raider_percentage)
 	var raiders_to_generate = max_raiders - get_raiders().size()
 	for i in range(raiders_to_generate):
+		var spawn_position = _pick_hidden_tile_position(grass_arr)
+		if spawn_position == INVALID_TILE_POSITION:
+			continue
 		var raider: Raider = RaiderScene.instantiate() 
-		raider.global_position = grass_arr.pick_random() * get_tile_size()
+		raider.global_position = spawn_position * get_tile_size()
 		raiders.add_child(raider)
+
+
+func _pick_hidden_tile_position(positions: Array[Vector2i]) -> Vector2i:
+	if positions.is_empty():
+		return INVALID_TILE_POSITION
+
+	var hidden_positions: Array[Vector2i] = positions.filter(func(pos): return not _is_tile_position_visible(pos))
+	if hidden_positions.is_empty():
+		return INVALID_TILE_POSITION
+
+	return hidden_positions.pick_random()
+
+
+func _is_tile_position_visible(tile_position: Vector2i) -> bool:
+	var viewport := get_viewport()
+	if viewport == null:
+		return false
+
+	var camera: Camera2D = viewport.get_camera_2d()
+	if camera == null:
+		return false
+
+	var viewport_size: Vector2 = viewport.get_visible_rect().size
+	var visible_size: Vector2 = viewport_size * camera.zoom
+	var visible_origin: Vector2 = camera.get_screen_center_position() - (visible_size * 0.5)
+	var visible_rect := Rect2(visible_origin, visible_size)
+
+	var tile_size: Vector2i = get_tile_size()
+	var tile_world_rect := Rect2(Vector2(tile_position * tile_size), Vector2(tile_size))
+	return visible_rect.intersects(tile_world_rect)
 
 
 func simulation(delta: float) -> void:
