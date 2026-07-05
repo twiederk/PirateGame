@@ -79,7 +79,7 @@ func _rob_player() -> void:
 	if player == null:
 		return
 	player.lose_gold(0.5)
-	player.lose_goods(0.5)	
+	player.lose_goods(0.5)
 	MessageBus.message_send.emit("Räuberangriff! Du verlierst die Hälfte deines Goldes und deiner Waren.")
 
 
