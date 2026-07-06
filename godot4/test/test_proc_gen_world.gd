@@ -63,7 +63,6 @@ func test_generate_minimap():
 	for i in range(biome_properties.size()):
 		var town = Town.new()
 		town.position = Vector2(start_x + (segment_width * 0.5), proc_gen_world.height * 0.5) * 16
-		print(str("town.position: ", town.position))
 		towns_root.add_child(town)
 		
 		var end_x = start_x + segment_width
@@ -83,4 +82,3 @@ func test_generate_minimap():
 	towns_root.free()
 	
 	image.save_png("res://test/test_proc_gen_world.png")
-	
