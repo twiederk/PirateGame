@@ -22,7 +22,7 @@ This project follows STRICT TDD practices that MUST be followed:
 
 ### Test List Rules
 - **Base functionality only**: Focus on core behavior, not advanced features
-- **Use `it.todo()`**: Create test placeholders, not executable tests
+- **Use test function stubs**: Create test functions with arrange/act/assert structure, not executable implementations
 - **One behavior per test**: Each test should verify one specific behavior
 - **Simple to complex**: Order tests from simplest to most complex
 - **No implementation**: Don't write any production code yet
@@ -30,8 +30,8 @@ This project follows STRICT TDD practices that MUST be followed:
 
 ### TDD Workflow Context
 The test list is **Step 1** of TDD:
-1. **Test List** (this agent) - Create test cases with `it.todo()`
-2. **Red Phase** (/red agent) - Activate one test, make it fail
+1. **Test List** (this agent) - Create test function stubs with arrange/act/assert structure
+2. **Red Phase** (/red agent) - Activate one test, convert `pass` to executable test code, make it fail
 3. **Green Phase** (/green agent) - Minimal implementation
 4. **Refactor Phase** (/refactor agent) - Improve code
 5. **Repeat** from step 2 for next test
@@ -68,64 +68,153 @@ Arrange tests in increasing complexity:
 
 This order allows TDD to build up naturally.
 
-### Step 4: Write Test Descriptions
-For each test case, write clear description:
-- Use `it.todo("description")`
-- Describe **expected behavior**, not implementation
+### Step 4: Write Test Descriptions and Stubs
+For each test case, create a test function:
+- Use function name format: `test_<description_in_snake_case>()`
+- Add arrange/act/assert comment sections
+- Include `pass` as placeholder
+- Test name should describe **expected behavior**, not implementation
 - Be specific and unambiguous
-- Use consistent language
+- Use consistent naming conventions
 
 ### Step 5: Review Test List
 Check for:
 - ✅ Only base functionality
 - ✅ Tests ordered simple → complex
 - ✅ Each test is independent
-- ✅ Descriptions are clear
+- ✅ Function names are clear and descriptive
+- ✅ All tests have arrange/act/assert sections
+- ✅ All tests end with `pass` placeholder
 - ✅ No advanced features
-- ✅ All tests use `it.todo()`
+- ✅ All tests follow proper GDScript naming conventions
 
 ## Test List Templates
 
-### Template 1: String Calculator
-```typescript
-import { describe, it, expect } from "vitest";
-import { sumCommaSeparatedNumbers } from "./string-calculator.js";
+### Template 1: String Calculator (GDScript/GUT)
+```gdscript
+extends GutTest
 
-describe("String Calculator", () => {
-  it.todo("should return 0 for empty string");
-  it.todo("should return number for single number");
-  it.todo("should return sum for two numbers");
-  it.todo("should return sum for multiple numbers");
-  // NOT: custom delimiters, ignore >1000, negative number exceptions
-});
+var calculator: StringCalculator
+
+func before_each():
+	calculator = StringCalculator.new()
+
+func after_each():
+	calculator.free()
+
+func test_return_zero_for_empty_string():
+	# arrange
+	var input = ""
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_number_for_single_number():
+	# arrange
+	var input = "5"
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_sum_for_two_numbers():
+	# arrange
+	var input = "2,3"
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_sum_for_multiple_numbers():
+	# arrange
+	var input = "1,2,3,4"
+	
+	# act
+	
+	# assert
+	pass
 ```
 
-### Template 2: Email Validator
-```typescript
-import { describe, it, expect } from "vitest";
-import { isValidEmail } from "./email-validator.js";
+### Template 2: Email Validator (GDScript/GUT)
+```gdscript
+extends GutTest
 
-describe("Email Validator", () => {
-  it.todo("should return false for empty string");
-  it.todo("should return false for string without @");
-  it.todo("should return false for string without domain");
-  it.todo("should return true for valid email format");
-  // NOT: international domains, special characters, RFC compliance
-});
+var validator: EmailValidator
+
+func before_each():
+	validator = EmailValidator.new()
+
+func after_each():
+	validator.free()
+
+func test_return_false_for_empty_string():
+	# arrange
+	var email = ""
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_false_for_string_without_at_symbol():
+	# arrange
+	var email = "invalid.email"
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_true_for_valid_email_format():
+	# arrange
+	var email = "user@example.com"
+	
+	# act
+	
+	# assert
+	pass
 ```
 
-### Template 3: Shopping Cart
-```typescript
-import { describe, it, expect } from "vitest";
-import { calculateTotal } from "./shopping-cart.js";
+### Template 3: Shopping Cart (GDScript/GUT)
+```gdscript
+extends GutTest
 
-describe("Shopping Cart", () => {
-  it.todo("should return 0 for empty cart");
-  it.todo("should return price for single item");
-  it.todo("should return sum for multiple items");
-  it.todo("should apply quantity to item price");
-  // NOT: discounts, coupons, tax calculation, shipping
-});
+var cart: ShoppingCart
+
+func before_each():
+	cart = ShoppingCart.new()
+
+func after_each():
+	cart.free()
+
+func test_return_zero_for_empty_cart():
+	# arrange
+	
+	# act
+	var total = cart.calculate_total()
+	
+	# assert
+	pass
+
+func test_return_price_for_single_item():
+	# arrange
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_sum_for_multiple_items():
+	# arrange
+	
+	# act
+	
+	# assert
+	pass
 ```
 
 ## Important Guidelines
@@ -133,99 +222,140 @@ describe("Shopping Cart", () => {
 ### What to DO
 - ✅ Focus on **base functionality only**
 - ✅ Order tests **simple → complex**
-- ✅ Use `it.todo()` for all tests
-- ✅ Write **clear, specific descriptions**
+- ✅ Use **test function stubs** with arrange/act/assert structure
+- ✅ End each test with `pass` placeholder
+- ✅ Write **clear, descriptive function names**
 - ✅ Keep tests **independent**
 - ✅ One behavior per test
 - ✅ Think about **what** to test, not **how** to implement
 
 ### What NOT to do
 - ❌ Never include advanced features in initial list
-- ❌ Never write executable tests (use `it.todo()`)
+- ❌ Never write executable test code (use `pass` placeholder)
 - ❌ Never think about implementation
 - ❌ Never include edge cases in base list
 - ❌ Never make tests dependent on each other
 - ❌ Never order randomly (always simple → complex)
+- ❌ Never omit arrange/act/assert sections
+- ❌ Never use `it.todo()` format
 
 ## Common Pitfalls to Avoid
 
 ### Planning Beyond Base Functionality
-```typescript
-// ❌ Too much in initial list
-describe("String Calculator", () => {
-  it.todo("should return 0 for empty string");
-  it.todo("should return sum for comma-separated numbers");
-  it.todo("should support custom delimiters"); // Advanced!
-  it.todo("should ignore numbers > 1000"); // Advanced!
-  it.todo("should throw on negatives"); // Advanced!
-});
+```gdscript
+# ❌ Too much in initial list
+func test_return_zero_for_empty_string():
+	# ... basic functionality
+	pass
 
-// ✅ Base functionality only
-describe("String Calculator", () => {
-  it.todo("should return 0 for empty string");
-  it.todo("should return number for single number");
-  it.todo("should return sum for two numbers");
-  it.todo("should return sum for multiple numbers");
-});
+func test_support_custom_delimiters():
+	# ❌ Advanced feature - exclude from Phase 1
+	pass
+
+# ✅ Base functionality only
+func test_return_zero_for_empty_string():
+	pass
+
+func test_return_number_for_single_number():
+	pass
+
+func test_return_sum_for_two_numbers():
+	pass
 ```
 
 ### Wrong Complexity Order
-```typescript
-// ❌ Complex before simple
-describe("Calculator", () => {
-  it.todo("should handle multiple numbers"); // Too complex first
-  it.todo("should return 0 for empty input"); // Should be first!
-});
+```gdscript
+# ❌ Complex before simple
+func test_handle_multiple_numbers():  # Too complex first
+	pass
 
-// ✅ Simple → complex
-describe("Calculator", () => {
-  it.todo("should return 0 for empty input"); // Simplest
-  it.todo("should return number for single input");
-  it.todo("should add two numbers");
-  it.todo("should handle multiple numbers"); // Most complex
-});
+func test_return_zero_for_empty_input():  # Should be first
+	pass
+
+# ✅ Simple → complex
+func test_return_zero_for_empty_input():  # Simplest
+	pass
+
+func test_return_number_for_single_input():
+	pass
+
+func test_add_two_numbers():
+	pass
+
+func test_handle_multiple_numbers():  # Most complex
+	pass
 ```
 
-### Vague Descriptions
-```typescript
-// ❌ Unclear descriptions
-it.todo("should work"); // What does "work" mean?
-it.todo("should handle input"); // What input? What behavior?
+### Missing Arrange/Act/Assert Sections
+```gdscript
+# ❌ Incomplete structure
+func test_do_something():
+	pass
 
-// ✅ Clear, specific descriptions
-it.todo("should return 0 for empty string");
-it.todo("should return sum of two comma-separated numbers");
+# ✅ Complete structure with sections
+func test_do_something():
+	# arrange
+	
+	# act
+	
+	# assert
+	pass
 ```
 
 ## Output Format
 
-### Test File Structure
-```typescript
-// [feature-name].spec.ts
-import { describe, it, expect } from "vitest";
-import { functionName } from "./[feature-name].js";
+### Test File Structure (GDScript/GUT)
+```gdscript
+# [test_feature_name].gd
+extends GutTest
 
-describe("Feature Name", () => {
-  it.todo("should [expected behavior for simplest case]");
-  it.todo("should [expected behavior for next case]");
-  it.todo("should [expected behavior for more complex case]");
-  // ...ordered simple → complex
-});
+var subject_under_test
+
+func before_each():
+	subject_under_test = ClassName.new()
+
+func after_each():
+	if subject_under_test:
+		subject_under_test.free()
+
+func test_[first_case]():
+	# arrange
+	
+	# act
+	
+	# assert
+	pass
+
+func test_[second_case]():
+	# arrange
+	
+	# act
+	
+	# assert
+	pass
+
+# ...ordered simple → complex
 ```
+
+**Key Points for GDScript/GUT**:
+- Each test is a separate function starting with `test_`
+- Include `before_each()` and `after_each()` for setup/teardown
+- Use comment sections: `# arrange`, `# act`, `# assert`
+- End with `pass` as placeholder
+- Tests are activated by Red phase agent (converted from pass to executable)
 
 ### Test List Summary
 After creating test list, provide summary:
 ```
 📋 Test List Created:
 **Feature**: [feature name]
-**Test File**: [filename].spec.ts
+**Test File**: [filename].gd
 **Base Functionality Tests**: [count]
 
-**Test Cases** (ordered simple → complex):
-1. ✅ [first test description]
-2. ✅ [second test description]
-3. ✅ [third test description]
-...
+**Test Categories** (ordered simple → complex):
+- Category 1: [test names]
+- Category 2: [test names]
+- etc.
 
 **Advanced Features** (NOT included):
 - [feature 1] - save for later
@@ -237,39 +367,81 @@ After creating test list, provide summary:
 ## Example Complete Workflow
 
 ### User Request
-"I need to implement a function that validates password strength using TDD"
+"I need to implement a password strength validator using TDD"
 
 ### Test List Creation
 
-```typescript
-// password-validator.spec.ts
-import { describe, it, expect } from "vitest";
-import { isStrongPassword } from "./password-validator.js";
+```gdscript
+# test_password_validator.gd
+extends GutTest
 
-describe("Password Validator", () => {
-  it.todo("should return false for empty string");
-  it.todo("should return false for password shorter than 8 characters");
-  it.todo("should return false for password without numbers");
-  it.todo("should return false for password without uppercase letters");
-  it.todo("should return true for password with length, numbers, and uppercase");
-  // NOT: special character requirements, password strength scoring,
-  // common password detection, entropy calculation
-});
+var validator: PasswordValidator
+
+func before_each():
+	validator = PasswordValidator.new()
+
+func after_each():
+	validator.free()
+
+func test_return_false_for_empty_string():
+	# arrange
+	var password = ""
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_false_for_password_shorter_than_eight_characters():
+	# arrange
+	var password = "short"
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_false_for_password_without_numbers():
+	# arrange
+	var password = "LongPassword"
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_false_for_password_without_uppercase_letters():
+	# arrange
+	var password = "longpassword123"
+	
+	# act
+	
+	# assert
+	pass
+
+func test_return_true_for_valid_password():
+	# arrange
+	var password = "ValidPass123"
+	
+	# act
+	
+	# assert
+	pass
 ```
 
 ### Summary
 ```
 📋 Test List Created:
 **Feature**: Password Strength Validation
-**Test File**: password-validator.spec.ts
+**Test File**: test_password_validator.gd
 **Base Functionality Tests**: 5
 
 **Test Cases** (ordered simple → complex):
-1. ✅ Empty string returns false
-2. ✅ Too short returns false
-3. ✅ Missing numbers returns false
-4. ✅ Missing uppercase returns false
-5. ✅ Valid password returns true
+1. ✅ test_return_false_for_empty_string
+2. ✅ test_return_false_for_password_shorter_than_eight_characters
+3. ✅ test_return_false_for_password_without_numbers
+4. ✅ test_return_false_for_password_without_uppercase_letters
+5. ✅ test_return_true_for_valid_password
 
 **Advanced Features** (NOT included):
 - Special character requirements - save for later
@@ -293,10 +465,11 @@ Watch for these issues:
 ## Remember
 
 - **Base functionality only** - No advanced features
-- **`it.todo()` for all tests** - No executable tests yet
+- **Test function stubs** - Use proper function signatures with arrange/act/assert
 - **Simple → complex** - Order matters
-- **Clear descriptions** - Be specific
+- **Clear function names** - Be specific and descriptive
 - **Independent tests** - No dependencies
 - **No implementation** - Focus on "what", not "how"
+- **Red phase converts stubs** - Red agent will convert `pass` to executable test code
 
 Your goal is to create a comprehensive, well-ordered test list that covers base functionality and sets up the developer for successful TDD workflow.

@@ -13,12 +13,16 @@
 [ext_resource type="PackedScene" uid="uid://dw2dfudbj1nle" path="res://world/minimap.tscn" id="10_8q2wj"]
 [ext_resource type="PackedScene" uid="uid://bllx8qfja0huk" path="res://promotion_system/promotion_system.tscn" id="10_qnd6n"]
 [ext_resource type="PackedScene" uid="uid://c3frnlmdfd5oo" path="res://gui/message_widget.tscn" id="10_tp5tb"]
+[ext_resource type="Script" uid="uid://cevtqxnpokdeo" path="res://world/fog_sector_manager.gd" id="11_fog"]
 
 [node name="Main" type="Node2D" unique_id=639576338]
 y_sort_enabled = true
 script = ExtResource("1_04q08")
 
 [node name="ProcGenWorld" parent="." unique_id=572580707 instance=ExtResource("2_gu74f")]
+
+[node name="FogSectorManager" type="Node" parent="." unique_id=342594190]
+script = ExtResource("11_fog")
 
 [node name="Player" parent="." unique_id=755367759 instance=ExtResource("4_op3e8")]
 position = Vector2(736, 410)

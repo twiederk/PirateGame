@@ -21,13 +21,16 @@ var towns: Array[Town]
 @onready var inventory_screen: InventoryScreen = $gui/InventoryScreen
 @onready var message_widget: MessageWidget = $gui/MessageWidget
 @onready var minimap: Minimap = $gui/Minimap
+@onready var fog_sector_manager: FogSectorManager = $FogSectorManager
 
 
 func _ready() -> void:
 	PauseManager.clear_all()
 	var world_seed = _get_seed()
 	proc_gen_world.generate_world(world_seed)
+	fog_sector_manager.initialize(proc_gen_world.width, proc_gen_world.height)
 	towns = proc_gen_world.generate_towns()
+	fog_sector_manager.set_base_minimap_image(proc_gen_world.generate_minimap())
 	_setup_limits_and_borders()
 
 
@@ -50,6 +53,7 @@ func _ready() -> void:
 func _physics_process(delta):
 	if PauseManager.is_simulation_paused():
 		return
+	fog_sector_manager.update_fog(proc_gen_world.get_tile_size())
 	trading_system.simulation(delta, towns)
 	proc_gen_world.simulation(delta)
 
@@ -157,6 +161,7 @@ func _minimap() -> void:
 			if inventory_screen.visible:
 				inventory_screen.hide()
 				PauseManager.simulation_start()
+			_setup_minimap()
 			minimap.show()
 			minimap.set_player_position(player.position * ProcGenWorld.MINIMAP_PLAYER_SCALE)
 			PauseManager.simulation_stop()
@@ -207,6 +212,6 @@ func remove_chasing_raiders() -> void:
 
 
 func _setup_minimap():
-	var minimap_image = proc_gen_world.generate_minimap()
+	var minimap_image = fog_sector_manager.generate_minimap_with_fog()
 	minimap.set_image(minimap_image)
 	minimap.center_on_screen()
