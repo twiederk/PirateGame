@@ -45,7 +45,7 @@ func _ready() -> void:
 	else:
 		player.position = proc_gen_world.get_starting_position()
 		proc_gen_world.generate_goods()
-		proc_gen_world.generate_raiders()
+		proc_gen_world.generate_raiders(player.position)
 		player.gold = 100
 	_connect_signals()
 	_setup_minimap()
@@ -56,7 +56,7 @@ func _physics_process(delta):
 		return
 	fog_sector_manager.update_fog(ProcGenWorld.TILE_SIZE)
 	trading_system.simulation(delta, towns)
-	proc_gen_world.simulation(delta)
+	proc_gen_world.simulation(delta, player.position)
 
 
 func _setup_limits_and_borders() -> void:
