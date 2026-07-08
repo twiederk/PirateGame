@@ -43,9 +43,9 @@ func _ready() -> void:
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
 		FogSectorManagerSerializer.new().set_save_data(fog_sector_manager, SaveManager.load_game_state)
 	else:
+		player.position = proc_gen_world.get_starting_position()
 		proc_gen_world.generate_goods()
 		proc_gen_world.generate_raiders()
-		player.position = proc_gen_world.get_starting_position()
 		player.gold = 100
 	_connect_signals()
 	_setup_minimap()
