@@ -41,6 +41,7 @@ func _ready() -> void:
 		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state)
 		ProcGenWorldSerializer.new().set_save_data( proc_gen_world, SaveManager.load_game_state)
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
+		FogSectorManagerSerializer.new().set_save_data(fog_sector_manager, SaveManager.load_game_state)
 	else:
 		proc_gen_world.generate_goods()
 		proc_gen_world.generate_raiders()
