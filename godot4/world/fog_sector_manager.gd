@@ -2,7 +2,7 @@ class_name FogSectorManager
 extends Node
 
 
-const DEFAULT_SECTOR_SIZE: int = 16
+const DEFAULT_SECTOR_SIZE: int = 4
 
 var world_width: int
 var world_height: int
