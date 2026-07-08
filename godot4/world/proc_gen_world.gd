@@ -35,6 +35,7 @@ const PALM_TREE_CHANCE: float = 0.35
 const WORLD_TILE_SET = 0
 const MINIMAP_PLAYER_SCALE: float = 2.0 / 16.0
 const MINIMAP_SCALE: float = 1.0 / 16.0
+const TILE_SIZE: Vector2i = Vector2i(16, 16)
 
 const GRASS_IN_SAND_TERRAIN_SET: int = 1
 const SAND_IN_WATER_TERRAIN_SET: int = 3
@@ -111,7 +112,7 @@ func generate_world(new_seed: int):
 func get_starting_position() -> Vector2i:
 	if grass_arr.is_empty():
 		return Vector2i.ZERO
-	return grass_arr.pick_random() * get_tile_size()
+	return grass_arr.pick_random() * TILE_SIZE
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
@@ -165,10 +166,6 @@ func get_used_rect() -> Rect2i:
 	return water_layer.get_used_rect()
 
 
-func get_tile_size() -> Vector2i:
-	return water_layer.tile_set.tile_size
-
-
 func is_coast(player_position: Vector2) -> bool:
 	var player_position_to_tile = sand_and_grass_layer.local_to_map(player_position)
 	var tile_data : TileData = sand_and_grass_layer.get_cell_tile_data(player_position_to_tile)
@@ -180,7 +177,7 @@ func is_coast(player_position: Vector2) -> bool:
 
 func generate_towns() -> Array[Town]:
 	var max_cities = int(width * town_percentage)
-	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * get_tile_size()))
+	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * TILE_SIZE))
 	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
 	
 	for i in range(max_cities * 1.0):
@@ -206,7 +203,7 @@ func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i)
 	town.town_resource = town_resource
 	town.town_name = town_name
 	town.name = town_name
-	town.global_position = pos * get_tile_size()
+	town.global_position = pos * TILE_SIZE
 	return town
 	
 
@@ -248,7 +245,7 @@ func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positio
 			continue
 		var good: Good = GoodScene.instantiate() 
 		good.good_resource = good_resource
-		good.global_position = spawn_position * get_tile_size()
+		good.global_position = spawn_position * TILE_SIZE
 		goods.add_child(good)
 
 
@@ -260,7 +257,7 @@ func generate_raiders() -> void:
 		if spawn_position == INVALID_TILE_POSITION:
 			continue
 		var raider: Raider = RaiderScene.instantiate() 
-		raider.global_position = spawn_position * get_tile_size()
+		raider.global_position = spawn_position * TILE_SIZE
 		raiders.add_child(raider)
 
 
@@ -289,7 +286,7 @@ func _is_tile_position_visible(tile_position: Vector2i) -> bool:
 	var visible_origin: Vector2 = camera.get_screen_center_position() - (visible_size * 0.5)
 	var visible_rect := Rect2(visible_origin, visible_size)
 
-	var tile_size: Vector2i = get_tile_size()
+	var tile_size: Vector2i = TILE_SIZE
 	var tile_world_rect := Rect2(Vector2(tile_position * tile_size), Vector2(tile_size))
 	return visible_rect.intersects(tile_world_rect)
 

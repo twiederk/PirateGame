@@ -53,14 +53,14 @@ func _ready() -> void:
 func _physics_process(delta):
 	if PauseManager.is_simulation_paused():
 		return
-	fog_sector_manager.update_fog(proc_gen_world.get_tile_size())
+	fog_sector_manager.update_fog(ProcGenWorld.TILE_SIZE)
 	trading_system.simulation(delta, towns)
 	proc_gen_world.simulation(delta)
 
 
 func _setup_limits_and_borders() -> void:
 	var tile_map_used_rect = proc_gen_world.get_used_rect()
-	var tile_size = proc_gen_world.get_tile_size()
+	var tile_size = ProcGenWorld.TILE_SIZE
 	var north_limit = tile_map_used_rect.position.y * tile_size.y
 	var south_limit = (tile_map_used_rect.position.y + tile_map_used_rect.size.y) * tile_size.y
 	var west_limit = tile_map_used_rect.position.x * tile_size.x
