@@ -73,7 +73,7 @@ func _setup_limits_and_borders() -> void:
 
 func _get_seed() -> int:
 	if SaveManager.load_game_state.is_empty():
-		return 0
+		return proc_gen_world.seed_value
 	return SaveManager.load_game_state.world.seed_value
 
 
