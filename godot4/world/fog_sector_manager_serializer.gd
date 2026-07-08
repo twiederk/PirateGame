@@ -17,18 +17,14 @@ func set_save_data(fog_sector_manager: FogSectorManager, save_data: Dictionary) 
 
 	var fog_data = save_data.fog
 	
-	# Restore dimensions
 	var world_width = fog_data.get("world_width", 0)
 	var world_height = fog_data.get("world_height", 0)
 	var sector_size = fog_data.get("sector_size", FogSectorManager.DEFAULT_SECTOR_SIZE)
 	
-	# Initialize with dimensions
 	fog_sector_manager.initialize(world_width, world_height, sector_size)
 	
-	# Restore visited sectors
 	if fog_data.has("visited_sectors"):
 		fog_sector_manager.visited_sectors = fog_data.visited_sectors
 	else:
-		# Reset all sectors to false (not visited) if missing
 		var total_sectors = fog_sector_manager.sector_width * fog_sector_manager.sector_height
 		fog_sector_manager._reset_visited_sectors(total_sectors)
