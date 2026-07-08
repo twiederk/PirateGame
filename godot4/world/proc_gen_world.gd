@@ -1,6 +1,7 @@
 class_name ProcGenWorld
 extends Node2D
 
+
 @export var width : int = 256
 @export var height : int = 192
 @export var seed_value: int = 0
