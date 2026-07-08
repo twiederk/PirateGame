@@ -191,7 +191,7 @@ func _on_town_left():
 
 
 func _on_pause_menu_save_button_pressed():
-	SaveManager.save(player, proc_gen_world, trading_system, 1)
+	SaveManager.save(player, proc_gen_world, trading_system, fog_sector_manager, 1)
 
 
 func _on_rank_promoted(new_rank: PrestigeRank):

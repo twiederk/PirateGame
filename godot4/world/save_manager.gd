@@ -5,18 +5,20 @@ var load_game_state : Dictionary = {}
 var player_serializer = PlayerSerializer.new()
 var proc_gen_world_serializer = ProcGenWorldSerializer.new()
 var trading_system_serializer = TradingSystemSerializer.new()
+var fog_sector_manager_serializer = FogSectorManagerSerializer.new()
 
 
-func save(player: Player, proc_gen_world: ProcGenWorld, trading_system: TradingSystem, slot_number: int) -> void:
-	var game_state: Dictionary = _collect_game_state(player, proc_gen_world, trading_system)
+func save(player: Player, proc_gen_world: ProcGenWorld, trading_system: TradingSystem, fog_sector_manager: FogSectorManager, slot_number: int) -> void:
+	var game_state: Dictionary = _collect_game_state(player, proc_gen_world, trading_system, fog_sector_manager)
 	_save_file(game_state, slot_number)
 
 
-func _collect_game_state(player: Player, proc_gen_world: ProcGenWorld, trading_system: TradingSystem) -> Dictionary:
+func _collect_game_state(player: Player, proc_gen_world: ProcGenWorld, trading_system: TradingSystem, fog_sector_manager: FogSectorManager) -> Dictionary:
 	var game_state: Dictionary = {}
 	game_state.merge(player_serializer.get_save_data(player), true)
 	game_state.merge(proc_gen_world_serializer.get_save_data(proc_gen_world), true)
 	game_state.merge(trading_system_serializer.get_save_data(trading_system), true)
+	game_state.merge(fog_sector_manager_serializer.get_save_data(fog_sector_manager), true)
 	return game_state
 
 
