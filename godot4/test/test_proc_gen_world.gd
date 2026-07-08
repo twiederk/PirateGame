@@ -82,3 +82,27 @@ func test_generate_minimap():
 	towns_root.free()
 	
 	image.save_png("res://test/test_proc_gen_world.png")
+
+
+func test_raider_spawns_in_raider_distance():
+	# arrange
+	var player_position = Vector2(200.0, 200.0)
+	var tile_position = Vector2i(12, 12)
+	
+	# act
+	var result = proc_gen_world._in_raider_distance(player_position, tile_position)
+	
+	# assert
+	assert_true(result, "Raider spawned in detection distance to player")
+
+
+func test_raider_spawns_outside_raider_distance():
+	# arrange
+	var player_position = Vector2(200.0, 200.0) # global_position
+	var tile_position = Vector2i(50, 100) # tile coords
+	
+	# act
+	var result = proc_gen_world._in_raider_distance(player_position, tile_position)
+	
+	# assert
+	assert_false(result, "Raider spawned in detection distance to player")

@@ -260,7 +260,7 @@ func generate_raiders(player_position: Vector2) -> void:
 		var spawn_position = _pick_hidden_tile_position(grass_arr)
 		if spawn_position == INVALID_TILE_POSITION:
 			continue
-		if in_min_raider_distance(player_position, spawn_position):
+		if _in_raider_distance(player_position, spawn_position):
 			continue
 		var raider: Raider = RaiderScene.instantiate() 
 		raider.global_position = spawn_position * TILE_SIZE
@@ -297,7 +297,7 @@ func _is_tile_position_visible(tile_position: Vector2i) -> bool:
 	return visible_rect.intersects(tile_world_rect)
 
 
-func in_min_raider_distance(player_position, spawn_position) -> bool:
+func _in_raider_distance(player_position, spawn_position) -> bool:
 	return player_position.distance_to(Vector2(spawn_position * TILE_SIZE)) <= RAIDER_DISTANCE
 
 func simulation(delta: float, player_position: Vector2) -> void:
