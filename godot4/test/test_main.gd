@@ -12,6 +12,8 @@ func after_each():
 
 func test_seed_new_game():
 	# arrange
+	var proc_gen_world = ProcGenWorld.new()
+	main.proc_gen_world  = proc_gen_world
 	SaveManager.load_game_state = {}
 	
 	# act
@@ -19,6 +21,9 @@ func test_seed_new_game():
 	
 	# assert
 	assert_eq(result, 0, "Should start with random seed.")
+	
+	# tear down
+	proc_gen_world.free()
 
 
 func test_seed_load_game():
