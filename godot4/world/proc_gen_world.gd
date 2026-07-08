@@ -37,6 +37,7 @@ const WORLD_TILE_SET = 0
 const MINIMAP_PLAYER_SCALE: float = 2.0 / 16.0
 const MINIMAP_SCALE: float = 1.0 / 16.0
 const TILE_SIZE: Vector2i = Vector2i(16, 16)
+const TOWN_OFFSET: Vector2i = Vector2i(8, 8)
 
 const GRASS_IN_SAND_TERRAIN_SET: int = 1
 const SAND_IN_WATER_TERRAIN_SET: int = 3
@@ -204,7 +205,7 @@ func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i)
 	town.town_resource = town_resource
 	town.town_name = town_name
 	town.name = town_name
-	town.global_position = pos * TILE_SIZE
+	town.global_position = pos * TILE_SIZE + TOWN_OFFSET
 	return town
 	
 
