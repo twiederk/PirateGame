@@ -88,6 +88,9 @@ func test_set_save_data():
 	
 	var goods_root = Node2D.new()
 	proc_gen_world.goods = goods_root
+	
+	var raiders_root = Node2D.new()
+	proc_gen_world.raiders = raiders_root
 
 	var save_data = {
 		"world": {
@@ -109,6 +112,11 @@ func test_set_save_data():
 					"resource_path": GOOD_FISH.resource_path,
 					"position": {"x": 10, "y": 20},
 				}
+			],
+			"raiders": [
+				{
+					"position": {"x": 30, "y": 40},
+				}
 			]
 		}
 	}
@@ -118,19 +126,29 @@ func test_set_save_data():
 
 	# assert
 	assert_eq(proc_gen_world.spawn_accumulator, 0.5, "should restore spawn accumulator")
+	
 	assert_true(town.get_visited(), "should restore visited")
 	assert_eq(town_item.stock, 50, "should restore town item stock")
 	assert_eq(town_item.cached_stock, 45, "should restore town item cached_stock")
 	assert_eq(town_item.last_updated, 1234.5, "should restore town item last_updated")
+	
 	var goods = proc_gen_world.get_goods()
 	assert_eq(goods.size(), 1, "Should restore goods")
 	var good = goods[0]
 	assert_eq(good.good_resource.resource_path, GOOD_FISH.resource_path, "Should restore good resource of good")
 	assert_eq(good.global_position, Vector2(10, 20), "Should restore position of good")
+
+	var raiders = proc_gen_world.get_raiders()
+	assert_eq(raiders.size(), 1, "Should restore raiders")
+	var raider = raiders[0]
+	assert_eq(raider.global_position, Vector2(30, 40), "Should restore position of raider")
+	
+	
 	
 	# tear down
 	towns_root.free()
 	goods_root.free()
+	raiders_root.free()
 
 
 func test_set_save_data_missing_data_use_defaults():
@@ -146,6 +164,9 @@ func test_set_save_data_missing_data_use_defaults():
 	
 	var goods_root = Node2D.new()
 	proc_gen_world.goods = goods_root
+	
+	var raiders_root = Node2D.new()
+	proc_gen_world.raiders = raiders_root
 
 	var save_data = {
 		"world": {
@@ -169,7 +190,9 @@ func test_set_save_data_missing_data_use_defaults():
 	assert_eq(town_item.cached_stock, 0, "Should use default value for town item cached_stock")
 	assert_eq(town_item.last_updated, 0.0, "Should use default value for town item last_updated")
 	assert_eq(proc_gen_world.get_goods().size(), 0, "Should not create goods")
+	assert_eq(proc_gen_world.get_raiders().size(), 0, "Should not create raiders")
 	
 	# tear down
 	towns_root.free()
 	goods_root.free()
+	raiders_root.free()

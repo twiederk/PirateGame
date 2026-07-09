@@ -1,7 +1,7 @@
 class_name ProcGenWorldSerializer
 
 const GoodScene = preload("res://world/good.tscn")
-
+const RaiderScene = preload("res://world/raider.tscn")
 
 func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 	var world_data = {
@@ -64,6 +64,7 @@ func set_save_data(proc_gen_world: ProcGenWorld, save_data: Dictionary) -> void:
 	_restore_world(proc_gen_world, world_data)
 	_restore_towns(proc_gen_world, world_data)
 	_restore_goods(proc_gen_world, world_data)
+	_restore_raiders(proc_gen_world, world_data)
 
 
 func _restore_world(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> void:
@@ -118,3 +119,17 @@ func _restore_good(good_data: Dictionary) -> Good:
 	var pos = Vector2i(int(good_data.position.x), int(good_data.position.y))
 	good.global_position = pos
 	return good
+
+
+func _restore_raiders(proc_gen_world: ProcGenWorld, world_data: Dictionary):
+	if world_data.has("raiders"):
+		for raider_data in world_data.raiders:
+			var raider = _restore_raider(raider_data)
+			proc_gen_world.raiders.add_child(raider)
+
+
+func _restore_raider(raider_data: Dictionary) -> Raider:
+	var raider: Raider = RaiderScene.instantiate()
+	var pos = Vector2i(int(raider_data.position.x), int(raider_data.position.y))
+	raider.global_position = pos
+	return raider
