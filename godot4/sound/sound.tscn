@@ -5,7 +5,9 @@
 
 [node name="Sound" type="Node" unique_id=501497402]
 script = ExtResource("1_vayi2")
-promotion = ExtResource("2_m32qc")
+rank_promption = ExtResource("2_m32qc")
+good_pickup = ExtResource("2_m32qc")
+raider_catch = ExtResource("2_m32qc")
 
 [node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="." unique_id=945607239]
 

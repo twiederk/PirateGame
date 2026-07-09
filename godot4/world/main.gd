@@ -46,6 +46,7 @@ func _ready() -> void:
 		player.position = proc_gen_world.get_starting_position()
 		proc_gen_world.generate_goods()
 		proc_gen_world.generate_raiders(player.position)
+		proc_gen_world.generate_treasures(proc_gen_world.generate_minimap())
 		player.gold = 100
 	_connect_signals()
 	_setup_minimap()
@@ -196,7 +197,7 @@ func _on_pause_menu_save_button_pressed():
 
 
 func _on_rank_promoted(new_rank: PrestigeRank):
-	Sound.play(Sound.promotion)
+	Sound.play(Sound.rank_promotion)
 	var message = str("Du hast den neuen Titel: ", new_rank.title, " erhalten!")
 	MessageBus.message_send.emit(message, Color.CORNFLOWER_BLUE)
 

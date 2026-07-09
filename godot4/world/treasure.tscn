@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cfmnykcdvktxm"]
+
+[ext_resource type="Script" uid="uid://bbro2l1macmta" path="res://world/treasure.gd" id="1_tjgvc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ww4pt"]
+radius = 100.0
+
+[node name="Treasure" type="Node2D" unique_id=1690335218]
+script = ExtResource("1_tjgvc")
+
+[node name="TreasureArea" type="Area2D" parent="." unique_id=187554409]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TreasureArea" unique_id=99819831]
+shape = SubResource("CircleShape2D_ww4pt")
+
+[connection signal="body_entered" from="TreasureArea" to="." method="_on_treasure_area_body_entered"]
+[connection signal="body_exited" from="TreasureArea" to="." method="_on_treasure_area_body_exited"]

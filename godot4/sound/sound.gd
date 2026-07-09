@@ -1,6 +1,9 @@
 extends Node
 
-@export var promotion: AudioStream
+@export var rank_promption: AudioStream
+@export var good_pickup: AudioStream
+@export var treasure_pickup: AudioStream
+@export var raider_catch: AudioStream
 
 @onready var sound_players = get_children()
 

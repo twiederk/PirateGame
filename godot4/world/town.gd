@@ -31,9 +31,10 @@ func _init_stock(good: GoodResource) -> int:
 
 
 func _on_body_entered(body):
-	if body is Player:
-		set_visited(true)
-		town_entered.emit(self)
+	if not body is Player:
+		return
+	set_visited(true)
+	town_entered.emit(self)
 
 
 func get_visited() -> bool:

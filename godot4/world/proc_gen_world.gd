@@ -10,12 +10,14 @@ extends Node2D
 @export var grain_percentage: float = 0.05
 @export var wood_percentage: float = 0.05
 @export var raider_percentage: float = 0.02
+@export var treasure_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 
 const TownScene = preload("res://world/town.tscn")
 const GoodScene = preload("res://world/good.tscn")
 const RaiderScene = preload("res://world/raider.tscn")
+const TreasureScene = preload("res://world/treasure.tscn")
 
 const TOWN_HABOR = preload("res://world/town_habor.tres")
 const TOWN_FARM = preload("res://world/town_farm.tres")
@@ -82,6 +84,7 @@ var spawn_accumulator: float = 0.0
 @onready var towns: Node2D = $Towns
 @onready var goods = $Goods
 @onready var raiders = $Raiders
+@onready var treasures = $Treasures
 
 
 func _ready() -> void:
@@ -229,6 +232,12 @@ func get_raiders() -> Array[Raider]:
 	return typed
 
 
+func get_treasures() -> Array[Treasure]:
+	var typed: Array[Treasure] = []
+	typed.assign(treasures.get_children())
+	return typed
+
+
 func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
 	return get_goods().filter(func(good): return good.good_resource == good_resource)
 
@@ -299,6 +308,22 @@ func _is_tile_position_visible(tile_position: Vector2i) -> bool:
 
 func _in_raider_distance(player_position, spawn_position) -> bool:
 	return player_position.distance_to(Vector2(spawn_position * TILE_SIZE)) <= RAIDER_DISTANCE
+
+
+func generate_treasures(minimap_image: Image) -> void:
+	var max_treasures = int(width * treasure_percentage)
+	var treasures_to_generate = max_treasures - get_treasures().size()
+	for i in range(treasures_to_generate):
+		var spawn_position = sand_arr.pick_random()
+		var treasure: Treasure = TreasureScene.instantiate()
+		var region = Rect2i(50, 50, 100, 100)
+		var treasure_map_image = minimap_image.get_region(region)
+		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
+		treasure.global_position = spawn_position * TILE_SIZE
+		
+		treasures.add_child(treasure)
+
+
 
 func simulation(delta: float, player_position: Vector2) -> void:
 	spawn_accumulator += delta

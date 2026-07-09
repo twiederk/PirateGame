@@ -20,6 +20,7 @@ func _on_body_entered(body) -> void:
 	var player = body as Player
 	var amount = randi_range(1, 5)
 	player.collect(good_resource, amount)
+	Sound.play(Sound.good_pickup)
 	var message = str("Du hast ", amount, " ", good_resource.name, " eingesammelt.")
 	MessageBus.message_send.emit(message)
 	queue_free()
