@@ -9,7 +9,7 @@ const ZOOM_STEP: float = 0.1
 var towns: Array[Town]
 
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
-@onready var player: CharacterBody2D = $Player
+@onready var player: Player = $Player
 @onready var camera: Camera2D = $Player/Camera2D
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
@@ -48,6 +48,7 @@ func _ready() -> void:
 		proc_gen_world.generate_raiders(player.position)
 		proc_gen_world.generate_treasures(proc_gen_world.generate_minimap())
 		player.gold = 100
+		player.treasure = proc_gen_world.treasures.get_children()[0]
 	_connect_signals()
 	_setup_minimap()
 

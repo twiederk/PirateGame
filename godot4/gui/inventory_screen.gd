@@ -14,6 +14,8 @@ var number_format = NumberFormat.new()
 @onready var fish = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer/Fish
 @onready var grain = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer2/Grain
 @onready var wood = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer3/Wood
+@onready var treasure_map = $CenterContainer/VBoxContainer/InventoryTable/TreasureMap
+
 
 
 func show_inventory(player: Player) -> void:
@@ -26,6 +28,8 @@ func show_inventory(player: Player) -> void:
 	fish.text = str(player.get_trading_item(1).stock)
 	grain.text = str(player.get_trading_item(2).stock)
 	wood.text = str(player.get_trading_item(3).stock)
+	treasure_map.texture = player.treasure.texture
+	treasure_map.size = Vector2(100, 100)
 	show()
 
 

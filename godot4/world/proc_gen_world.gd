@@ -320,7 +320,6 @@ func generate_treasures(minimap_image: Image) -> void:
 		var treasure_map_image = minimap_image.get_region(region)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
-		
 		treasures.add_child(treasure)
 
 

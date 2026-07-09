@@ -31,6 +31,7 @@ var _inventory: Dictionary = {
 		2: TradingItem.new(load("res://trading_system/good_grain.tres")),
 		3: TradingItem.new(load("res://trading_system/good_wood.tres")),
 	}
+var treasure: Treasure
 
 @onready var wanderer_animation_tree = $WandererSprite2D/WandererAnimationTree
 @onready var wanderer_sprite: Sprite2D = $WandererSprite2D
