@@ -19,6 +19,7 @@ func test_get_save_data():
 	# arrange
 	proc_gen_world.spawn_accumulator = 0.5
 	proc_gen_world.seed_value = 12345
+
 	var towns_root = Node2D.new()
 	var town = Town.new()
 	town.set_visited(true)
@@ -36,6 +37,12 @@ func test_get_save_data():
 	goods_root.add_child(good)
 	proc_gen_world.goods = goods_root
 
+	var raiders_root = Node2D.new()
+	var raider = Raider.new()
+	raider.global_position = Vector2(20, 30)
+	raiders_root.add_child(raider)
+	proc_gen_world.raiders = raiders_root
+
 	# act
 	var save_data = proc_gen_world_serializer.get_save_data(proc_gen_world)
 
@@ -43,21 +50,29 @@ func test_get_save_data():
 	assert_eq(save_data.world.seed_value, 12345, "Save data should include the world seed")
 	assert_eq(save_data.world.spawn_accumulator, 0.5, "Save data should include the spawn accumulator")
 	assert_eq(save_data.world.towns.size(), 1, "Save data should include one serialized town")
+
 	var loaded_town = save_data.world.towns[0]
 	assert_eq(loaded_town.size(), 2, "Save data should include one serialized town")
 	assert_true(loaded_town.visited, "Town visited should be serialized")
 	assert_eq(loaded_town.inventory[1].stock, 50, "Town inventory stock should be serialized")
 	assert_eq(loaded_town.inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
 	assert_eq(loaded_town.inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
-	var loaded_fish = save_data.world.goods[0]
-	assert_not_null(loaded_fish)
-	assert_eq(loaded_fish.resource_path, GOOD_FISH.resource_path, "Should store good resouce path")
-	assert_eq(loaded_fish.position.x, 10.0, "Should store x position")
-	assert_eq(loaded_fish.position.y, 20.0, "Should store y position")
+
+	var loaded_good = save_data.world.goods[0]
+	assert_not_null(loaded_good)
+	assert_eq(loaded_good.resource_path, GOOD_FISH.resource_path, "Should store good resouce path")
+	assert_eq(loaded_good.position.x, 10.0, "Should store x position")
+	assert_eq(loaded_good.position.y, 20.0, "Should store y position")
+
+	var loaded_raider = save_data.world.raiders[0]
+	assert_not_null(loaded_raider)
+	assert_eq(loaded_raider.position.x, 20.0, "Should store raider x position")
+	assert_eq(loaded_raider.position.y, 30.0, "Should store raider y position")
 
 	# tear down
 	towns_root.free()
 	goods_root.free()
+	raiders_root.free()
 
 
 func test_set_save_data():

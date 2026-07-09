@@ -31,6 +31,8 @@ func test_collect_game_state():
 	proc_gen_world.towns = towns_root
 	var goods_root = Node2D.new()
 	proc_gen_world.goods = goods_root
+	var raiders_root = Node2D.new()
+	proc_gen_world.raiders = raiders_root
 	trading_system.current_game_time = 1234.5
 	trading_system.accumulator = 246.8
 
@@ -48,6 +50,7 @@ func test_collect_game_state():
 	# tear down
 	towns_root.free()
 	goods_root.free()
+	raiders_root.free()
 
 
 func test_save_file():
@@ -89,6 +92,8 @@ func test_save():
 	proc_gen_world.towns = towns_root
 	var goods_root = Node2D.new()
 	proc_gen_world.goods = goods_root
+	var raiders_root = Node2D.new()
+	proc_gen_world.raiders = raiders_root
 
 	var save_path = "user://saves/save_slot_%d.json" % SLOT_NUMBER
 
@@ -104,6 +109,7 @@ func test_save():
 	# tear down
 	towns_root.free()
 	goods_root.free()
+	raiders_root.free()
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
 

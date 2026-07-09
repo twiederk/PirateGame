@@ -10,14 +10,17 @@ func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 	}
 	world_data.towns = []
 	for town in proc_gen_world.get_towns():
-		world_data.towns.append(_serialize_town_save_data(town))
+		world_data.towns.append(_serialize_town(town))
 	world_data.goods = []
 	for good in proc_gen_world.get_goods():
-		world_data.goods.append(_serialize_good_save_data(good))
+		world_data.goods.append(_serialize_good(good))
+	world_data.raiders =[]
+	for raider in proc_gen_world.get_raiders():
+		world_data.raiders.append(_serialize_raider(raider))
 	return {"world": world_data}
 
 
-func _serialize_town_save_data(town: Town) -> Dictionary:
+func _serialize_town(town: Town) -> Dictionary:
 	return {
 		"visited": town.get_visited(),
 		"inventory": _serialize_town_inventory(town)
@@ -35,12 +38,20 @@ func _serialize_town_inventory(town: Town) -> Dictionary:
 	return inventory_data
 
 
-func _serialize_good_save_data(good: Good) -> Dictionary:
+func _serialize_good(good: Good) -> Dictionary:
 	return {
 		"resource_path": good.good_resource.resource_path,
 		"position": {
 			"x": good.position.x,
 			"y": good.position.y,
+		}
+	}
+
+func _serialize_raider(raider: Raider) -> Dictionary:
+	return {
+		"position": {
+			"x": raider.position.x,
+			"y": raider.position.y,
 		}
 	}
 
