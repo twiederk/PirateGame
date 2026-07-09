@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 SaveManager="*res://world/save_manager.gd"
 MessageBus="*uid://b7mx1pguyndhf"
 PauseManager="*res://world/pause_manager.gd"
+Sound="*uid://camg1re80chgu"
 
 [display]
 
