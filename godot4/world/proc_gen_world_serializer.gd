@@ -1,7 +1,7 @@
 class_name ProcGenWorldSerializer
 
 const GoodScene = preload("res://world/good.tscn")
-
+const RaiderScene = preload("res://world/raider.tscn")
 
 func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 	var world_data = {
@@ -10,14 +10,17 @@ func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 	}
 	world_data.towns = []
 	for town in proc_gen_world.get_towns():
-		world_data.towns.append(_serialize_town_save_data(town))
+		world_data.towns.append(_serialize_town(town))
 	world_data.goods = []
 	for good in proc_gen_world.get_goods():
-		world_data.goods.append(_serialize_good_save_data(good))
+		world_data.goods.append(_serialize_good(good))
+	world_data.raiders =[]
+	for raider in proc_gen_world.get_raiders():
+		world_data.raiders.append(_serialize_raider(raider))
 	return {"world": world_data}
 
 
-func _serialize_town_save_data(town: Town) -> Dictionary:
+func _serialize_town(town: Town) -> Dictionary:
 	return {
 		"visited": town.get_visited(),
 		"inventory": _serialize_town_inventory(town)
@@ -35,12 +38,20 @@ func _serialize_town_inventory(town: Town) -> Dictionary:
 	return inventory_data
 
 
-func _serialize_good_save_data(good: Good) -> Dictionary:
+func _serialize_good(good: Good) -> Dictionary:
 	return {
 		"resource_path": good.good_resource.resource_path,
 		"position": {
 			"x": good.position.x,
 			"y": good.position.y,
+		}
+	}
+
+func _serialize_raider(raider: Raider) -> Dictionary:
+	return {
+		"position": {
+			"x": raider.position.x,
+			"y": raider.position.y,
 		}
 	}
 
@@ -53,6 +64,7 @@ func set_save_data(proc_gen_world: ProcGenWorld, save_data: Dictionary) -> void:
 	_restore_world(proc_gen_world, world_data)
 	_restore_towns(proc_gen_world, world_data)
 	_restore_goods(proc_gen_world, world_data)
+	_restore_raiders(proc_gen_world, world_data)
 
 
 func _restore_world(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> void:
@@ -107,3 +119,17 @@ func _restore_good(good_data: Dictionary) -> Good:
 	var pos = Vector2i(int(good_data.position.x), int(good_data.position.y))
 	good.global_position = pos
 	return good
+
+
+func _restore_raiders(proc_gen_world: ProcGenWorld, world_data: Dictionary):
+	if world_data.has("raiders"):
+		for raider_data in world_data.raiders:
+			var raider = _restore_raider(raider_data)
+			proc_gen_world.raiders.add_child(raider)
+
+
+func _restore_raider(raider_data: Dictionary) -> Raider:
+	var raider: Raider = RaiderScene.instantiate()
+	var pos = Vector2i(int(raider_data.position.x), int(raider_data.position.y))
+	raider.global_position = pos
+	return raider

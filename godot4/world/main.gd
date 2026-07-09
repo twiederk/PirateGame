@@ -41,10 +41,11 @@ func _ready() -> void:
 		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state)
 		ProcGenWorldSerializer.new().set_save_data( proc_gen_world, SaveManager.load_game_state)
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
+		FogSectorManagerSerializer.new().set_save_data(fog_sector_manager, SaveManager.load_game_state)
 	else:
-		proc_gen_world.generate_goods()
-		proc_gen_world.generate_raiders()
 		player.position = proc_gen_world.get_starting_position()
+		proc_gen_world.generate_goods()
+		proc_gen_world.generate_raiders(player.position)
 		player.gold = 100
 	_connect_signals()
 	_setup_minimap()
@@ -53,14 +54,14 @@ func _ready() -> void:
 func _physics_process(delta):
 	if PauseManager.is_simulation_paused():
 		return
-	fog_sector_manager.update_fog(proc_gen_world.get_tile_size())
+	fog_sector_manager.update_fog(ProcGenWorld.TILE_SIZE)
 	trading_system.simulation(delta, towns)
-	proc_gen_world.simulation(delta)
+	proc_gen_world.simulation(delta, player.position)
 
 
 func _setup_limits_and_borders() -> void:
 	var tile_map_used_rect = proc_gen_world.get_used_rect()
-	var tile_size = proc_gen_world.get_tile_size()
+	var tile_size = ProcGenWorld.TILE_SIZE
 	var north_limit = tile_map_used_rect.position.y * tile_size.y
 	var south_limit = (tile_map_used_rect.position.y + tile_map_used_rect.size.y) * tile_size.y
 	var west_limit = tile_map_used_rect.position.x * tile_size.x
@@ -72,7 +73,7 @@ func _setup_limits_and_borders() -> void:
 
 func _get_seed() -> int:
 	if SaveManager.load_game_state.is_empty():
-		return 0
+		return proc_gen_world.seed_value
 	return SaveManager.load_game_state.world.seed_value
 
 
@@ -191,7 +192,7 @@ func _on_town_left():
 
 
 func _on_pause_menu_save_button_pressed():
-	SaveManager.save(player, proc_gen_world, trading_system, 1)
+	SaveManager.save(player, proc_gen_world, trading_system, fog_sector_manager, 1)
 
 
 func _on_rank_promoted(new_rank: PrestigeRank):

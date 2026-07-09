@@ -58,7 +58,10 @@ func _create_trading_rows() -> void:
 
 
 func _create_ship_rows() -> void:
-	for ship_resource in _town.get_ship_resources():
+	var ship_resources = _town.get_ship_resources()
+	ship_item_table.visible = not ship_resources.is_empty()
+
+	for ship_resource in ship_resources:
 		var row = ShipRowScene.instantiate()
 		row.init(ship_resource)
 		row.ship_bought.connect(_on_buy_ship)

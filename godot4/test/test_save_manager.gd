@@ -5,18 +5,21 @@ const SLOT_NUMBER: int = 100
 var player: Player = null
 var proc_gen_world: ProcGenWorld = null
 var trading_system: TradingSystem = null
+var fog_sector_manager: FogSectorManager = null
 
 
 func before_each():
 	player = Player.new()
 	proc_gen_world = ProcGenWorld.new()
 	trading_system = TradingSystem.new()
+	fog_sector_manager = FogSectorManager.new()
 
 
 func after_each():
 	player.free()
 	proc_gen_world.free()
 	trading_system.free()
+	fog_sector_manager.free()
 
 
 func test_collect_game_state():
@@ -28,11 +31,13 @@ func test_collect_game_state():
 	proc_gen_world.towns = towns_root
 	var goods_root = Node2D.new()
 	proc_gen_world.goods = goods_root
+	var raiders_root = Node2D.new()
+	proc_gen_world.raiders = raiders_root
 	trading_system.current_game_time = 1234.5
 	trading_system.accumulator = 246.8
 
 	# act
-	var game_state = SaveManager._collect_game_state(player, proc_gen_world, trading_system)
+	var game_state = SaveManager._collect_game_state(player, proc_gen_world, trading_system, fog_sector_manager)
 
 	# assert
 	assert_eq(game_state.player.gold, 321, "Collected data should include player gold")
@@ -45,6 +50,7 @@ func test_collect_game_state():
 	# tear down
 	towns_root.free()
 	goods_root.free()
+	raiders_root.free()
 
 
 func test_save_file():
@@ -86,6 +92,8 @@ func test_save():
 	proc_gen_world.towns = towns_root
 	var goods_root = Node2D.new()
 	proc_gen_world.goods = goods_root
+	var raiders_root = Node2D.new()
+	proc_gen_world.raiders = raiders_root
 
 	var save_path = "user://saves/save_slot_%d.json" % SLOT_NUMBER
 
@@ -93,7 +101,7 @@ func test_save():
 		DirAccess.remove_absolute(save_path)
 
 	# act
-	SaveManager.save(player, proc_gen_world, trading_system, SLOT_NUMBER)
+	SaveManager.save(player, proc_gen_world, trading_system, fog_sector_manager, SLOT_NUMBER)
 
 	# assert
 	assert_true(FileAccess.file_exists(save_path), "Save file should be created for the target slot")
@@ -101,6 +109,7 @@ func test_save():
 	# tear down
 	towns_root.free()
 	goods_root.free()
+	raiders_root.free()
 	if FileAccess.file_exists(save_path):
 		DirAccess.remove_absolute(save_path)
 
