@@ -19,14 +19,6 @@ noise = SubResource("FastNoiseLite_btogb")
 [node name="ProcGenWorld" type="Node2D" unique_id=572580707]
 y_sort_enabled = true
 script = ExtResource("1_p51ow")
-width = null
-height = null
-seed_value = null
-town_percentage = null
-fish_percentage = null
-grain_percentage = null
-wood_percentage = null
-raider_percentage = null
 noise_texture = SubResource("NoiseTexture2D_p51ow")
 tree_noise_texture = SubResource("NoiseTexture2D_btogb")
 
@@ -62,3 +54,5 @@ z_index = 1
 [node name="Goods" type="Node2D" parent="." unique_id=624860065]
 
 [node name="Raiders" type="Node2D" parent="." unique_id=1607928999]
+
+[node name="Treasures" type="Node2D" parent="." unique_id=1459061103]

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="PirateGame"
-config/version="2.4.0"
+config/version="2.5.0"
 run/main_scene="uid://b8d0jj36n3kdo"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 SaveManager="*res://world/save_manager.gd"
 MessageBus="*uid://b7mx1pguyndhf"
 PauseManager="*res://world/pause_manager.gd"
+Sound="*uid://camg1re80chgu"
 
 [display]
 
@@ -100,6 +101,11 @@ inventory_screen={
 minimap={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":77,"key_label":0,"unicode":109,"location":0,"echo":false,"script":null)
+]
+}
+search={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":88,"key_label":0,"unicode":120,"location":0,"echo":false,"script":null)
 ]
 }
 

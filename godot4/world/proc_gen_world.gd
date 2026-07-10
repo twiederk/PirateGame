@@ -10,12 +10,14 @@ extends Node2D
 @export var grain_percentage: float = 0.05
 @export var wood_percentage: float = 0.05
 @export var raider_percentage: float = 0.02
+@export var treasure_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 
 const TownScene = preload("res://world/town.tscn")
 const GoodScene = preload("res://world/good.tscn")
 const RaiderScene = preload("res://world/raider.tscn")
+const TreasureScene = preload("res://world/treasure.tscn")
 
 const TOWN_HABOR = preload("res://world/town_habor.tres")
 const TOWN_FARM = preload("res://world/town_farm.tres")
@@ -26,6 +28,7 @@ const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
 const GOOD_WOOD = preload("res://trading_system/good_wood.tres")
 
 const RAIDER_DISTANCE: float = 350.0
+const TREASURE_MAP_SIZE: Vector2i = Vector2i(100, 100)
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -82,6 +85,7 @@ var spawn_accumulator: float = 0.0
 @onready var towns: Node2D = $Towns
 @onready var goods = $Goods
 @onready var raiders = $Raiders
+@onready var treasures = $Treasures
 
 
 func _ready() -> void:
@@ -229,6 +233,12 @@ func get_raiders() -> Array[Raider]:
 	return typed
 
 
+func get_treasures() -> Array[Treasure]:
+	var typed: Array[Treasure] = []
+	typed.assign(treasures.get_children())
+	return typed
+
+
 func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
 	return get_goods().filter(func(good): return good.good_resource == good_resource)
 
@@ -300,6 +310,48 @@ func _is_tile_position_visible(tile_position: Vector2i) -> bool:
 func _in_raider_distance(player_position, spawn_position) -> bool:
 	return player_position.distance_to(Vector2(spawn_position * TILE_SIZE)) <= RAIDER_DISTANCE
 
+
+func generate_treasures(minimap_image: Image) -> void:
+	var max_treasures = int(width * treasure_percentage)
+	var treasures_to_generate = max_treasures - get_treasures().size()
+	for i in range(treasures_to_generate):
+		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, TREASURE_MAP_SIZE * 0.5)
+		if spawn_position == INVALID_TILE_POSITION:
+			continue
+		var treasure: Treasure = TreasureScene.instantiate()
+		var region = Rect2i(spawn_position - Vector2i(TREASURE_MAP_SIZE * 0.5), TREASURE_MAP_SIZE)
+		var treasure_map_image = minimap_image.get_region(region)
+		_draw_mark(treasure_map_image, TREASURE_MAP_SIZE * 0.5, Color.ORANGE_RED)
+		treasure.price = randi_range(1, 10)	* 100
+		treasure.gold = randi_range(5, 100) * 100
+		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
+		treasure.global_position = spawn_position * TILE_SIZE
+		treasures.add_child(treasure)
+
+
+func _pick_distance_from_border_tile_position(positions: Array[Vector2i], distance: Vector2) -> Vector2i:
+	if positions.is_empty():
+		return INVALID_TILE_POSITION
+	
+	var valid_positions: Array[Vector2i] = positions.filter(func(pos): return _is_distance_from_border(pos, distance))
+	if valid_positions.is_empty():
+		return INVALID_TILE_POSITION
+
+	return valid_positions.pick_random()
+
+
+func _is_distance_from_border(pos: Vector2i, distance: Vector2) -> bool:
+	var min_x := int(ceil(distance.x))
+	var min_y := int(ceil(distance.y))
+	var max_x := width - min_x - 1
+	var max_y := height - min_y - 1
+
+	if max_x < min_x or max_y < min_y:
+		return false
+
+	return pos.x >= min_x and pos.x <= max_x and pos.y >= min_y and pos.y <= max_y
+
+
 func simulation(delta: float, player_position: Vector2) -> void:
 	spawn_accumulator += delta
 	if spawn_accumulator >= SIMULATION_STEP:
@@ -334,15 +386,15 @@ func _draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> v
 func _draw_towns(minimap: Image) -> void:
 	for town in get_towns():
 		var pos = town.position * MINIMAP_SCALE
-		_draw_town(minimap, pos)
+		_draw_mark(minimap, pos, Color.DARK_RED)
 
 
-func _draw_town(minimap: Image, pos: Vector2i) -> void:
+func _draw_mark(minimap: Image, pos: Vector2i, color: Color) -> void:
 	for x_offset in range(-1, 2):
 		for y_offset in range(-1, 2):
 			var pixel_pos = pos + Vector2i(x_offset, y_offset)
 			if _is_in_minimap_bounds(minimap, pixel_pos):
-				minimap.set_pixelv(pixel_pos, Color.DARK_RED)
+				minimap.set_pixelv(pixel_pos, color)
 
 
 func _is_in_minimap_bounds(minimap: Image, pixel_pos: Vector2i) -> bool:

@@ -9,7 +9,7 @@ const ZOOM_STEP: float = 0.1
 var towns: Array[Town]
 
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
-@onready var player: CharacterBody2D = $Player
+@onready var player: Player = $Player
 @onready var camera: Camera2D = $Player/Camera2D
 @onready var map_borders: MapBorders = $MapBorders
 @onready var zoom_widget: ZoomWidget = $gui/ZoomWidget
@@ -46,6 +46,7 @@ func _ready() -> void:
 		player.position = proc_gen_world.get_starting_position()
 		proc_gen_world.generate_goods()
 		proc_gen_world.generate_raiders(player.position)
+		proc_gen_world.generate_treasures(proc_gen_world.generate_minimap())
 		player.gold = 100
 	_connect_signals()
 	_setup_minimap()
@@ -180,7 +181,7 @@ func _on_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
 	remove_chasing_raiders()
-	town_menu.init(town, player, trading_system)
+	town_menu.init(town, player, trading_system, proc_gen_world.get_treasures())
 	town_menu.show()
 
 
@@ -196,6 +197,7 @@ func _on_pause_menu_save_button_pressed():
 
 
 func _on_rank_promoted(new_rank: PrestigeRank):
+	Sound.play(Sound.rank_promotion)
 	var message = str("Du hast den neuen Titel: ", new_rank.title, " erhalten!")
 	MessageBus.message_send.emit(message, Color.CORNFLOWER_BLUE)
 

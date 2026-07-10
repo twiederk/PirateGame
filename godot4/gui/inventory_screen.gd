@@ -14,6 +14,9 @@ var number_format = NumberFormat.new()
 @onready var fish = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer/Fish
 @onready var grain = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer2/Grain
 @onready var wood = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer3/Wood
+@onready var treasure_row = $CenterContainer/VBoxContainer/TreasureRow
+@onready var treasure_map = $CenterContainer/VBoxContainer/TreasureRow/TreasureMap
+
 
 
 func show_inventory(player: Player) -> void:
@@ -26,6 +29,7 @@ func show_inventory(player: Player) -> void:
 	fish.text = str(player.get_trading_item(1).stock)
 	grain.text = str(player.get_trading_item(2).stock)
 	wood.text = str(player.get_trading_item(3).stock)
+	_create_treasure_row(player)
 	show()
 
 
@@ -49,6 +53,16 @@ func _create_ship_buttons(player: Player) -> void:
 		button.pressed.connect(_on_ship_button_pressed.bind(ship_resource))
 		ship_buttons.add_child(button)
 		button.grab_focus()
+
+
+func _create_treasure_row(player: Player) -> void:
+	if player.has_treasure_map():
+		treasure_row.visible = true
+		var treasure_texture: ImageTexture = player.treasure.texture
+		treasure_map.texture = treasure_texture
+		treasure_map.size = treasure_texture.get_size()
+	else:
+		treasure_row.visible = false
 
 
 func _on_ship_button_pressed(ship_resource: ShipResource) -> void:

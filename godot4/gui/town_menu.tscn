@@ -72,6 +72,21 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "Preis"
 
+[node name="TreasureTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=173013862]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/TreasureTable" unique_id=1299357020]
+layout_mode = 2
+
+[node name="TreasureLabel" type="Label" parent="CenterContainer/VBoxContainer/TreasureTable/HBoxContainer" unique_id=280211809]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Schatzkarte für 500 Gold"
+
+[node name="TreasureBuyButton" type="Button" parent="CenterContainer/VBoxContainer/TreasureTable/HBoxContainer" unique_id=981014100]
+layout_mode = 2
+text = "Kaufen"
+
 [node name="TradingItemTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1492825442]
 layout_mode = 2
 
@@ -104,4 +119,5 @@ text = "Stadt verlassen"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1320096196]
 
+[connection signal="pressed" from="CenterContainer/VBoxContainer/TreasureTable/HBoxContainer/TreasureBuyButton" to="." method="_on_buy_treasure"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TravelButton" to="." method="_on_travel_button_pressed"]

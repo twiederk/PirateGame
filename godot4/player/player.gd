@@ -31,6 +31,7 @@ var _inventory: Dictionary = {
 		2: TradingItem.new(load("res://trading_system/good_grain.tres")),
 		3: TradingItem.new(load("res://trading_system/good_wood.tres")),
 	}
+var treasure: Treasure
 
 @onready var wanderer_animation_tree = $WandererSprite2D/WandererAnimationTree
 @onready var wanderer_sprite: Sprite2D = $WandererSprite2D
@@ -226,3 +227,17 @@ func lose_gold(loss_percentage: float) -> void:
 func lose_goods(loss_percentage: float) -> void:
 	for trading_item in get_trading_items():
 		trading_item.stock = int(trading_item.stock * loss_percentage)
+
+
+func has_treasure_map() -> bool:
+	return treasure != null
+
+
+func found_treasure() -> void:
+	gold += treasure.gold
+	treasure = null
+
+
+func buy_treasure(p_treasure: Treasure) -> void:
+	gold -= p_treasure.price
+	treasure = p_treasure

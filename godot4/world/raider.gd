@@ -71,6 +71,7 @@ func _on_robbery_zone_body_entered(body) -> void:
 	if not body is Player:
 		return
 	_rob_player()
+	Sound.play(Sound.raider_catch)
 	_show_animation()
 	queue_free()
 

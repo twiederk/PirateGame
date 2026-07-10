@@ -195,3 +195,25 @@ func test_set_active_ship_fails_while_on_ship():
 	# assert
 	assert_false(result, "Should prevent changing active ship while player is on ship")
 	assert_eq(player.get_ship(), SAILING, "Should keep current active ship unchanged")
+
+
+func test_has_treasure_map_returns_false_when_no_map():
+	# act
+	var result = player.has_treasure_map()
+
+	# assert
+	assert_false(result, "Player should not have a treasure map when none is set")
+
+
+func test_has_treasure_map_returns_true_when_map_set():
+	# arrange
+	player.treasure = Treasure.new()
+
+	# act
+	var result = player.has_treasure_map()
+
+	# assert
+	assert_true(result, "Player should have a treasure map when one is set")
+
+	# tear down
+	player.treasure.free()
