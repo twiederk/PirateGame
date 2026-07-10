@@ -28,6 +28,7 @@ const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
 const GOOD_WOOD = preload("res://trading_system/good_wood.tres")
 
 const RAIDER_DISTANCE: float = 350.0
+const TREASURE_MAP_SIZE: Vector2i = Vector2i(100, 100)
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -314,11 +315,13 @@ func generate_treasures(minimap_image: Image) -> void:
 	var max_treasures = int(width * treasure_percentage)
 	var treasures_to_generate = max_treasures - get_treasures().size()
 	for i in range(treasures_to_generate):
-		var spawn_position = sand_arr.pick_random()
+		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, TREASURE_MAP_SIZE * 0.5)
+		if spawn_position == INVALID_TILE_POSITION:
+			continue
 		var treasure: Treasure = TreasureScene.instantiate()
-		var region = Rect2i(spawn_position.x + 50, spawn_position.y + 50, 100, 100)
+		var region = Rect2i(spawn_position - Vector2i(TREASURE_MAP_SIZE * 0.5), TREASURE_MAP_SIZE)
 		var treasure_map_image = minimap_image.get_region(region)
-		_draw_cross_on_treasure_map(treasure_map_image)
+		_draw_mark(treasure_map_image, TREASURE_MAP_SIZE * 0.5, Color.ORANGE_RED)
 		treasure.price = randi_range(1, 10)	* 100
 		treasure.gold = randi_range(5, 100) * 100
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
@@ -326,12 +329,27 @@ func generate_treasures(minimap_image: Image) -> void:
 		treasures.add_child(treasure)
 
 
-func _draw_cross_on_treasure_map(treasure_map_image: Image) -> void:
-	treasure_map_image.set_pixelv(Vector2i(49, 49), Color.RED)
-	treasure_map_image.set_pixelv(Vector2i(50, 50), Color.RED)
-	treasure_map_image.set_pixelv(Vector2i(51, 51), Color.RED)
-	treasure_map_image.set_pixelv(Vector2i(49, 51), Color.RED)
-	treasure_map_image.set_pixelv(Vector2i(51, 49), Color.RED)
+func _pick_distance_from_border_tile_position(positions: Array[Vector2i], distance: Vector2) -> Vector2i:
+	if positions.is_empty():
+		return INVALID_TILE_POSITION
+	
+	var valid_positions: Array[Vector2i] = positions.filter(func(pos): return _is_distance_from_border(pos, distance))
+	if valid_positions.is_empty():
+		return INVALID_TILE_POSITION
+
+	return valid_positions.pick_random()
+
+
+func _is_distance_from_border(pos: Vector2i, distance: Vector2) -> bool:
+	var min_x := int(ceil(distance.x))
+	var min_y := int(ceil(distance.y))
+	var max_x := width - min_x - 1
+	var max_y := height - min_y - 1
+
+	if max_x < min_x or max_y < min_y:
+		return false
+
+	return pos.x >= min_x and pos.x <= max_x and pos.y >= min_y and pos.y <= max_y
 
 
 func simulation(delta: float, player_position: Vector2) -> void:
@@ -368,15 +386,15 @@ func _draw_pixels(minimap: Image, positions: Array[Vector2i], color: Color) -> v
 func _draw_towns(minimap: Image) -> void:
 	for town in get_towns():
 		var pos = town.position * MINIMAP_SCALE
-		_draw_town(minimap, pos)
+		_draw_mark(minimap, pos, Color.DARK_RED)
 
 
-func _draw_town(minimap: Image, pos: Vector2i) -> void:
+func _draw_mark(minimap: Image, pos: Vector2i, color: Color) -> void:
 	for x_offset in range(-1, 2):
 		for y_offset in range(-1, 2):
 			var pixel_pos = pos + Vector2i(x_offset, y_offset)
 			if _is_in_minimap_bounds(minimap, pixel_pos):
-				minimap.set_pixelv(pixel_pos, Color.DARK_RED)
+				minimap.set_pixelv(pixel_pos, color)
 
 
 func _is_in_minimap_bounds(minimap: Image, pixel_pos: Vector2i) -> bool:
