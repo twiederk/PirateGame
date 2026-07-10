@@ -318,10 +318,18 @@ func generate_treasures(minimap_image: Image) -> void:
 		var treasure: Treasure = TreasureScene.instantiate()
 		var region = Rect2i(spawn_position.x + 50, spawn_position.y + 50, 100, 100)
 		var treasure_map_image = minimap_image.get_region(region)
+		_draw_cross_on_treasure_map(treasure_map_image)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
 		treasures.add_child(treasure)
 
+
+func _draw_cross_on_treasure_map(treasure_map_image: Image) -> void:
+	treasure_map_image.set_pixelv(Vector2i(49, 49), Color.RED)
+	treasure_map_image.set_pixelv(Vector2i(50, 50), Color.RED)
+	treasure_map_image.set_pixelv(Vector2i(51, 51), Color.RED)
+	treasure_map_image.set_pixelv(Vector2i(49, 51), Color.RED)
+	treasure_map_image.set_pixelv(Vector2i(51, 49), Color.RED)
 
 
 func simulation(delta: float, player_position: Vector2) -> void:
