@@ -31,7 +31,7 @@ func _is_player_in_area() -> bool:
 	
 func _found_treasure() -> void:
 	Sound.play(Sound.treasure_pickup)
-	player.found_treasure(self)
+	player.found_treasure()
 	var message = "Goldschatz! Du hast %s Gold gefunden." % _number_format.format(gold)
 	MessageBus.message_send.emit(message)
 	queue_free()

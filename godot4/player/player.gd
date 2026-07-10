@@ -233,10 +233,11 @@ func has_treasure_map() -> bool:
 	return treasure != null
 
 
-func found_treasure(treasure: Treasure) -> void:
+func found_treasure() -> void:
 	gold += treasure.gold
+	treasure = null
 
 
 func buy_treasure(p_treasure: Treasure) -> void:
-	gold -= p_treasure.treasure.price
+	gold -= p_treasure.price
 	treasure = p_treasure
