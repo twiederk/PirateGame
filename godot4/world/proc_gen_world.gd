@@ -316,7 +316,7 @@ func generate_treasures(minimap_image: Image) -> void:
 	for i in range(treasures_to_generate):
 		var spawn_position = sand_arr.pick_random()
 		var treasure: Treasure = TreasureScene.instantiate()
-		var region = Rect2i(50, 50, 100, 100)
+		var region = Rect2i(spawn_position.x + 50, spawn_position.y + 50, 100, 100)
 		var treasure_map_image = minimap_image.get_region(region)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
