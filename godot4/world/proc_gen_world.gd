@@ -319,6 +319,8 @@ func generate_treasures(minimap_image: Image) -> void:
 		var region = Rect2i(spawn_position.x + 50, spawn_position.y + 50, 100, 100)
 		var treasure_map_image = minimap_image.get_region(region)
 		_draw_cross_on_treasure_map(treasure_map_image)
+		treasure.price = randi_range(1, 10)	* 100
+		treasure.gold = randi_range(5, 100) * 100
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
 		treasures.add_child(treasure)
