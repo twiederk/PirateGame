@@ -99,18 +99,6 @@ text = "Ruderboot"
 [node name="ShipButtons" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1567000011]
 layout_mode = 2
 
-[node name="TreasureRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=590657451]
-layout_mode = 2
-
-[node name="TreasureMapLabel" type="Label" parent="CenterContainer/VBoxContainer/TreasureRow" unique_id=1615213694]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-text = "Schatzkarte"
-
-[node name="TreasureMap" type="TextureRect" parent="CenterContainer/VBoxContainer/TreasureRow" unique_id=1354121801]
-layout_mode = 2
-stretch_mode = 2
-
 [node name="InventoryTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1554919295]
 layout_mode = 2
 
@@ -149,3 +137,15 @@ text = "Holz"
 [node name="Wood" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer3" unique_id=998535664]
 layout_mode = 2
 text = "30"
+
+[node name="TreasureRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=590657451]
+layout_mode = 2
+
+[node name="TreasureMapLabel" type="Label" parent="CenterContainer/VBoxContainer/TreasureRow" unique_id=1615213694]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Schatzkarte"
+
+[node name="TreasureMap" type="TextureRect" parent="CenterContainer/VBoxContainer/TreasureRow" unique_id=1354121801]
+layout_mode = 2
+stretch_mode = 2
