@@ -48,7 +48,6 @@ func _ready() -> void:
 		proc_gen_world.generate_raiders(player.position)
 		proc_gen_world.generate_treasures(proc_gen_world.generate_minimap())
 		player.gold = 100
-		player.treasure = proc_gen_world.get_treasures()[0]
 	_connect_signals()
 	_setup_minimap()
 
