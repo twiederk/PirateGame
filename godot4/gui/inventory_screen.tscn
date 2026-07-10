@@ -138,5 +138,14 @@ text = "Holz"
 layout_mode = 2
 text = "30"
 
-[node name="TreasureMap" type="TextureRect" parent="CenterContainer/VBoxContainer/InventoryTable" unique_id=1354121801]
+[node name="HBoxContainer4" type="HBoxContainer" parent="CenterContainer/VBoxContainer/InventoryTable" unique_id=590657451]
 layout_mode = 2
+
+[node name="TreasureMapLabel" type="Label" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer4" unique_id=1615213694]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Schatzkarte"
+
+[node name="TreasureMap" type="TextureRect" parent="CenterContainer/VBoxContainer/InventoryTable/HBoxContainer4" unique_id=1354121801]
+layout_mode = 2
+stretch_mode = 2

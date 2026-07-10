@@ -14,7 +14,7 @@ var number_format = NumberFormat.new()
 @onready var fish = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer/Fish
 @onready var grain = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer2/Grain
 @onready var wood = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer3/Wood
-@onready var treasure_map = $CenterContainer/VBoxContainer/InventoryTable/TreasureMap
+@onready var treasure_map = $CenterContainer/VBoxContainer/InventoryTable/HBoxContainer4/TreasureMap
 
 
 
