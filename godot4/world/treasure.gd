@@ -3,7 +3,7 @@ extends Node2D
 
 @export var gold: int = 10_000
 
-var texture: Texture = null
+var texture: ImageTexture = null
 var player: Player = null
 
 

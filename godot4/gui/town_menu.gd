@@ -12,6 +12,7 @@ var number_format = NumberFormat.new()
 var _trading_system: TradingSystem
 var _player: Player
 var _town: Town
+var _treasures: Array[Treasure] = []
 
 @onready var town_name = $CenterContainer/VBoxContainer/TownName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
@@ -21,12 +22,15 @@ var _town: Town
 @onready var trading_item_table = $CenterContainer/VBoxContainer/TradingItemTable
 @onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
 @onready var message = $CenterContainer/VBoxContainer/Message
+@onready var treasure_map_table = $CenterContainer/VBoxContainer/TreasureTable
 
 
-func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
+func init(town: Town, player: Player, trading_system: TradingSystem, treasures: Array[Treasure]) -> void:
 	_town = town
 	_player = player
 	_trading_system = trading_system
+	_treasures = treasures
+	_create_treasure_row()
 	_create_ship_rows()
 	_create_trading_rows()
 	_update_gui()
@@ -48,14 +52,10 @@ func _update_all_rows() -> void:
 			child.update_display()
 
 
-func _create_trading_rows() -> void:
-	for good_id in _trading_system.goods:
-		var row = TradingRowScene.instantiate()
-		row.init(good_id, _trading_system, _player, _town)
-		row.buy_requested.connect(_on_buy_requested)
-		row.sell_requested.connect(_on_sell_requested)
-		trading_item_table.add_child(row)
-
+func _create_treasure_row():
+	treasure_map_table.visible = not _player.has_treasure_map()
+	treasure_map_table.visible = not _treasures.is_empty()
+	
 
 func _create_ship_rows() -> void:
 	var ship_resources = _town.get_ship_resources()
@@ -66,6 +66,15 @@ func _create_ship_rows() -> void:
 		row.init(ship_resource)
 		row.ship_bought.connect(_on_buy_ship)
 		ship_item_table.add_child(row)
+
+
+func _create_trading_rows() -> void:
+	for good_id in _trading_system.goods:
+		var row = TradingRowScene.instantiate()
+		row.init(good_id, _trading_system, _player, _town)
+		row.buy_requested.connect(_on_buy_requested)
+		row.sell_requested.connect(_on_sell_requested)
+		trading_item_table.add_child(row)
 
 
 func _on_buy_requested(good_id: int, amount: int) -> void:
@@ -122,3 +131,15 @@ func _buy_ship(ship_resource: ShipResource) -> String:
 	_player.gold -= ship_resource.price
 	_update_gui()
 	return "Schiff gekauft."
+
+
+func _on_buy_treasure() -> void:
+	message.text = _buy_treasure()
+
+
+func _buy_treasure() -> String:
+	if _player.gold < 500:
+		return "Nicht genug Gold."
+	_player.gold -= 500
+	_player.treasure = _treasures[0]
+	return "Schatzkarte gekauft"

@@ -20,14 +20,6 @@ y_sort_enabled = true
 script = ExtResource("1_04q08")
 
 [node name="ProcGenWorld" parent="." unique_id=572580707 instance=ExtResource("2_gu74f")]
-width = 256
-height = 192
-seed_value = 0
-town_percentage = 0.05
-fish_percentage = 0.125
-grain_percentage = 0.05
-wood_percentage = 0.05
-raider_percentage = 0.02
 
 [node name="FogSectorManager" type="Node" parent="." unique_id=342594190]
 script = ExtResource("11_fog")

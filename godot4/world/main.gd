@@ -48,7 +48,6 @@ func _ready() -> void:
 		proc_gen_world.generate_raiders(player.position)
 		proc_gen_world.generate_treasures(proc_gen_world.generate_minimap())
 		player.gold = 100
-		player.treasure = proc_gen_world.treasures.get_children()[0]
 	_connect_signals()
 	_setup_minimap()
 
@@ -182,7 +181,7 @@ func _on_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
 	remove_chasing_raiders()
-	town_menu.init(town, player, trading_system)
+	town_menu.init(town, player, trading_system, proc_gen_world.get_treasures())
 	town_menu.show()
 
 

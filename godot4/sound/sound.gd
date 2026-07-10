@@ -1,6 +1,6 @@
 extends Node
 
-@export var rank_promption: AudioStream
+@export var rank_promotion: AudioStream
 @export var good_pickup: AudioStream
 @export var treasure_pickup: AudioStream
 @export var raider_catch: AudioStream

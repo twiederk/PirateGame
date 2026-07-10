@@ -227,3 +227,7 @@ func lose_gold(loss_percentage: float) -> void:
 func lose_goods(loss_percentage: float) -> void:
 	for trading_item in get_trading_items():
 		trading_item.stock = int(trading_item.stock * loss_percentage)
+
+
+func has_treasure_map() -> bool:
+	return treasure != null
