@@ -231,3 +231,8 @@ func lose_goods(loss_percentage: float) -> void:
 
 func has_treasure_map() -> bool:
 	return treasure != null
+
+
+func buy_treasure(p_treasure: Treasure) -> void:
+	gold -= p_treasure.treasure.price
+	treasure = p_treasure

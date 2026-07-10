@@ -2,7 +2,9 @@ class_name Treasure
 extends Node2D
 
 @export var gold: int = 10_000
+@export var price: int = 500
 
+var active: bool = false
 var texture: ImageTexture = null
 var player: Player = null
 
@@ -18,7 +20,7 @@ func _on_treasure_area_body_exited(body):
 
 
 func _input(_event: InputEvent):
-	if Input.is_action_just_pressed("search") and _is_player_in_area():
+	if Input.is_action_just_pressed("search") and _is_player_in_area() and active:
 		_found_treasure()
 
 

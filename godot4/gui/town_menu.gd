@@ -23,6 +23,7 @@ var _treasures: Array[Treasure] = []
 @onready var travel_button = $CenterContainer/VBoxContainer/TravelButton
 @onready var message = $CenterContainer/VBoxContainer/Message
 @onready var treasure_map_table = $CenterContainer/VBoxContainer/TreasureTable
+@onready var treasure_label = $CenterContainer/VBoxContainer/TreasureTable/HBoxContainer/TreasureLabel
 
 
 func init(town: Town, player: Player, trading_system: TradingSystem, treasures: Array[Treasure]) -> void:
@@ -53,8 +54,11 @@ func _update_all_rows() -> void:
 
 
 func _create_treasure_row():
-	treasure_map_table.visible = not _player.has_treasure_map()
-	treasure_map_table.visible = not _treasures.is_empty()
+	if _player.has_treasure_map() || _treasures.is_empty():
+		treasure_map_table.visible = false
+		return
+	treasure_map_table.visible = true
+	treasure_label.text = "Schatzkarte (%d Gold)" % _treasures[0].price
 	
 
 func _create_ship_rows() -> void:
@@ -138,8 +142,9 @@ func _on_buy_treasure() -> void:
 
 
 func _buy_treasure() -> String:
-	if _player.gold < 500:
+	var treasure = _treasures[0]
+	if _player.gold < treasure.price:
 		return "Nicht genug Gold."
-	_player.gold -= 500
-	_player.treasure = _treasures[0]
+	_player.buy_treasure(treasure)
+	treasure.active = true
 	return "Schatzkarte gekauft"
