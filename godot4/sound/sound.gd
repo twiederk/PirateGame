@@ -2,7 +2,7 @@ extends Node
 
 @export var rank_promotion: AudioStream
 @export var good_pickup: AudioStream
-@export var treasure_pickup: AudioStream
+@export var treasure_found: AudioStream
 @export var raider_catch: AudioStream
 
 @onready var sound_players = get_children()

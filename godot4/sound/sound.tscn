@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://camg1re80chgu"]
 
 [ext_resource type="Script" uid="uid://cg33rt2whwaji" path="res://sound/sound.gd" id="1_vayi2"]
-[ext_resource type="AudioStream" uid="uid://ira10kjctrin" path="res://sound/promotion.mp3" id="2_m32qc"]
+[ext_resource type="AudioStream" uid="uid://ci3xpvlpd3cqg" path="res://sound/rank_promotion.mp3" id="2_rv0di"]
+[ext_resource type="AudioStream" uid="uid://dbi7vy1fwstee" path="res://sound/good_pickup.ogg" id="3_m7icx"]
+[ext_resource type="AudioStream" uid="uid://cfwrbrdgeeoyk" path="res://sound/treasure_found.ogg" id="4_5ys1g"]
+[ext_resource type="AudioStream" uid="uid://dff18vdjky8o7" path="res://sound/raider_catch.wav" id="5_xtvmg"]
 
 [node name="Sound" type="Node" unique_id=501497402]
 script = ExtResource("1_vayi2")
-rank_promotion = ExtResource("2_m32qc")
-good_pickup = ExtResource("2_m32qc")
-treasure_pickup = ExtResource("2_m32qc")
-raider_catch = ExtResource("2_m32qc")
+rank_promotion = ExtResource("2_rv0di")
+good_pickup = ExtResource("3_m7icx")
+treasure_found = ExtResource("4_5ys1g")
+raider_catch = ExtResource("5_xtvmg")
 
 [node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="." unique_id=945607239]
 
