@@ -8,6 +8,7 @@ var active: bool = false
 var texture: ImageTexture = null
 var player: Player = null
 
+var _number_format = NumberFormat.new()
 
 func _on_treasure_area_body_entered(body):
 	if body is Player:
@@ -31,6 +32,6 @@ func _is_player_in_area() -> bool:
 func _found_treasure() -> void:
 	Sound.play(Sound.treasure_pickup)
 	player.found_treasure(self)
-	var message = str("Goldschatz! Du hast ", gold, " Gold gefunden.")
+	var message = "Goldschatz! Du hast %s Gold gefunden." % _number_format.format(gold)
 	MessageBus.message_send.emit(message)
 	queue_free()
