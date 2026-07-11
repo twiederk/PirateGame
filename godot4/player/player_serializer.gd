@@ -14,6 +14,7 @@ func get_save_data(player: Player) -> Dictionary:
 		"inventory": _serialize_inventory_stock(player),
 		"ships": _serialize_ships(player),
 		"current_ship_index": player._current_ship_index,
+		"treasure": player.treasure != null
 	}
 
 	return {"player": player_data}
@@ -33,7 +34,7 @@ func _serialize_ships(player: Player) -> Array:
 	return ships
 
 
-func set_save_data(player: Player, save_data: Dictionary) -> void:
+func set_save_data(player: Player, save_data: Dictionary, treasures: Array[Treasure] = []) -> void:
 	var player_data = save_data.player
 	var pos_data = player_data.position
 	player.position = Vector2i(int(pos_data.x), int(pos_data.y))
@@ -59,7 +60,8 @@ func set_save_data(player: Player, save_data: Dictionary) -> void:
 		else:
 			player.current_state = Player.State.ON_LAND
 			player.board_ship()
-
+	if player_data.has("treasure"):
+		player.treasure = _restore_treasure(treasures)
 
 func _restore_ships(player: Player, player_data: Dictionary) -> void:
 	for ship_data in player_data.ships:
@@ -73,3 +75,10 @@ func _restore_inventory_stock(player: Player, inventory_data: Dictionary) -> voi
 	for good_id in inventory_data:
 		var item_data = inventory_data[good_id]
 		player.get_trading_item(int(good_id)).stock = int(item_data.stock)
+
+
+func _restore_treasure(treasures: Array[Treasure]) -> Treasure:
+	for treasure in treasures:
+		if treasure.active:
+			return treasure
+	return null

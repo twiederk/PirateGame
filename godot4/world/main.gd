@@ -30,7 +30,7 @@ func _ready() -> void:
 	proc_gen_world.generate_world(world_seed)
 	fog_sector_manager.initialize(proc_gen_world.width, proc_gen_world.height)
 	towns = proc_gen_world.generate_towns()
-	fog_sector_manager.set_base_minimap_image(proc_gen_world.generate_minimap())
+	fog_sector_manager.set_base_minimap_image(proc_gen_world.get_minimap_image())
 	_setup_limits_and_borders()
 
 
@@ -38,15 +38,15 @@ func _ready() -> void:
 	zoom_widget.set_zoom(camera.zoom)
 	
 	if SaveManager.is_game_loaded():
-		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state)
-		ProcGenWorldSerializer.new().set_save_data( proc_gen_world, SaveManager.load_game_state)
+		ProcGenWorldSerializer.new().set_save_data(proc_gen_world, SaveManager.load_game_state)
+		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state, proc_gen_world.get_treasures(),)
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
 		FogSectorManagerSerializer.new().set_save_data(fog_sector_manager, SaveManager.load_game_state)
 	else:
 		player.position = proc_gen_world.get_starting_position()
 		proc_gen_world.generate_goods()
 		proc_gen_world.generate_raiders(player.position)
-		proc_gen_world.generate_treasures(proc_gen_world.generate_minimap())
+		proc_gen_world.generate_treasures()
 		player.gold = 100
 	_connect_signals()
 	_setup_minimap()
