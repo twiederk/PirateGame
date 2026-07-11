@@ -185,6 +185,9 @@ func test_set_save_data_missing_data_use_defaults():
 	
 	var raiders_root = Node2D.new()
 	proc_gen_world.raiders = raiders_root
+	
+	var treasures_root = Node2D.new()
+	proc_gen_world.treasures = treasures_root
 
 	var save_data = {
 		"world": {
@@ -209,8 +212,10 @@ func test_set_save_data_missing_data_use_defaults():
 	assert_eq(town_item.last_updated, 0.0, "Should use default value for town item last_updated")
 	assert_eq(proc_gen_world.get_goods().size(), 0, "Should not create goods")
 	assert_eq(proc_gen_world.get_raiders().size(), 0, "Should not create raiders")
+	assert_eq(proc_gen_world.get_treasures().size(), 0, "Should not create treasure")
 	
 	# tear down
 	towns_root.free()
 	goods_root.free()
 	raiders_root.free()
+	treasures_root.free()
