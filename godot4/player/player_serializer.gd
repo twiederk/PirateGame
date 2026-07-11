@@ -61,7 +61,7 @@ func set_save_data(player: Player, save_data: Dictionary, treasures: Array[Treas
 			player.current_state = Player.State.ON_LAND
 			player.board_ship()
 	if player_data.has("treasure"):
-		player.treasure = _restore_treasure(player, treasures)
+		player.treasure = _restore_treasure(treasures)
 
 func _restore_ships(player: Player, player_data: Dictionary) -> void:
 	for ship_data in player_data.ships:
@@ -77,7 +77,7 @@ func _restore_inventory_stock(player: Player, inventory_data: Dictionary) -> voi
 		player.get_trading_item(int(good_id)).stock = int(item_data.stock)
 
 
-func _restore_treasure(player: Player, treasures: Array[Treasure]) -> Treasure:
+func _restore_treasure(treasures: Array[Treasure]) -> Treasure:
 	for treasure in treasures:
 		if treasure.active:
 			return treasure
