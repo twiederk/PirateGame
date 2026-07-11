@@ -30,7 +30,7 @@ func _ready() -> void:
 	proc_gen_world.generate_world(world_seed)
 	fog_sector_manager.initialize(proc_gen_world.width, proc_gen_world.height)
 	towns = proc_gen_world.generate_towns()
-	fog_sector_manager.set_base_minimap_image(proc_gen_world.generate_minimap())
+	fog_sector_manager.set_base_minimap_image(proc_gen_world.get_minimap_image())
 	_setup_limits_and_borders()
 
 
@@ -46,7 +46,7 @@ func _ready() -> void:
 		player.position = proc_gen_world.get_starting_position()
 		proc_gen_world.generate_goods()
 		proc_gen_world.generate_raiders(player.position)
-		proc_gen_world.generate_treasures(proc_gen_world.generate_minimap())
+		proc_gen_world.generate_treasures()
 		player.gold = 100
 	_connect_signals()
 	_setup_minimap()

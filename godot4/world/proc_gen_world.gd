@@ -77,6 +77,8 @@ var tree_arr: Array[Vector2i] = []
 
 var spawn_accumulator: float = 0.0
 
+var _minimap_image: Image = null
+
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
 @onready var farm_field_layer: TileMapLayer = $FarmFieldLayer
@@ -311,7 +313,7 @@ func _in_raider_distance(player_position, spawn_position) -> bool:
 	return player_position.distance_to(Vector2(spawn_position * TILE_SIZE)) <= RAIDER_DISTANCE
 
 
-func generate_treasures(minimap_image: Image) -> void:
+func generate_treasures() -> void:
 	var max_treasures = int(width * treasure_percentage)
 	var treasures_to_generate = max_treasures - get_treasures().size()
 	for i in range(treasures_to_generate):
@@ -322,7 +324,7 @@ func generate_treasures(minimap_image: Image) -> void:
 		treasure.price = randi_range(1, 10) * 100
 		treasure.gold = randi_range(5, 100) * 100
 		var region = Rect2i(spawn_position - Vector2i(Vector2(TREASURE_MAP_SIZE) * 0.5), TREASURE_MAP_SIZE)
-		var treasure_map_image = minimap_image.get_region(region)
+		var treasure_map_image = get_minimap_image().get_region(region)
 		_draw_mark(treasure_map_image, Vector2(TREASURE_MAP_SIZE) * 0.5, Color.ORANGE_RED)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
@@ -353,10 +355,9 @@ func _is_distance_from_border(pos: Vector2i, distance: Vector2) -> bool:
 
 
 func create_treasure_map(global_pos: Vector2) -> Image:
-	var minimap_image = generate_minimap()
 	var minimap_position = Vector2i(global_pos / Vector2(TILE_SIZE))
 	var region = Rect2i(minimap_position - Vector2i(Vector2(TREASURE_MAP_SIZE) * 0.5), TREASURE_MAP_SIZE)
-	var treasure_map_image = minimap_image.get_region(region)
+	var treasure_map_image = get_minimap_image().get_region(region)
 	_draw_mark(treasure_map_image, Vector2(TREASURE_MAP_SIZE) * 0.5, Color.ORANGE_RED)
 	return treasure_map_image
 
@@ -369,7 +370,7 @@ func simulation(delta: float, player_position: Vector2) -> void:
 		spawn_accumulator = 0.0
 
 
-func generate_minimap() -> Image:
+func _generate_minimap() -> Image:
 	var minimap: Image = Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
 	minimap.fill(Color.BLACK)
 	_draw_world(minimap)
@@ -408,3 +409,9 @@ func _draw_mark(minimap: Image, pos: Vector2i, color: Color) -> void:
 
 func _is_in_minimap_bounds(minimap: Image, pixel_pos: Vector2i) -> bool:
 	return pixel_pos.x >= 0 and pixel_pos.y >= 0 and pixel_pos.x < minimap.get_width() and pixel_pos.y < minimap.get_height()
+
+
+func get_minimap_image() -> Image:
+	if _minimap_image == null:
+		_minimap_image = _generate_minimap()
+	return _minimap_image

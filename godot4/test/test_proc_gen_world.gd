@@ -45,7 +45,7 @@ func _build_segment(start_x: int, end_x: int, max_y: int) -> Array[Vector2i]:
 	return segment
 
 
-func test_generate_minimap():
+func test_get_minimap_image():
 	# arrange
 	var biome_properties = [
 		"deep_water_arr",
@@ -71,7 +71,7 @@ func test_generate_minimap():
 
 	
 	# act
-	var image = proc_gen_world.generate_minimap()
+	var image = proc_gen_world.get_minimap_image()
 	
 	# assert
 	assert_not_null(image)
