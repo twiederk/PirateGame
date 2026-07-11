@@ -17,6 +17,9 @@ func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 	world_data.raiders =[]
 	for raider in proc_gen_world.get_raiders():
 		world_data.raiders.append(_serialize_raider(raider))
+	world_data.treasures = []
+	for treasure in proc_gen_world.get_treasures():
+		world_data.treasures.append(_serialize_treasure(treasure))
 	return {"world": world_data}
 
 
@@ -52,6 +55,18 @@ func _serialize_raider(raider: Raider) -> Dictionary:
 		"position": {
 			"x": raider.position.x,
 			"y": raider.position.y,
+		}
+	}
+
+
+func _serialize_treasure(treasure: Treasure) -> Dictionary:
+	return {
+		"gold": treasure.gold,
+		"price": treasure.price,
+		"active": treasure.active,
+		"position": {
+			"x": treasure.position.x,
+			"y": treasure.position.y,
 		}
 	}
 

@@ -43,6 +43,15 @@ func test_get_save_data():
 	raiders_root.add_child(raider)
 	proc_gen_world.raiders = raiders_root
 
+	var treasures_root = Node2D.new()
+	var treasure = Treasure.new()
+	treasure.global_position = Vector2(40, 50)
+	treasure.gold = 10_000
+	treasure.price = 1_000
+	treasure.active = true
+	treasures_root.add_child(treasure)
+	proc_gen_world.treasures = treasures_root
+
 	# act
 	var save_data = proc_gen_world_serializer.get_save_data(proc_gen_world)
 
@@ -69,10 +78,19 @@ func test_get_save_data():
 	assert_eq(loaded_raider.position.x, 20.0, "Should store raider x position")
 	assert_eq(loaded_raider.position.y, 30.0, "Should store raider y position")
 
+	var loaded_treasure = save_data.world.treasures[0]
+	assert_not_null(loaded_treasure)
+	assert_eq(loaded_treasure.position.x, 40.0, "Should store treasure x position")
+	assert_eq(loaded_treasure.position.y, 50.0, "Should store treasure y position")
+	assert_eq(loaded_treasure.gold, 10_000, "Should store treasure gold")
+	assert_eq(loaded_treasure.price, 1_000, "Should store treasure price")
+	assert_true(loaded_treasure.active, "Should store treasure active")
+
 	# tear down
 	towns_root.free()
 	goods_root.free()
 	raiders_root.free()
+	treasures_root.free()
 
 
 func test_set_save_data():
