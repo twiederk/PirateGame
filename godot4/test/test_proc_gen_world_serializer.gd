@@ -109,6 +109,9 @@ func test_set_save_data():
 	
 	var raiders_root = Node2D.new()
 	proc_gen_world.raiders = raiders_root
+	
+	var treasures_root = Node2D.new()
+	proc_gen_world.treasures = treasures_root
 
 	var save_data = {
 		"world": {
@@ -134,6 +137,14 @@ func test_set_save_data():
 			"raiders": [
 				{
 					"position": {"x": 30, "y": 40},
+				}
+			],
+			"treasures": [
+				{
+					"gold": 10_000,
+					"price": 1_000,
+					"active": true,
+					"position": {"x": 50, "y": 60},
 				}
 			]
 		}
@@ -161,7 +172,13 @@ func test_set_save_data():
 	var raider = raiders[0]
 	assert_eq(raider.global_position, Vector2(30, 40), "Should restore position of raider")
 	
-	
+	var treasurs = proc_gen_world.get_treasures()
+	assert_eq(treasurs.size(), 1, "Should restore treasurs")
+	var treasure = treasurs[0]
+	assert_eq(treasure.global_position, Vector2(50, 60), "Should restore position of treasure")
+	assert_eq(treasure.gold, 10_000, "Should restore gold of treasure")
+	assert_eq(treasure.price, 1_000, "Should restore price of treasure")
+	assert_true(treasure.active, "Should restore active of treasure")
 	
 	# tear down
 	towns_root.free()
