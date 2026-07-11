@@ -2,6 +2,7 @@ class_name ProcGenWorldSerializer
 
 const GoodScene = preload("res://world/good.tscn")
 const RaiderScene = preload("res://world/raider.tscn")
+const TreasureScene = preload("res://world/treasure.tscn")
 
 func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 	var world_data = {
@@ -80,6 +81,7 @@ func set_save_data(proc_gen_world: ProcGenWorld, save_data: Dictionary) -> void:
 	_restore_towns(proc_gen_world, world_data)
 	_restore_goods(proc_gen_world, world_data)
 	_restore_raiders(proc_gen_world, world_data)
+	_restore_treasures(proc_gen_world, world_data)
 
 
 func _restore_world(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> void:
@@ -148,3 +150,22 @@ func _restore_raider(raider_data: Dictionary) -> Raider:
 	var pos = Vector2i(int(raider_data.position.x), int(raider_data.position.y))
 	raider.global_position = pos
 	return raider
+
+
+func _restore_treasures(proc_gen_world: ProcGenWorld, world_data: Dictionary):
+	if world_data.has("treasures"):
+		for treasure_data in world_data.treasures:
+			var treasure = _restore_treasure(proc_gen_world, treasure_data)
+			proc_gen_world.treasures.add_child(treasure)
+
+
+func _restore_treasure(proc_gen_world: ProcGenWorld, treasure_data: Dictionary) -> Treasure:
+	var treasure: Treasure = TreasureScene.instantiate()
+	var pos = Vector2i(int(treasure_data.position.x), int(treasure_data.position.y))
+	treasure.global_position = pos
+	treasure.gold = treasure_data.gold
+	treasure.price = treasure_data.price
+	treasure.active = treasure_data.active
+	var treasure_map_image = proc_gen_world.create_treasure_map(treasure.global_position)
+	treasure.texture = ImageTexture.create_from_image(treasure_map_image)
+	return treasure

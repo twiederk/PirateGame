@@ -179,11 +179,13 @@ func test_set_save_data():
 	assert_eq(treasure.gold, 10_000, "Should restore gold of treasure")
 	assert_eq(treasure.price, 1_000, "Should restore price of treasure")
 	assert_true(treasure.active, "Should restore active of treasure")
-	
+	assert_not_null(treasure.texture, "Should restore texture of treasure")
+
 	# tear down
 	towns_root.free()
 	goods_root.free()
 	raiders_root.free()
+	treasures_root.free()
 
 
 func test_set_save_data_missing_data_use_defaults():

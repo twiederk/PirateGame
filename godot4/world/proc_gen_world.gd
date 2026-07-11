@@ -315,15 +315,15 @@ func generate_treasures(minimap_image: Image) -> void:
 	var max_treasures = int(width * treasure_percentage)
 	var treasures_to_generate = max_treasures - get_treasures().size()
 	for i in range(treasures_to_generate):
-		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, TREASURE_MAP_SIZE * 0.5)
+		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, Vector2(TREASURE_MAP_SIZE) * 0.5)
 		if spawn_position == INVALID_TILE_POSITION:
 			continue
 		var treasure: Treasure = TreasureScene.instantiate()
-		var region = Rect2i(spawn_position - Vector2i(TREASURE_MAP_SIZE * 0.5), TREASURE_MAP_SIZE)
-		var treasure_map_image = minimap_image.get_region(region)
-		_draw_mark(treasure_map_image, TREASURE_MAP_SIZE * 0.5, Color.ORANGE_RED)
-		treasure.price = randi_range(1, 10)	* 100
+		treasure.price = randi_range(1, 10) * 100
 		treasure.gold = randi_range(5, 100) * 100
+		var region = Rect2i(spawn_position - Vector2i(Vector2(TREASURE_MAP_SIZE) * 0.5), TREASURE_MAP_SIZE)
+		var treasure_map_image = minimap_image.get_region(region)
+		_draw_mark(treasure_map_image, Vector2(TREASURE_MAP_SIZE) * 0.5, Color.ORANGE_RED)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
 		treasures.add_child(treasure)
@@ -350,6 +350,15 @@ func _is_distance_from_border(pos: Vector2i, distance: Vector2) -> bool:
 		return false
 
 	return pos.x >= min_x and pos.x <= max_x and pos.y >= min_y and pos.y <= max_y
+
+
+func create_treasure_map(global_pos: Vector2) -> Image:
+	var minimap_image = generate_minimap()
+	var minimap_position = Vector2i(global_pos / Vector2(TILE_SIZE))
+	var region = Rect2i(minimap_position - Vector2i(Vector2(TREASURE_MAP_SIZE) * 0.5), TREASURE_MAP_SIZE)
+	var treasure_map_image = minimap_image.get_region(region)
+	_draw_mark(treasure_map_image, Vector2(TREASURE_MAP_SIZE) * 0.5, Color.ORANGE_RED)
+	return treasure_map_image
 
 
 func simulation(delta: float, player_position: Vector2) -> void:
