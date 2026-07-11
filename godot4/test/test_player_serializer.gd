@@ -126,6 +126,7 @@ func test_set_save_data_missing_data_use_defaults():
 	# assert
 	assert_eq(player.trader_rank.title, TRADER_RANK_01.title, "Missing trader_rank in save should default to trader rank 1")
 	assert_eq(player.sailer_rank.title, SAILER_RANK_01.title, "Missing sailer_rank in save should default to sailer rank 1")
+	assert_null(player.treasure, "Missing treasure should leave treasure empty")
 
 
 func test_set_save_data_legacy_ship_field_migrates_to_ships_array():
