@@ -30,6 +30,8 @@ func test_get_save_data():
 	player.add_ship(SAILING)
 	player.get_trading_item(1).stock = 5
 	player.get_trading_item(2).stock = 7
+	var treasure = Treasure.new()
+	player.treasure = treasure
 
 	# act
 	var save_data = player_serializer.get_save_data(player)
@@ -45,6 +47,10 @@ func test_get_save_data():
 	assert_eq(save_data.player.sailer_rank, "res://promotion_system/sailer_rank_01.tres", "Collected data should include player sailer rank resource")
 	assert_eq(save_data.player.ships.size(), 2, "Collected data should include serialized owned ships")
 	assert_eq(save_data.player.current_ship_index, 1, "Collected data should include active ship index")
+	assert_true(save_data.player.treasure, "Collected data should include treasure")
+	
+	# tear down
+	treasure.free()
 
 
 func test_set_save_data():
@@ -70,24 +76,33 @@ func test_set_save_data():
 				1: {"stock": 5},
 				2: {"stock": 7},
 				3: {"stock": 0},
-			}
+			},
+			"treasure": true,
 		}
 	}
+	
+	var treasure = Treasure.new()
+	treasure.active = true
+	var treasures: Array[Treasure] = [ treasure ]
 
 	# act
-	player_serializer.set_save_data(player, save_data)
+	player_serializer.set_save_data(player, save_data, treasures)
 
 	# assert
-	assert_eq(player.current_state, Player.State.IN_TOWN, "set_save_data should restore player current_state")
-	assert_eq(player.gold, 123, "set_save_data should restore player gold")
-	assert_eq(player.position.x, 11.0, "set_save_data should restore player position x")
-	assert_eq(player.position.y, 13.0, "set_save_data should restore player position y")
-	assert_eq(player.get_trading_item(1).stock, 5, "set_save_data should restore inventory stock for key 1")
-	assert_eq(player.get_trading_item(2).stock, 7, "set_save_data should restore inventory stock for key 2")
-	assert_eq(player.trader_rank.title, "Zunftmeister", "set_save_data should restore player trader rank")
-	assert_eq(player.sailer_rank.title, "Kapitän", "set_save_data should restore player sailer rank")
-	assert_eq(player.get_ships().size(), 2, "set_save_data should restore all owned ships")
-	assert_eq(player.get_ship().resource_path, "res://trading_system/ship_sailing.tres", "set_save_data should restore active ship by index")
+	assert_eq(player.current_state, Player.State.IN_TOWN, "Should restore player current_state")
+	assert_eq(player.gold, 123, "Should restore player gold")
+	assert_eq(player.position.x, 11.0, "Should restore player position x")
+	assert_eq(player.position.y, 13.0, "Should restore player position y")
+	assert_eq(player.get_trading_item(1).stock, 5, "Should restore inventory stock for key 1")
+	assert_eq(player.get_trading_item(2).stock, 7, "Should restore inventory stock for key 2")
+	assert_eq(player.trader_rank.title, "Zunftmeister", "Should restore player trader rank")
+	assert_eq(player.sailer_rank.title, "Kapitän", "Should restore player sailer rank")
+	assert_eq(player.get_ships().size(), 2, "Should restore all owned ships")
+	assert_eq(player.get_ship().resource_path, "res://trading_system/ship_sailing.tres", "Should restore active ship by index")
+	assert_not_null(player.treasure, "Should restore treasure")
+	
+	# tear down
+	treasure.free()
 
 
 func test_set_save_data_missing_data_use_defaults():

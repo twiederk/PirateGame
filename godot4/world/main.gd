@@ -38,8 +38,8 @@ func _ready() -> void:
 	zoom_widget.set_zoom(camera.zoom)
 	
 	if SaveManager.is_game_loaded():
-		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state)
-		ProcGenWorldSerializer.new().set_save_data( proc_gen_world, SaveManager.load_game_state)
+		ProcGenWorldSerializer.new().set_save_data(proc_gen_world, SaveManager.load_game_state)
+		PlayerSerializer.new().set_save_data(player, SaveManager.load_game_state, proc_gen_world.get_treasures(),)
 		TradingSystemSerializer.new().set_save_data(trading_system, SaveManager.load_game_state)
 		FogSectorManagerSerializer.new().set_save_data(fog_sector_manager, SaveManager.load_game_state)
 	else:
