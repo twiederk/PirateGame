@@ -56,7 +56,7 @@ func _create_treasure_row():
 		treasure_map_table.visible = false
 		return
 	treasure_map_table.visible = true
-	treasure_label.text = "Schatzkarte (%d Gold)" % _town.treasure.gold
+	treasure_label.text = "Schatzkarte (%d Gold)" % _town.treasure.price
 	
 
 func _create_ship_rows() -> void:

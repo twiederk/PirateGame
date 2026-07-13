@@ -52,9 +52,9 @@ func _create_treasure(spawn_position: Vector2i, treasure_resource: TreasureResou
 		treasure.resource = treasure_resource
 		treasure.price = treasure_resource.get_price()
 		treasure.gold = treasure_resource.get_gold()
+		treasure.global_position = spawn_position * ProcGenWorld.TILE_SIZE
 		var treasure_map_image = proc_gen_world.create_treasure_map(treasure.global_position, treasure.resource.treasure_map_size)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
-		treasure.global_position = spawn_position * ProcGenWorld.TILE_SIZE
 		return treasure
 
 
