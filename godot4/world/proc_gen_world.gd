@@ -252,23 +252,6 @@ func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
 
 func generate_goods():
 	goods_generator.generate_goods(self)
-	#var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
-	#_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.33), shallow_water_arr)
-	#_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.66), deep_water_arr)
-	#_generate_goods_of_type(GOOD_GRAIN, int(width * grain_percentage), farm_arr)
-	#_generate_goods_of_type(GOOD_WOOD, int(width * wood_percentage), tree_arr)
-
-
-func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positions: Array[Vector2i]) -> void:
-	var goods_to_generate = max_good - get_goods_by_type(good_resource).size()
-	for i in range(goods_to_generate):
-		var spawn_position = _pick_hidden_tile_position(positions)
-		if spawn_position == INVALID_TILE_POSITION:
-			continue
-		var good: Good = GoodScene.instantiate() 
-		good.good_resource = good_resource
-		good.global_position = spawn_position * TILE_SIZE
-		goods.add_child(good)
 
 
 func generate_raiders(player_position: Vector2) -> void:
