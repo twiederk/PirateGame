@@ -38,7 +38,6 @@ func generate_goods(proc_gen_world: ProcGenWorld):
 
 
 func _generate_goods_of_type(good_resource: GoodResource, goods_to_generate: int, positions: Array[Vector2i], goods_root: Node2D, viewport: Viewport) -> void:
-	print(good_resource.name, " to generate: ", goods_to_generate)
 	for i in range(goods_to_generate):
 		var spawn_position = _pick_hidden_tile_position(viewport, positions)
 		if spawn_position == INVALID_TILE_POSITION:
