@@ -5,18 +5,12 @@ extends Node2D
 @export var width : int = 256
 @export var height : int = 192
 @export var seed_value: int = 0
-@export var town_percentage: float = 0.05
 @export var treasure_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
 @export var treasure_rareness: Array[TreasureResource]
 
-const TownScene = preload("res://world/town.tscn")
 const TreasureScene = preload("res://world/treasure.tscn")
-
-const TOWN_HABOR = preload("res://world/town_habor.tres")
-const TOWN_FARM = preload("res://world/town_farm.tres")
-const TOWN_WOOD_CAMP = preload("res://world/town_wood_camp.tres")
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -69,6 +63,7 @@ var _minimap_image: Image = null
 
 var goods_generator: GoodsGenerator = GoodsGenerator.new()
 var raiders_generator: RaidersGenerator = RaidersGenerator.new()
+var towns_generator: TownsGenerator = TownsGenerator.new()
 
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
@@ -76,9 +71,9 @@ var raiders_generator: RaidersGenerator = RaidersGenerator.new()
 @onready var cliff_layer: TileMapLayer = $CliffLayer
 @onready var environment_layer: TileMapLayer = $EnvironmentLayer
 @onready var towns: Node2D = $Towns
-@onready var goods = $Goods
-@onready var raiders = $Raiders
-@onready var treasures = $Treasures
+@onready var goods: Node2D = $Goods
+@onready var raiders: Node2D = $Raiders
+@onready var treasures: Node2D = $Treasures
 
 
 func _ready() -> void:
@@ -177,36 +172,8 @@ func is_coast(player_position: Vector2) -> bool:
 
 
 func generate_towns() -> Array[Town]:
-	var max_cities = int(width * town_percentage)
-	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and is_coast(pos * TILE_SIZE))
-	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
-	
-	for i in range(max_cities * 1.0):
-		var town_name = TownResource.name_dictionary[TownResource.Type.Habor].pick_random()
-		var town = _create_town(TOWN_HABOR, town_name, coast_arr.pick_random())
-		towns.add_child(town)
-		
-	for i in range(max_cities * 0.5):
-		var town_name = TownResource.name_dictionary[TownResource.Type.Farm].pick_random()
-		var town = _create_town(TOWN_FARM, town_name, farm_arr.pick_random())
-		towns.add_child(town)
+	return towns_generator.generate_towns(self)
 
-	for i in range(max_cities * 0.5):
-		var town_name = TownResource.name_dictionary[TownResource.Type.Woodcamp].pick_random()
-		var town = _create_town(TOWN_WOOD_CAMP, town_name, tree_arr.pick_random())
-		towns.add_child(town)
-
-	return get_towns()
-
-
-func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i) -> Town:
-	var town: Town = TownScene.instantiate()
-	town.town_resource = town_resource
-	town.town_name = town_name
-	town.name = town_name
-	town.global_position = pos * TILE_SIZE + TOWN_OFFSET
-	return town
-	
 
 func get_towns() -> Array[Town]:
 	var typed: Array[Town] = []

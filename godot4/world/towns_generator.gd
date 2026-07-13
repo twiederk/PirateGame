@@ -1,4 +1,4 @@
-class_name TownGenerator
+class_name TownsGenerator
 
 
 @export var town_percentage: float = 0.05
