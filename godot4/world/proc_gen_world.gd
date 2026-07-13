@@ -80,6 +80,7 @@ var spawn_accumulator: float = 0.0
 var _minimap_image: Image = null
 
 var goods_generator: GoodsGenerator = GoodsGenerator.new()
+var raiders_generator: RaidersGenerator = RaidersGenerator.new()
 
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
@@ -255,17 +256,18 @@ func generate_goods():
 
 
 func generate_raiders(player_position: Vector2) -> void:
-	var max_raiders = int(width * raider_percentage)
-	var raiders_to_generate = max_raiders - get_raiders().size()
-	for i in range(raiders_to_generate):
-		var spawn_position = _pick_hidden_tile_position(grass_arr)
-		if spawn_position == INVALID_TILE_POSITION:
-			continue
-		if _in_raider_distance(player_position, spawn_position):
-			continue
-		var raider: Raider = RaiderScene.instantiate() 
-		raider.global_position = spawn_position * TILE_SIZE
-		raiders.add_child(raider)
+	raiders_generator.generate_raiders(self, player_position)
+	#var max_raiders = int(width * raider_percentage)
+	#var raiders_to_generate = max_raiders - get_raiders().size()
+	#for i in range(raiders_to_generate):
+		#var spawn_position = _pick_hidden_tile_position(grass_arr)
+		#if spawn_position == INVALID_TILE_POSITION:
+			#continue
+		#if _in_raider_distance(player_position, spawn_position):
+			#continue
+		#var raider: Raider = RaiderScene.instantiate() 
+		#raider.global_position = spawn_position * TILE_SIZE
+		#raiders.add_child(raider)
 
 
 func _pick_hidden_tile_position(positions: Array[Vector2i]) -> Vector2i:
