@@ -7,6 +7,7 @@ extends Node2D
 var active: bool = false
 var texture: ImageTexture = null
 var player: Player = null
+var resource: TreasureResource = null
 
 var _number_format = NumberFormat.new()
 

@@ -1,5 +1,7 @@
 class_name ProcGenWorldSerializer
 
+const TREASURE_COMMON = preload("res://world/treasure_common.tres")
+
 const GoodScene = preload("res://world/good.tscn")
 const RaiderScene = preload("res://world/raider.tscn")
 const TreasureScene = preload("res://world/treasure.tscn")
@@ -68,7 +70,8 @@ func _serialize_treasure(treasure: Treasure) -> Dictionary:
 		"position": {
 			"x": treasure.position.x,
 			"y": treasure.position.y,
-		}
+		},
+		"resource_path": treasure.resource.resource_path
 	}
 
 
@@ -166,6 +169,10 @@ func _restore_treasure(proc_gen_world: ProcGenWorld, treasure_data: Dictionary) 
 	treasure.gold = treasure_data.gold
 	treasure.price = treasure_data.price
 	treasure.active = treasure_data.active
-	var treasure_map_image = proc_gen_world.create_treasure_map(treasure.global_position)
+	if treasure_data.has("resource_path"):
+		treasure.resource = load(treasure_data.resource_path)
+	else:
+		treasure.resource = TREASURE_COMMON
+	var treasure_map_image = proc_gen_world.create_treasure_map(treasure.global_position, treasure.resource.treasure_map_size)
 	treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 	return treasure

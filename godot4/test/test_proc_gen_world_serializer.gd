@@ -2,6 +2,7 @@ extends GutTest
 
 
 const GOOD_FISH = preload("res://trading_system/good_fish.tres")
+const TREASURE_COMMON = preload("res://world/treasure_common.tres")
 
 var proc_gen_world: ProcGenWorld = null
 var proc_gen_world_serializer: ProcGenWorldSerializer = null
@@ -49,6 +50,7 @@ func test_get_save_data():
 	treasure.gold = 10_000
 	treasure.price = 1_000
 	treasure.active = true
+	treasure.resource = TREASURE_COMMON
 	treasures_root.add_child(treasure)
 	proc_gen_world.treasures = treasures_root
 
@@ -85,6 +87,7 @@ func test_get_save_data():
 	assert_eq(loaded_treasure.gold, 10_000, "Should store treasure gold")
 	assert_eq(loaded_treasure.price, 1_000, "Should store treasure price")
 	assert_true(loaded_treasure.active, "Should store treasure active")
+	assert_eq(loaded_treasure.resource_path, "res://world/treasure_common.tres", "should store resource path")
 
 	# tear down
 	towns_root.free()
@@ -145,6 +148,7 @@ func test_set_save_data():
 					"price": 1_000,
 					"active": true,
 					"position": {"x": 50, "y": 60},
+					"resource_path": "res://world/treasure_common.tres",
 				}
 			]
 		}

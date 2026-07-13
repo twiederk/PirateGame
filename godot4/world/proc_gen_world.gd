@@ -13,6 +13,7 @@ extends Node2D
 @export var treasure_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
+@export var treasure_rareness: Array[TreasureResource]
 
 const TownScene = preload("res://world/town.tscn")
 const GoodScene = preload("res://world/good.tscn")
@@ -28,7 +29,6 @@ const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
 const GOOD_WOOD = preload("res://trading_system/good_wood.tres")
 
 const RAIDER_DISTANCE: float = 350.0
-const TREASURE_MAP_SIZE: Vector2i = Vector2i(100, 100)
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -316,23 +316,24 @@ func _in_raider_distance(player_position, spawn_position) -> bool:
 func generate_treasures() -> void:
 	var max_treasures = int(width * treasure_percentage)
 	var treasures_to_generate = max_treasures - get_treasures().size()
+	var treasure_resource = treasure_rareness.pick_random()
 	for i in range(treasures_to_generate):
-		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, Vector2(TREASURE_MAP_SIZE) * 0.5)
+		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, treasure_resource.treasure_map_size * 0.5)
 		if spawn_position == INVALID_TILE_POSITION:
 			continue
-		var treasure = _create_treasure(spawn_position)
+		var treasure = _create_treasure(spawn_position, treasure_resource)
 		var town = _get_town_without_treasure(get_towns())
 		town.treasure = treasure
 		treasures.add_child(treasure)
 
 
-func _create_treasure(spawn_position: Vector2i) -> Treasure:
+func _create_treasure(spawn_position: Vector2i, treasure_resource: TreasureResource) -> Treasure:
 		var treasure: Treasure = TreasureScene.instantiate()
-		treasure.price = randi_range(1, 10) * 100
-		treasure.gold = randi_range(5, 100) * 100
-		var region = Rect2i(spawn_position - Vector2i(Vector2(TREASURE_MAP_SIZE) * 0.5), TREASURE_MAP_SIZE)
+		treasure.price = treasure_resource.get_price()
+		treasure.gold = treasure_resource.get_gold()
+		var region = Rect2i(spawn_position - Vector2i(Vector2(treasure_resource.treasure_map_size) * 0.5), treasure_resource.treasure_map_size)
 		var treasure_map_image = get_minimap_image().get_region(region)
-		_draw_mark(treasure_map_image, Vector2(TREASURE_MAP_SIZE) * 0.5, Color.ORANGE_RED)
+		_draw_mark(treasure_map_image, Vector2(treasure_resource.treasure_map_size) * 0.5, Color.ORANGE_RED)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
 		return treasure
@@ -366,11 +367,11 @@ func _is_distance_from_border(pos: Vector2i, distance: Vector2) -> bool:
 	return pos.x >= min_x and pos.x <= max_x and pos.y >= min_y and pos.y <= max_y
 
 
-func create_treasure_map(global_pos: Vector2) -> Image:
+func create_treasure_map(global_pos: Vector2, treasure_map_size: Vector2i) -> Image:
 	var minimap_position = Vector2i(global_pos / Vector2(TILE_SIZE))
-	var region = Rect2i(minimap_position - Vector2i(Vector2(TREASURE_MAP_SIZE) * 0.5), TREASURE_MAP_SIZE)
+	var region = Rect2i(minimap_position - Vector2i(Vector2(treasure_map_size) * 0.5), treasure_map_size)
 	var treasure_map_image = get_minimap_image().get_region(region)
-	_draw_mark(treasure_map_image, Vector2(TREASURE_MAP_SIZE) * 0.5, Color.ORANGE_RED)
+	_draw_mark(treasure_map_image, Vector2(treasure_map_size) * 0.5, Color.ORANGE_RED)
 	return treasure_map_image
 
 
