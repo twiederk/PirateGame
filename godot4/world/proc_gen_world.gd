@@ -320,6 +320,11 @@ func generate_treasures() -> void:
 		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, Vector2(TREASURE_MAP_SIZE) * 0.5)
 		if spawn_position == INVALID_TILE_POSITION:
 			continue
+		var treasure = _create_treasure(spawn_position)
+		treasures.add_child(treasure)
+
+
+func _create_treasure(spawn_position: Vector2i) -> Treasure:
 		var treasure: Treasure = TreasureScene.instantiate()
 		treasure.price = randi_range(1, 10) * 100
 		treasure.gold = randi_range(5, 100) * 100
@@ -328,7 +333,7 @@ func generate_treasures() -> void:
 		_draw_mark(treasure_map_image, Vector2(TREASURE_MAP_SIZE) * 0.5, Color.ORANGE_RED)
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
-		treasures.add_child(treasure)
+		return treasure
 
 
 func _pick_distance_from_border_tile_position(positions: Array[Vector2i], distance: Vector2) -> Vector2i:
