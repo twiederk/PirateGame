@@ -79,6 +79,8 @@ var spawn_accumulator: float = 0.0
 
 var _minimap_image: Image = null
 
+var goods_generator: GoodsGenerator = GoodsGenerator.new()
+
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
 @onready var farm_field_layer: TileMapLayer = $FarmFieldLayer
@@ -249,11 +251,12 @@ func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
 
 
 func generate_goods():
-	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
-	_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.33), shallow_water_arr)
-	_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.66), deep_water_arr)
-	_generate_goods_of_type(GOOD_GRAIN, int(width * grain_percentage), farm_arr)
-	_generate_goods_of_type(GOOD_WOOD, int(width * wood_percentage), tree_arr)
+	goods_generator.generate_goods(self)
+	#var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
+	#_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.33), shallow_water_arr)
+	#_generate_goods_of_type(GOOD_FISH, int(width * grain_percentage * 0.66), deep_water_arr)
+	#_generate_goods_of_type(GOOD_GRAIN, int(width * grain_percentage), farm_arr)
+	#_generate_goods_of_type(GOOD_WOOD, int(width * wood_percentage), tree_arr)
 
 
 func _generate_goods_of_type(good_resource: GoodResource, max_good: int, positions: Array[Vector2i]) -> void:
