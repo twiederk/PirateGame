@@ -70,8 +70,8 @@ func test_get_save_data():
 	assert_eq(town_data.inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
 	assert_eq(town_data.inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
 	assert_true(town_data.has("treasure"))
-	assert_eq(town_data.treasure.x, 40)
-	assert_eq(town_data.treasure.y, 50)
+	assert_eq(town_data.treasure.x, 40.0)
+	assert_eq(town_data.treasure.y, 50.0)
 
 	var good_data = save_data.world.goods[0]
 	assert_not_null(good_data)
