@@ -12,7 +12,6 @@ var number_format = NumberFormat.new()
 var _trading_system: TradingSystem
 var _player: Player
 var _town: Town
-var _treasures: Array[Treasure] = []
 
 @onready var town_name = $CenterContainer/VBoxContainer/TownName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
@@ -26,11 +25,10 @@ var _treasures: Array[Treasure] = []
 @onready var treasure_label = $CenterContainer/VBoxContainer/TreasureTable/HBoxContainer/TreasureLabel
 
 
-func init(town: Town, player: Player, trading_system: TradingSystem, treasures: Array[Treasure]) -> void:
+func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
 	_town = town
 	_player = player
 	_trading_system = trading_system
-	_treasures = treasures
 	_create_treasure_row()
 	_create_ship_rows()
 	_create_trading_rows()
@@ -54,11 +52,11 @@ func _update_all_rows() -> void:
 
 
 func _create_treasure_row():
-	if _player.has_treasure_map() || _treasures.is_empty():
+	if _player.has_treasure_map() || not _town.has_treasure():
 		treasure_map_table.visible = false
 		return
 	treasure_map_table.visible = true
-	treasure_label.text = "Schatzkarte (%d Gold)" % _treasures[0].price
+	treasure_label.text = "Schatzkarte (%d Gold)" % _town.treasure.price
 	
 
 func _create_ship_rows() -> void:
@@ -142,7 +140,7 @@ func _on_buy_treasure() -> void:
 
 
 func _buy_treasure() -> String:
-	var treasure = _treasures[0]
+	var treasure = _town.treasure
 	if _player.gold < treasure.price:
 		return "Nicht genug Gold."
 	_player.buy_treasure(treasure)

@@ -1,5 +1,7 @@
 class_name ProcGenWorldSerializer
 
+const TREASURE_COMMON = preload("res://world/treasure_common.tres")
+
 const GoodScene = preload("res://world/good.tscn")
 const RaiderScene = preload("res://world/raider.tscn")
 const TreasureScene = preload("res://world/treasure.tscn")
@@ -27,7 +29,8 @@ func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 func _serialize_town(town: Town) -> Dictionary:
 	return {
 		"visited": town.get_visited(),
-		"inventory": _serialize_town_inventory(town)
+		"inventory": _serialize_town_inventory(town),
+		"treasure": _serialize_town_treasure(town),
 	}
 
 
@@ -41,6 +44,14 @@ func _serialize_town_inventory(town: Town) -> Dictionary:
 		}
 	return inventory_data
 
+
+func _serialize_town_treasure(town: Town) -> Dictionary:
+	if not town.has_treasure():
+		return { }
+	return {
+		"x" : town.treasure.position.x,
+		"y" : town.treasure.position.y,
+	}
 
 func _serialize_good(good: Good) -> Dictionary:
 	return {
@@ -68,7 +79,8 @@ func _serialize_treasure(treasure: Treasure) -> Dictionary:
 		"position": {
 			"x": treasure.position.x,
 			"y": treasure.position.y,
-		}
+		},
+		"resource_path": treasure.resource.resource_path
 	}
 
 
@@ -77,11 +89,11 @@ func set_save_data(proc_gen_world: ProcGenWorld, save_data: Dictionary) -> void:
 		return
 
 	var world_data: Dictionary = save_data.world
+	_restore_treasures(proc_gen_world, world_data)
+	_restore_towns(proc_gen_world, world_data, proc_gen_world.get_treasures())
 	_restore_world(proc_gen_world, world_data)
-	_restore_towns(proc_gen_world, world_data)
 	_restore_goods(proc_gen_world, world_data)
 	_restore_raiders(proc_gen_world, world_data)
-	_restore_treasures(proc_gen_world, world_data)
 
 
 func _restore_world(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> void:
@@ -89,20 +101,31 @@ func _restore_world(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> voi
 		proc_gen_world.spawn_accumulator = world_data.spawn_accumulator
 
 
-func _restore_towns(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> void:
+func _restore_towns(proc_gen_world: ProcGenWorld, world_data: Dictionary, treasures: Array[Treasure]) -> void:
 	if not world_data.has("towns"):
 		return
 	var towns : Array[Town] = proc_gen_world.get_towns()
 	var towns_data = world_data.towns
 	for i in range(towns_data.size()):
-		_restore_town(towns[i], towns_data[i])
+		_restore_town(towns[i], towns_data[i], treasures)
 
 
-func _restore_town(town: Town, town_data: Dictionary) -> void:
+func _restore_town(town: Town, town_data: Dictionary, treasures: Array[Treasure]) -> void:
 	if town_data.has("visited"):
 		town.set_visited(town_data.visited)
 	if town_data.has("inventory"):
 		_restore_town_inventory_from_save(town, town_data.inventory)
+	if town_data.has("treasure"):
+		if town_data.treasure.is_empty():
+			return
+		else:
+			var treasure_position = Vector2(town_data.treasure.x, town_data.treasure.y)
+			var treasure = _get_treasure_by_position(treasure_position, treasures)
+			town.treasure = treasure
+
+
+func _get_treasure_by_position(treasure_position: Vector2, treasures: Array[Treasure]) -> Treasure:
+	return treasures.filter(func(treasure): return treasure.position == treasure_position)[0]
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
@@ -166,6 +189,10 @@ func _restore_treasure(proc_gen_world: ProcGenWorld, treasure_data: Dictionary) 
 	treasure.gold = treasure_data.gold
 	treasure.price = treasure_data.price
 	treasure.active = treasure_data.active
-	var treasure_map_image = proc_gen_world.create_treasure_map(treasure.global_position)
+	if treasure_data.has("resource_path"):
+		treasure.resource = load(treasure_data.resource_path)
+	else:
+		treasure.resource = TREASURE_COMMON
+	var treasure_map_image = proc_gen_world.create_treasure_map(treasure.global_position, treasure.resource.treasure_map_size)
 	treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 	return treasure

@@ -2,6 +2,7 @@ extends GutTest
 
 
 const GOOD_FISH = preload("res://trading_system/good_fish.tres")
+const TREASURE_COMMON = preload("res://world/treasure_common.tres")
 
 var proc_gen_world: ProcGenWorld = null
 var proc_gen_world_serializer: ProcGenWorldSerializer = null
@@ -20,13 +21,21 @@ func test_get_save_data():
 	proc_gen_world.spawn_accumulator = 0.5
 	proc_gen_world.seed_value = 12345
 
-	var towns_root = Node2D.new()
+	var treasure = Treasure.new()
+	treasure.global_position = Vector2(40, 50)
+	treasure.gold = 10_000
+	treasure.price = 1_000
+	treasure.active = true
+	treasure.resource = TREASURE_COMMON
+
 	var town = Town.new()
 	town.set_visited(true)
 	var town_item = TradingItem.new(GOOD_FISH, 50)
 	town_item.cached_stock = 45
 	town_item.last_updated = 1234.5
 	town.add_trading_item(town_item)
+	town.treasure = treasure
+	var towns_root = Node2D.new()
 	towns_root.add_child(town)
 	proc_gen_world.towns = towns_root
 	
@@ -44,11 +53,6 @@ func test_get_save_data():
 	proc_gen_world.raiders = raiders_root
 
 	var treasures_root = Node2D.new()
-	var treasure = Treasure.new()
-	treasure.global_position = Vector2(40, 50)
-	treasure.gold = 10_000
-	treasure.price = 1_000
-	treasure.active = true
 	treasures_root.add_child(treasure)
 	proc_gen_world.treasures = treasures_root
 
@@ -56,35 +60,38 @@ func test_get_save_data():
 	var save_data = proc_gen_world_serializer.get_save_data(proc_gen_world)
 
 	# assert
-	assert_eq(save_data.world.seed_value, 12345, "Save data should include the world seed")
-	assert_eq(save_data.world.spawn_accumulator, 0.5, "Save data should include the spawn accumulator")
-	assert_eq(save_data.world.towns.size(), 1, "Save data should include one serialized town")
+	assert_eq(save_data.world.seed_value, 12345, "Should include the world seed")
+	assert_eq(save_data.world.spawn_accumulator, 0.5, "Should include the spawn accumulator")
+	assert_eq(save_data.world.towns.size(), 1, "Should include one serialized town")
 
-	var loaded_town = save_data.world.towns[0]
-	assert_eq(loaded_town.size(), 2, "Save data should include one serialized town")
-	assert_true(loaded_town.visited, "Town visited should be serialized")
-	assert_eq(loaded_town.inventory[1].stock, 50, "Town inventory stock should be serialized")
-	assert_eq(loaded_town.inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
-	assert_eq(loaded_town.inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
+	var town_data = save_data.world.towns[0]
+	assert_true(town_data.visited, "Town visited should be serialized")
+	assert_eq(town_data.inventory[1].stock, 50, "Town inventory stock should be serialized")
+	assert_eq(town_data.inventory[1].cached_stock, 45, "Town inventory cached_stock should be serialized")
+	assert_eq(town_data.inventory[1].last_updated, 1234.5, "Town inventory last_updated should be serialized")
+	assert_true(town_data.has("treasure"))
+	assert_eq(town_data.treasure.x, 40.0)
+	assert_eq(town_data.treasure.y, 50.0)
 
-	var loaded_good = save_data.world.goods[0]
-	assert_not_null(loaded_good)
-	assert_eq(loaded_good.resource_path, GOOD_FISH.resource_path, "Should store good resouce path")
-	assert_eq(loaded_good.position.x, 10.0, "Should store x position")
-	assert_eq(loaded_good.position.y, 20.0, "Should store y position")
+	var good_data = save_data.world.goods[0]
+	assert_not_null(good_data)
+	assert_eq(good_data.resource_path, GOOD_FISH.resource_path, "Should store good resouce path")
+	assert_eq(good_data.position.x, 10.0, "Should store x position")
+	assert_eq(good_data.position.y, 20.0, "Should store y position")
 
-	var loaded_raider = save_data.world.raiders[0]
-	assert_not_null(loaded_raider)
-	assert_eq(loaded_raider.position.x, 20.0, "Should store raider x position")
-	assert_eq(loaded_raider.position.y, 30.0, "Should store raider y position")
+	var raider_data = save_data.world.raiders[0]
+	assert_not_null(raider_data)
+	assert_eq(raider_data.position.x, 20.0, "Should store raider x position")
+	assert_eq(raider_data.position.y, 30.0, "Should store raider y position")
 
-	var loaded_treasure = save_data.world.treasures[0]
-	assert_not_null(loaded_treasure)
-	assert_eq(loaded_treasure.position.x, 40.0, "Should store treasure x position")
-	assert_eq(loaded_treasure.position.y, 50.0, "Should store treasure y position")
-	assert_eq(loaded_treasure.gold, 10_000, "Should store treasure gold")
-	assert_eq(loaded_treasure.price, 1_000, "Should store treasure price")
-	assert_true(loaded_treasure.active, "Should store treasure active")
+	var treasure_data = save_data.world.treasures[0]
+	assert_not_null(treasure_data)
+	assert_eq(treasure_data.position.x, 40.0, "Should store treasure x position")
+	assert_eq(treasure_data.position.y, 50.0, "Should store treasure y position")
+	assert_eq(treasure_data.gold, 10_000, "Should store treasure gold")
+	assert_eq(treasure_data.price, 1_000, "Should store treasure price")
+	assert_true(treasure_data.active, "Should store treasure active")
+	assert_eq(treasure_data.resource_path, "res://world/treasure_common.tres", "should store resource path")
 
 	# tear down
 	towns_root.free()
@@ -125,6 +132,10 @@ func test_set_save_data():
 							"cached_stock": 45,
 							"last_updated": 1234.5,
 						}
+					},
+					"treasure": {
+						"x": 50,
+						"y": 60,
 					}
 				}
 			],
@@ -145,6 +156,7 @@ func test_set_save_data():
 					"price": 1_000,
 					"active": true,
 					"position": {"x": 50, "y": 60},
+					"resource_path": "res://world/treasure_common.tres",
 				}
 			]
 		}
@@ -160,6 +172,7 @@ func test_set_save_data():
 	assert_eq(town_item.stock, 50, "should restore town item stock")
 	assert_eq(town_item.cached_stock, 45, "should restore town item cached_stock")
 	assert_eq(town_item.last_updated, 1234.5, "should restore town item last_updated")
+	assert_eq(town.treasure.position, Vector2(50, 60), "Should restore treasure of town")
 	
 	var goods = proc_gen_world.get_goods()
 	assert_eq(goods.size(), 1, "Should restore goods")
@@ -226,6 +239,7 @@ func test_set_save_data_missing_data_use_defaults():
 	# assert
 	assert_eq(proc_gen_world.spawn_accumulator, 0.0, "Should use default value for accumulator")
 	assert_false(town.get_visited(), "Should use default value for visited")
+	assert_null(town.treasure)
 	assert_eq(town_item.stock, 0, "Should use default value for town item stock")
 	assert_eq(town_item.cached_stock, 0, "Should use default value for town item cached_stock")
 	assert_eq(town_item.last_updated, 0.0, "Should use default value for town item last_updated")

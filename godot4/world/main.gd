@@ -44,6 +44,7 @@ func _ready() -> void:
 		FogSectorManagerSerializer.new().set_save_data(fog_sector_manager, SaveManager.load_game_state)
 	else:
 		player.position = proc_gen_world.get_starting_position()
+		
 		proc_gen_world.generate_goods()
 		proc_gen_world.generate_raiders(player.position)
 		proc_gen_world.generate_treasures()
@@ -181,7 +182,7 @@ func _on_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
 	remove_chasing_raiders()
-	town_menu.init(town, player, trading_system, proc_gen_world.get_treasures())
+	town_menu.init(town, player, trading_system)
 	town_menu.show()
 
 
