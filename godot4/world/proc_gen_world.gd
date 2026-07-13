@@ -64,6 +64,7 @@ var _minimap_image: Image = null
 var goods_generator: GoodsGenerator = GoodsGenerator.new()
 var raiders_generator: RaidersGenerator = RaidersGenerator.new()
 var towns_generator: TownsGenerator = TownsGenerator.new()
+var treasures_generator: TreasuresGenerator = TreasuresGenerator.new()
 
 @onready var water_layer: TileMapLayer = $WaterLayer
 @onready var sand_and_grass_layer: TileMapLayer = $SandAndGrassLayer
@@ -245,17 +246,18 @@ func _is_tile_position_visible(tile_position: Vector2i) -> bool:
 
 
 func generate_treasures() -> void:
-	var max_treasures = int(width * treasure_percentage)
-	var treasures_to_generate = max_treasures - get_treasures().size()
-	var treasure_resource = treasure_rareness.pick_random()
-	for i in range(treasures_to_generate):
-		var spawn_position = _pick_distance_from_border_tile_position(sand_arr, treasure_resource.treasure_map_size * 0.5)
-		if spawn_position == INVALID_TILE_POSITION:
-			continue
-		var treasure = _create_treasure(spawn_position, treasure_resource)
-		var town = _get_town_without_treasure(get_towns())
-		town.treasure = treasure
-		treasures.add_child(treasure)
+	treasures_generator.generate_treasures(self)
+	#var max_treasures = int(width * treasure_percentage)
+	#var treasures_to_generate = max_treasures - get_treasures().size()
+	#var treasure_resource = treasure_rareness.pick_random()
+	#for i in range(treasures_to_generate):
+		#var spawn_position = _pick_distance_from_border_tile_position(sand_arr, treasure_resource.treasure_map_size * 0.5)
+		#if spawn_position == INVALID_TILE_POSITION:
+			#continue
+		#var treasure = _create_treasure(spawn_position, treasure_resource)
+		#var town = _get_town_without_treasure(get_towns())
+		#town.treasure = treasure
+		#treasures.add_child(treasure)
 
 
 func _create_treasure(spawn_position: Vector2i, treasure_resource: TreasureResource) -> Treasure:
