@@ -197,10 +197,6 @@ func get_treasures() -> Array[Treasure]:
 	return typed
 
 
-func get_goods_by_type(good_resource: GoodResource) -> Array[Good]:
-	return get_goods().filter(func(good): return good.good_resource == good_resource)
-
-
 func generate_goods():
 	goods_generator.generate_goods(self)
 
