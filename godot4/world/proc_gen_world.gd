@@ -372,6 +372,7 @@ func simulation(delta: float, player_position: Vector2) -> void:
 	if spawn_accumulator >= SIMULATION_STEP:
 		generate_goods()
 		generate_raiders(player_position)
+		generate_treasures()
 		spawn_accumulator = 0.0
 
 
