@@ -239,6 +239,7 @@ func test_set_save_data_missing_data_use_defaults():
 	# assert
 	assert_eq(proc_gen_world.spawn_accumulator, 0.0, "Should use default value for accumulator")
 	assert_false(town.get_visited(), "Should use default value for visited")
+	assert_null(town.treasure)
 	assert_eq(town_item.stock, 0, "Should use default value for town item stock")
 	assert_eq(town_item.cached_stock, 0, "Should use default value for town item cached_stock")
 	assert_eq(town_item.last_updated, 0.0, "Should use default value for town item last_updated")
