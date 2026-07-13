@@ -63,3 +63,25 @@ func test_get_trading_items():
 	# assert
 	assert_not_null(trading_items)
 	assert_eq(trading_items.size(), 2)
+
+
+func test_has_treasure_false():
+	# act
+	var result = town.has_treasure()
+	
+	# assert
+	assert_false(result, "Should return false when town has no treasure set")
+
+
+func test_has_treasure_true():
+	# arrange
+	town.treasure = Treasure.new()
+	
+	# act
+	var result = town.has_treasure()
+	
+	# assert
+	assert_true(result, "Should return true when town has no treasure set")
+	
+	# tear down
+	town.treasure.free()

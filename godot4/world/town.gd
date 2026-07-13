@@ -7,6 +7,7 @@ signal town_entered(town_resource: TownResource)
 @export var town_resource: TownResource
 
 var town_name: String
+var treasure: Treasure = null
 var _visited: bool = false
 var _inventory: Dictionary = {}
 
@@ -71,3 +72,7 @@ func add_trading_item(trading_item: TradingItem) -> void:
 
 func get_ship_resources() -> Array[ShipResource]:
 	return town_resource.ships
+
+
+func has_treasure() -> bool:
+	return not treasure == null
