@@ -321,6 +321,8 @@ func generate_treasures() -> void:
 		if spawn_position == INVALID_TILE_POSITION:
 			continue
 		var treasure = _create_treasure(spawn_position)
+		var town = _get_town_without_treasure(get_towns())
+		town.treasure = treasure
 		treasures.add_child(treasure)
 
 
@@ -334,6 +336,11 @@ func _create_treasure(spawn_position: Vector2i) -> Treasure:
 		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
 		treasure.global_position = spawn_position * TILE_SIZE
 		return treasure
+
+
+func _get_town_without_treasure(all_towns: Array[Town]) -> Town:
+	var towns_without_treasure = all_towns.filter(func(town): return not town.has_treasure())
+	return towns_without_treasure.pick_random()
 
 
 func _pick_distance_from_border_tile_position(positions: Array[Vector2i], distance: Vector2) -> Vector2i:
