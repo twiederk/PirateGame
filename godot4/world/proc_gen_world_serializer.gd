@@ -29,7 +29,8 @@ func get_save_data(proc_gen_world: ProcGenWorld) -> Dictionary:
 func _serialize_town(town: Town) -> Dictionary:
 	return {
 		"visited": town.get_visited(),
-		"inventory": _serialize_town_inventory(town)
+		"inventory": _serialize_town_inventory(town),
+		"treasure": _serialize_town_treasure(town),
 	}
 
 
@@ -43,6 +44,14 @@ func _serialize_town_inventory(town: Town) -> Dictionary:
 		}
 	return inventory_data
 
+
+func _serialize_town_treasure(town: Town) -> Dictionary:
+	if not town.has_treasure():
+		return { }
+	return {
+		"x" : town.treasure.position.x,
+		"y" : town.treasure.position.y,
+	}
 
 func _serialize_good(good: Good) -> Dictionary:
 	return {
