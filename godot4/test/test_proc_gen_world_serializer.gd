@@ -132,6 +132,10 @@ func test_set_save_data():
 							"cached_stock": 45,
 							"last_updated": 1234.5,
 						}
+					},
+					"treasure": {
+						"x": 50,
+						"y": 60,
 					}
 				}
 			],
@@ -168,6 +172,7 @@ func test_set_save_data():
 	assert_eq(town_item.stock, 50, "should restore town item stock")
 	assert_eq(town_item.cached_stock, 45, "should restore town item cached_stock")
 	assert_eq(town_item.last_updated, 1234.5, "should restore town item last_updated")
+	assert_eq(town.treasure.position, Vector2(50, 60), "Should restore treasure of town")
 	
 	var goods = proc_gen_world.get_goods()
 	assert_eq(goods.size(), 1, "Should restore goods")

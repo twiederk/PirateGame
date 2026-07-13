@@ -89,11 +89,11 @@ func set_save_data(proc_gen_world: ProcGenWorld, save_data: Dictionary) -> void:
 		return
 
 	var world_data: Dictionary = save_data.world
+	_restore_treasures(proc_gen_world, world_data)
+	_restore_towns(proc_gen_world, world_data, proc_gen_world.get_treasures())
 	_restore_world(proc_gen_world, world_data)
-	_restore_towns(proc_gen_world, world_data)
 	_restore_goods(proc_gen_world, world_data)
 	_restore_raiders(proc_gen_world, world_data)
-	_restore_treasures(proc_gen_world, world_data)
 
 
 func _restore_world(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> void:
@@ -101,20 +101,31 @@ func _restore_world(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> voi
 		proc_gen_world.spawn_accumulator = world_data.spawn_accumulator
 
 
-func _restore_towns(proc_gen_world: ProcGenWorld, world_data: Dictionary) -> void:
+func _restore_towns(proc_gen_world: ProcGenWorld, world_data: Dictionary, treasures: Array[Treasure]) -> void:
 	if not world_data.has("towns"):
 		return
 	var towns : Array[Town] = proc_gen_world.get_towns()
 	var towns_data = world_data.towns
 	for i in range(towns_data.size()):
-		_restore_town(towns[i], towns_data[i])
+		_restore_town(towns[i], towns_data[i], treasures)
 
 
-func _restore_town(town: Town, town_data: Dictionary) -> void:
+func _restore_town(town: Town, town_data: Dictionary, treasures: Array[Treasure]) -> void:
 	if town_data.has("visited"):
 		town.set_visited(town_data.visited)
 	if town_data.has("inventory"):
 		_restore_town_inventory_from_save(town, town_data.inventory)
+	if town_data.has("treasure"):
+		if town_data.treasure.is_empty():
+			return
+		else:
+			var treasure_position = Vector2(town_data.treasure.x, town_data.treasure.y)
+			var treasure = _get_treasure_by_position(treasure_position, treasures)
+			town.treasure = treasure
+
+
+func _get_treasure_by_position(treasure_position: Vector2, treasures: Array[Treasure]) -> Treasure:
+	return treasures.filter(func(treasure): return treasure.position == treasure_position)[0]
 
 
 func _restore_town_inventory_from_save(town: Town, inventory_data: Dictionary) -> void:
