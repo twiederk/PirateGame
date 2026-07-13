@@ -7,6 +7,8 @@ const TOWN_HABOR = preload("res://world/town_habor.tres")
 const TOWN_FARM = preload("res://world/town_farm.tres")
 const TOWN_WOOD_CAMP = preload("res://world/town_wood_camp.tres")
 
+const TOWN_OFFSET: Vector2i = Vector2i(8, 8)
+
 const TownScene = preload("res://world/town.tscn")
 
 
@@ -44,5 +46,5 @@ func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i)
 	town.town_resource = town_resource
 	town.town_name = town_name
 	town.name = town_name
-	town.global_position = pos * ProcGenWorld.TILE_SIZE + ProcGenWorld.TOWN_OFFSET
+	town.global_position = pos * ProcGenWorld.TILE_SIZE + TOWN_OFFSET
 	return town
