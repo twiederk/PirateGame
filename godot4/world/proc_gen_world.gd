@@ -16,19 +16,11 @@ extends Node2D
 @export var treasure_rareness: Array[TreasureResource]
 
 const TownScene = preload("res://world/town.tscn")
-const GoodScene = preload("res://world/good.tscn")
-const RaiderScene = preload("res://world/raider.tscn")
 const TreasureScene = preload("res://world/treasure.tscn")
 
 const TOWN_HABOR = preload("res://world/town_habor.tres")
 const TOWN_FARM = preload("res://world/town_farm.tres")
 const TOWN_WOOD_CAMP = preload("res://world/town_wood_camp.tres")
-
-const GOOD_FISH = preload("res://trading_system/good_fish.tres")
-const GOOD_GRAIN = preload("res://trading_system/good_grain.tres")
-const GOOD_WOOD = preload("res://trading_system/good_wood.tres")
-
-const RAIDER_DISTANCE: float = 350.0
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -257,17 +249,6 @@ func generate_goods():
 
 func generate_raiders(player_position: Vector2) -> void:
 	raiders_generator.generate_raiders(self, player_position)
-	#var max_raiders = int(width * raider_percentage)
-	#var raiders_to_generate = max_raiders - get_raiders().size()
-	#for i in range(raiders_to_generate):
-		#var spawn_position = _pick_hidden_tile_position(grass_arr)
-		#if spawn_position == INVALID_TILE_POSITION:
-			#continue
-		#if _in_raider_distance(player_position, spawn_position):
-			#continue
-		#var raider: Raider = RaiderScene.instantiate() 
-		#raider.global_position = spawn_position * TILE_SIZE
-		#raiders.add_child(raider)
 
 
 func _pick_hidden_tile_position(positions: Array[Vector2i]) -> Vector2i:
@@ -298,10 +279,6 @@ func _is_tile_position_visible(tile_position: Vector2i) -> bool:
 	var tile_size: Vector2i = TILE_SIZE
 	var tile_world_rect := Rect2(Vector2(tile_position * tile_size), Vector2(tile_size))
 	return visible_rect.intersects(tile_world_rect)
-
-
-func _in_raider_distance(player_position, spawn_position) -> bool:
-	return player_position.distance_to(Vector2(spawn_position * TILE_SIZE)) <= RAIDER_DISTANCE
 
 
 func generate_treasures() -> void:

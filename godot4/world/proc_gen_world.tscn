@@ -23,6 +23,15 @@ noise = SubResource("FastNoiseLite_btogb")
 [node name="ProcGenWorld" type="Node2D" unique_id=572580707]
 y_sort_enabled = true
 script = ExtResource("1_p51ow")
+width = null
+height = null
+seed_value = null
+town_percentage = null
+fish_percentage = null
+grain_percentage = null
+wood_percentage = null
+raider_percentage = null
+treasure_percentage = null
 noise_texture = SubResource("NoiseTexture2D_p51ow")
 tree_noise_texture = SubResource("NoiseTexture2D_btogb")
 treasure_rareness = Array[ExtResource("2_nx8yj")]([ExtResource("3_qlqlx"), ExtResource("3_qlqlx"), ExtResource("3_qlqlx"), ExtResource("4_6c8px"), ExtResource("4_6c8px"), ExtResource("5_qni8d")])
