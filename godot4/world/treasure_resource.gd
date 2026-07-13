@@ -2,13 +2,13 @@ class_name TreasureResource
 extends Resource
 
 
-@export var price_range: Vector2i = Vector2i(1, 5)
+@export var price_range: Vector2i = Vector2i(10, 50)
 @export var gold_range: Vector2i = Vector2i(5, 10)
 @export var treasure_map_size: Vector2i = Vector2i(100, 100)
 
 
 func get_price() -> int:
-	return randi_range(price_range.x, price_range.y) * 100
+	return randi_range(price_range.x, price_range.y) * 10
 
 
 func get_gold() -> int:
