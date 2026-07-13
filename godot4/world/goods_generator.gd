@@ -24,20 +24,21 @@ func generate_goods(proc_gen_world: ProcGenWorld):
 	var tree_arr = proc_gen_world.tree_arr
 	var farm_arr = proc_gen_world.grass_arr.filter(func(pos): return not (pos in tree_arr))
 
-	var goods_to_generate = int(width * fish_percentage * 0.33) - _get_goods_by_type(all_goods, GOOD_FISH).size()
+	var goods_to_generate = max(0, int(width * fish_percentage * 0.33) - _get_goods_by_type(all_goods, GOOD_FISH).size())
 	_generate_goods_of_type(GOOD_FISH, goods_to_generate, shallow_water_arr, goods_root, viewport)
 	
-	goods_to_generate = int(width * fish_percentage * 0.66) - _get_goods_by_type(all_goods, GOOD_FISH).size()
+	goods_to_generate = max(0, int(width * fish_percentage * 0.66) - _get_goods_by_type(all_goods, GOOD_FISH).size())
 	_generate_goods_of_type(GOOD_FISH, goods_to_generate, deep_water_arr, goods_root, viewport)
 	
 	goods_to_generate = int(width * grain_percentage) - _get_goods_by_type(all_goods, GOOD_GRAIN).size()
 	_generate_goods_of_type(GOOD_GRAIN, goods_to_generate, farm_arr, goods_root, viewport)
 	
 	goods_to_generate = int(width * wood_percentage) - _get_goods_by_type(all_goods, GOOD_WOOD).size()
-	_generate_goods_of_type(GOOD_WOOD, int(width * wood_percentage), tree_arr, goods_root, viewport)
+	_generate_goods_of_type(GOOD_WOOD, goods_to_generate, tree_arr, goods_root, viewport)
 
 
 func _generate_goods_of_type(good_resource: GoodResource, goods_to_generate: int, positions: Array[Vector2i], goods_root: Node2D, viewport: Viewport) -> void:
+	print(good_resource.name, " to generate: ", goods_to_generate)
 	for i in range(goods_to_generate):
 		var spawn_position = _pick_hidden_tile_position(viewport, positions)
 		if spawn_position == INVALID_TILE_POSITION:
