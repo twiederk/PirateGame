@@ -6,10 +6,6 @@ extends Node2D
 @export var height : int = 192
 @export var seed_value: int = 0
 @export var town_percentage: float = 0.05
-@export var fish_percentage: float = 0.125
-@export var grain_percentage: float = 0.05
-@export var wood_percentage: float = 0.05
-@export var raider_percentage: float = 0.02
 @export var treasure_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
