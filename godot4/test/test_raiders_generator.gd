@@ -1,11 +1,11 @@
 extends GutTest
 
+
 var raiders_generator: RaidersGenerator = null
 
 
 func before_each():
 	raiders_generator = RaidersGenerator.new()
-
 
 
 func test_raider_spawns_in_raider_distance():

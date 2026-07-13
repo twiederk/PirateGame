@@ -2,10 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dqyqpn2l6q80t" path="res://world/proc_gen_world.gd" id="1_p51ow"]
 [ext_resource type="TileSet" uid="uid://cikokysmabvnd" path="res://world/world.tres" id="2_btogb"]
-[ext_resource type="Script" uid="uid://bgsg12g0xpha8" path="res://world/treasure_resource.gd" id="2_nx8yj"]
-[ext_resource type="Resource" uid="uid://cnsybmfwe680h" path="res://world/treasure_common.tres" id="3_qlqlx"]
-[ext_resource type="Resource" uid="uid://bnbem6c4466kr" path="res://world/treasure_rare.tres" id="4_6c8px"]
-[ext_resource type="Resource" uid="uid://dcgv1rwtw58yt" path="res://world/treasure_very_rare.tres" id="5_qni8d"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_p51ow"]
 
@@ -25,7 +21,6 @@ y_sort_enabled = true
 script = ExtResource("1_p51ow")
 noise_texture = SubResource("NoiseTexture2D_p51ow")
 tree_noise_texture = SubResource("NoiseTexture2D_btogb")
-treasure_rareness = Array[ExtResource("2_nx8yj")]([ExtResource("3_qlqlx"), ExtResource("3_qlqlx"), ExtResource("3_qlqlx"), ExtResource("4_6c8px"), ExtResource("4_6c8px"), ExtResource("5_qni8d")])
 
 [node name="WaterLayer" type="TileMapLayer" parent="." unique_id=553333346]
 z_index = -1

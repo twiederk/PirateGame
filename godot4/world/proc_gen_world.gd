@@ -5,12 +5,8 @@ extends Node2D
 @export var width : int = 256
 @export var height : int = 192
 @export var seed_value: int = 0
-@export var treasure_percentage: float = 0.02
 @export var noise_texture : NoiseTexture2D
 @export var tree_noise_texture : NoiseTexture2D
-@export var treasure_rareness: Array[TreasureResource]
-
-const TreasureScene = preload("res://world/treasure.tscn")
 
 const DEEP_WATER_LEVEL: float = -0.2
 const WATER_LEVEL: float = 0
@@ -45,7 +41,6 @@ const PALM_TREE_TILES = [PALM_TREE_1_TILE, PALM_TREE_2_TILE]
 const GRASS_TILES: Array[Vector2i] = [Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 
 const SIMULATION_STEP: float = 30.0
-const INVALID_TILE_POSITION: Vector2i = Vector2i(-1, -1)
 
 var noise : Noise
 var tree_noise : Noise
@@ -215,89 +210,8 @@ func generate_raiders(player_position: Vector2) -> void:
 	raiders_generator.generate_raiders(self, player_position)
 
 
-func _pick_hidden_tile_position(positions: Array[Vector2i]) -> Vector2i:
-	if positions.is_empty():
-		return INVALID_TILE_POSITION
-
-	var hidden_positions: Array[Vector2i] = positions.filter(func(pos): return not _is_tile_position_visible(pos))
-	if hidden_positions.is_empty():
-		return INVALID_TILE_POSITION
-
-	return hidden_positions.pick_random()
-
-
-func _is_tile_position_visible(tile_position: Vector2i) -> bool:
-	var viewport := get_viewport()
-	if viewport == null:
-		return false
-
-	var camera: Camera2D = viewport.get_camera_2d()
-	if camera == null:
-		return false
-
-	var viewport_size: Vector2 = viewport.get_visible_rect().size
-	var visible_size: Vector2 = viewport_size * camera.zoom
-	var visible_origin: Vector2 = camera.get_screen_center_position() - (visible_size * 0.5)
-	var visible_rect := Rect2(visible_origin, visible_size)
-
-	var tile_size: Vector2i = TILE_SIZE
-	var tile_world_rect := Rect2(Vector2(tile_position * tile_size), Vector2(tile_size))
-	return visible_rect.intersects(tile_world_rect)
-
-
 func generate_treasures() -> void:
 	treasures_generator.generate_treasures(self)
-	#var max_treasures = int(width * treasure_percentage)
-	#var treasures_to_generate = max_treasures - get_treasures().size()
-	#var treasure_resource = treasure_rareness.pick_random()
-	#for i in range(treasures_to_generate):
-		#var spawn_position = _pick_distance_from_border_tile_position(sand_arr, treasure_resource.treasure_map_size * 0.5)
-		#if spawn_position == INVALID_TILE_POSITION:
-			#continue
-		#var treasure = _create_treasure(spawn_position, treasure_resource)
-		#var town = _get_town_without_treasure(get_towns())
-		#town.treasure = treasure
-		#treasures.add_child(treasure)
-
-
-func _create_treasure(spawn_position: Vector2i, treasure_resource: TreasureResource) -> Treasure:
-		var treasure: Treasure = TreasureScene.instantiate()
-		treasure.price = treasure_resource.get_price()
-		treasure.gold = treasure_resource.get_gold()
-		var region = Rect2i(spawn_position - Vector2i(Vector2(treasure_resource.treasure_map_size) * 0.5), treasure_resource.treasure_map_size)
-		var treasure_map_image = get_minimap_image().get_region(region)
-		_draw_mark(treasure_map_image, Vector2(treasure_resource.treasure_map_size) * 0.5, Color.ORANGE_RED)
-		treasure.texture = ImageTexture.create_from_image(treasure_map_image)
-		treasure.global_position = spawn_position * TILE_SIZE
-		return treasure
-
-
-func _get_town_without_treasure(all_towns: Array[Town]) -> Town:
-	var towns_without_treasure = all_towns.filter(func(town): return not town.has_treasure())
-	return towns_without_treasure.pick_random()
-
-
-func _pick_distance_from_border_tile_position(positions: Array[Vector2i], distance: Vector2) -> Vector2i:
-	if positions.is_empty():
-		return INVALID_TILE_POSITION
-	
-	var valid_positions: Array[Vector2i] = positions.filter(func(pos): return _is_distance_from_border(pos, distance))
-	if valid_positions.is_empty():
-		return INVALID_TILE_POSITION
-
-	return valid_positions.pick_random()
-
-
-func _is_distance_from_border(pos: Vector2i, distance: Vector2) -> bool:
-	var min_x := int(ceil(distance.x))
-	var min_y := int(ceil(distance.y))
-	var max_x := width - min_x - 1
-	var max_y := height - min_y - 1
-
-	if max_x < min_x or max_y < min_y:
-		return false
-
-	return pos.x >= min_x and pos.x <= max_x and pos.y >= min_y and pos.y <= max_y
 
 
 func create_treasure_map(global_pos: Vector2, treasure_map_size: Vector2i) -> Image:
