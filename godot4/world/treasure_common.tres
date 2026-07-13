@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TreasureResource" format=3 uid="uid://cnsybmfwe680h"]
+
+[ext_resource type="Script" uid="uid://bgsg12g0xpha8" path="res://world/treasure_resource.gd" id="1_wm75i"]
+
+[resource]
+script = ExtResource("1_wm75i")
+metadata/_custom_type_script = "uid://bgsg12g0xpha8"

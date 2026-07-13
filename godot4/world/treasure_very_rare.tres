@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TreasureResource" format=3 uid="uid://dcgv1rwtw58yt"]
+
+[ext_resource type="Script" uid="uid://bgsg12g0xpha8" path="res://world/treasure_resource.gd" id="1_rtp1a"]
+
+[resource]
+script = ExtResource("1_rtp1a")
+price_range = Vector2i(10, 20)
+gold_range = Vector2i(50, 100)
+treasure_map_size = Vector2i(50, 50)
+metadata/_custom_type_script = "uid://bgsg12g0xpha8"
