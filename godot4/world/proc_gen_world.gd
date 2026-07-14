@@ -80,23 +80,29 @@ func _ready() -> void:
 
 func generate_world(new_seed: int):
 	seed_value = new_seed
+	_generate_seed()
+	_place_world_tiles()
+	_apply_world_tiles_to_layers()
+
+
+func _place_world_tiles() -> void:
 	var noise_val: float
 	var tree_noise_val: float
-	_generate_seed()
-	
 	for x in range(width):
 		for y in range(height):
 			var curr_pos: Vector2i = Vector2i(x, y)
-			noise_val = noise.get_noise_2d(x,y)
-			tree_noise_val = tree_noise.get_noise_2d(x,y)
-			
+			noise_val = noise.get_noise_2d(x, y)
+			tree_noise_val = tree_noise.get_noise_2d(x, y)
+
 			_place_sand(noise_val, curr_pos)
 			_place_grass(noise_val, curr_pos)
 			_place_cliffs(noise_val, curr_pos)
 			_place_water(noise_val, curr_pos)
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
-			
+
+
+func _apply_world_tiles_to_layers() -> void:
 	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, SAND_IN_WATER_TERRAIN_SET, TERRAIN)
 	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN_SET, TERRAIN)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, CLIFF_TERRAIN_SET, TERRAIN)
