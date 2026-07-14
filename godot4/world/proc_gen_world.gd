@@ -101,9 +101,10 @@ func generate_world(new_seed: int):
 
 
 func get_starting_position() -> Vector2i:
-	if grass_arr.is_empty():
+	var starting_positions = grass_arr.filter(func(pos): return not pos in cliff_arr)
+	if starting_positions.is_empty():
 		return Vector2i.ZERO
-	return grass_arr.pick_random() * TILE_SIZE
+	return starting_positions.pick_random() * TILE_SIZE
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:

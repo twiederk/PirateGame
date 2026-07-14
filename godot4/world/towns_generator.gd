@@ -8,18 +8,17 @@ const TOWN_FARM = preload("res://world/town_farm.tres")
 const TOWN_WOOD_CAMP = preload("res://world/town_wood_camp.tres")
 
 const TOWN_OFFSET: Vector2i = Vector2i(8, 8)
+const DISTANCE_FROM_BORDER = Vector2i(5, 5)
 
 const TownScene = preload("res://world/town.tscn")
 
 
 func generate_towns(proc_gen_world: ProcGenWorld) -> void:
 	var width = proc_gen_world.width
-	var grass_arr = proc_gen_world.grass_arr
 	var tree_arr = proc_gen_world.tree_arr
 	var towns_root = proc_gen_world.towns
 	
 	var max_cities = int(width * town_percentage)
-	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
 	
 	# Habors
 	var habor_positions: Array[Vector2i] = _create_habor_positions(proc_gen_world)
@@ -32,9 +31,11 @@ func generate_towns(proc_gen_world: ProcGenWorld) -> void:
 		towns_root.add_child(town)
 	
 	# Farms
+	var fram_positions: Array[Vector2i] = _create_farm_positions(proc_gen_world)
 	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Farm].pick_random()
-		var town = _create_town(TOWN_FARM, town_name, farm_arr.pick_random())
+		var spawn_position = _get_spawn_position(fram_positions)
+		var town = _create_town(TOWN_FARM, town_name, spawn_position)
 		towns_root.add_child(town)
 
 	# Woodcamps
@@ -57,12 +58,22 @@ func _create_habor_positions(proc_gen_world: ProcGenWorld) -> Array[Vector2i]:
 	return proc_gen_world.sand_arr.filter(func(pos): return _is_habor_position(pos, proc_gen_world))
 
 
-func _get_spawn_position(positions: Array[Vector2i]) -> Vector2i:
-	var random_index = randi_range(0, positions.size() - 1)
-	return positions.pop_at(random_index)
-
-
 func _is_habor_position(pos: Vector2i, proc_gen_world: ProcGenWorld) -> bool:
 	var width = proc_gen_world.width
 	var height = proc_gen_world.height
-	return proc_gen_world.is_coast(pos * ProcGenWorld.TILE_SIZE) and _is_distance_from_border(pos, Vector2(5, 5), width, height)
+	return proc_gen_world.is_coast(pos * ProcGenWorld.TILE_SIZE) and _is_distance_from_border(pos, DISTANCE_FROM_BORDER, width, height)
+
+
+func _create_farm_positions(proc_gen_world: ProcGenWorld) -> Array[Vector2i]:
+	return proc_gen_world.grass_arr.filter(func(pos): return _is_farm_position(pos, proc_gen_world))
+
+
+func _is_farm_position(pos: Vector2i, proc_gen_world: ProcGenWorld) -> bool:
+	var width = proc_gen_world.width
+	var height = proc_gen_world.height
+	return not (pos in proc_gen_world.tree_arr) and not (pos in proc_gen_world.cliff_arr) and _is_distance_from_border(pos, DISTANCE_FROM_BORDER, width, height)
+
+
+func _get_spawn_position(positions: Array[Vector2i]) -> Vector2i:
+	var random_index = randi_range(0, positions.size() - 1)
+	return positions.pop_at(random_index)
