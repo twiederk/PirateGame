@@ -87,4 +87,5 @@ func _rob_player() -> void:
 func _show_animation() -> void:
 	var fight_cloud = FightCloudScene.instantiate()
 	fight_cloud.position = global_position
-	get_parent().add_child(fight_cloud)
+	var proc_gen_world = get_parent().get_parent()
+	proc_gen_world.get_node("Effects").add_child(fight_cloud)

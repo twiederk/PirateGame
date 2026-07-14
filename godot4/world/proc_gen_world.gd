@@ -184,10 +184,7 @@ func get_goods() -> Array[Good]:
 
 func get_raiders() -> Array[Raider]:
 	var typed: Array[Raider] = []
-	var children = raiders.get_children()
-	for child in children:
-		print(str("Name: ", child.name, " Type: ", child.get_class(), " Script: ", child.get_script()))
-	typed.assign(children)
+	typed.assign(raiders.get_children())
 	return typed
 
 

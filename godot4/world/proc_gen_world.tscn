@@ -55,4 +55,6 @@ z_index = 1
 
 [node name="Raiders" type="Node2D" parent="." unique_id=1607928999]
 
+[node name="Effects" type="Node2D" parent="." unique_id=1034276154]
+
 [node name="Treasures" type="Node2D" parent="." unique_id=1459061103]
