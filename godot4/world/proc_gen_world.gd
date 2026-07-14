@@ -48,8 +48,10 @@ var deep_water_arr: Array[Vector2i] = []
 var shallow_water_arr: Array[Vector2i] = []
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
+var farm_arr: Array[Vector2i] =[]
 var cliff_arr: Array[Vector2i] = []
 var tree_arr: Array[Vector2i] = []
+var palm_tree_arr: Array[Vector2i] = []
 
 var spawn_accumulator: float = 0.0
 
@@ -98,6 +100,17 @@ func generate_world(new_seed: int):
 	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, SAND_IN_WATER_TERRAIN_SET, TERRAIN)
 	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN_SET, TERRAIN)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, CLIFF_TERRAIN_SET, TERRAIN)
+	for curr_pos in deep_water_arr:
+		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
+	for curr_pos in shallow_water_arr:
+		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
+	for curr_pos in farm_arr:
+		farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, GRASS_TILES.pick_random())
+	for curr_pos in tree_arr:
+		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILES.pick_random())
+	for curr_pos in palm_tree_arr:
+		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, PALM_TREE_TILES.pick_random())
+
 
 
 func get_starting_position() -> Vector2i:
@@ -116,7 +129,7 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val > GRASS_LEVEL:
 		grass_arr.append(curr_pos)
 		if noise_val > FIELD_LEVEL:
-			farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, GRASS_TILES.pick_random())
+			farm_arr.append(curr_pos)
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
@@ -126,16 +139,13 @@ func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
 
 func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val <= DEEP_WATER_LEVEL:
-		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
 		deep_water_arr.append(curr_pos)
 	elif noise_val <= WATER_LEVEL:
-		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
 		shallow_water_arr.append(curr_pos)
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
 	if (tree_noise_val > TREE_CHANCE) and (noise_val > FIELD_LEVEL) and (noise_val < CLIFF_LEVEL):
-		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILES.pick_random())
 		tree_arr.append(curr_pos)
 
 
@@ -143,7 +153,7 @@ func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector
 	# setting palm trees on sand, between water and grass
 	if (noise_val > WATER_LEVEL) and (noise_val < GRASS_LEVEL):
 		if tree_noise_val > PALM_TREE_CHANCE:
-			environment_layer.set_cell(curr_pos, WORLD_TILE_SET, PALM_TREE_TILES.pick_random())
+			palm_tree_arr.append(curr_pos)
 
 
 func _generate_seed() -> void:

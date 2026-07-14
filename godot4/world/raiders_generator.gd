@@ -29,7 +29,7 @@ func generate_raiders(proc_gen_world: ProcGenWorld, player_position: Vector2) ->
 
 
 func _create_raiders_positions(proc_gen_world: ProcGenWorld) -> Array[Vector2i]:
-	return proc_gen_world.sand_arr.filter(func(pos): return not pos in proc_gen_world.cliff_arr)
+	return proc_gen_world.grass_arr.filter(func(pos): return not pos in proc_gen_world.cliff_arr)
 
 
 func _in_raider_distance(player_position, spawn_position) -> bool:
