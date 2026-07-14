@@ -67,8 +67,8 @@ func _setup_limits_and_borders() -> void:
 	var west_limit = tile_map_used_rect.position.x * tile_size.x
 	var east_limit = (tile_map_used_rect.position.x + tile_map_used_rect.size.x) * tile_size.x
 
-	map_borders.set_borders(north_limit, south_limit, west_limit, east_limit)
-	_camera_limits(north_limit, south_limit, west_limit, east_limit)
+	map_borders.set_borders(north_limit, south_limit, west_limit, east_limit, ProcGenWorld.TILE_SIZE)
+	_camera_limits(north_limit, south_limit, west_limit, east_limit, ProcGenWorld.TILE_SIZE)
 
 
 func _get_seed() -> int:
@@ -168,11 +168,11 @@ func _minimap() -> void:
 			PauseManager.simulation_stop()
 
 
-func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float) -> void:
-	camera.set_limit(SIDE_LEFT, int(west_limit))
-	camera.set_limit(SIDE_RIGHT, int(east_limit))
-	camera.set_limit(SIDE_TOP, int(north_limit))
-	camera.set_limit(SIDE_BOTTOM, int(south_limit))
+func _camera_limits(north_limit: float, south_limit: float, west_limit: float, east_limit: float, margin: Vector2 = Vector2.ZERO) -> void:
+	camera.set_limit(SIDE_LEFT, int(west_limit + margin.x))
+	camera.set_limit(SIDE_RIGHT, int(east_limit - margin.x))
+	camera.set_limit(SIDE_TOP, int(north_limit + margin.y))
+	camera.set_limit(SIDE_BOTTOM, int(south_limit - margin.y))
 
 
 func _on_town_entered(town: Town):
