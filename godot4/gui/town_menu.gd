@@ -12,6 +12,7 @@ var number_format = NumberFormat.new()
 var _trading_system: TradingSystem
 var _player: Player
 var _town: Town
+var _towns_with_treasure: Array[Town] = []
 
 @onready var town_name = $CenterContainer/VBoxContainer/TownName
 @onready var player_gold = $CenterContainer/VBoxContainer/PlayerGold
@@ -23,12 +24,15 @@ var _town: Town
 @onready var message = $CenterContainer/VBoxContainer/Message
 @onready var treasure_map_table = $CenterContainer/VBoxContainer/TreasureTable
 @onready var treasure_label = $CenterContainer/VBoxContainer/TreasureTable/HBoxContainer/TreasureLabel
+@onready var treasure_hint_table = $CenterContainer/VBoxContainer/TreasureHintTable
+@onready var treasure_hint_label = $CenterContainer/VBoxContainer/TreasureHintTable/TreasureHintLabel
 
 
-func init(town: Town, player: Player, trading_system: TradingSystem) -> void:
+func init(town: Town, player: Player, trading_system: TradingSystem, towns_with_treasure: Array[Town]) -> void:
 	_town = town
 	_player = player
 	_trading_system = trading_system
+	_towns_with_treasure = towns_with_treasure
 	_create_treasure_row()
 	_create_ship_rows()
 	_create_trading_rows()
@@ -52,12 +56,82 @@ func _update_all_rows() -> void:
 
 
 func _create_treasure_row():
-	if _player.has_treasure_map() || not _town.has_treasure():
+	if _player.has_treasure_map():
 		treasure_map_table.visible = false
-		return
+		treasure_hint_table.visible = false
+	elif _town.has_treasure():
+		_show_treasure_price()
+	else:
+		_show_treasure_hint()
+
+
+func _show_treasure_hint():
+	treasure_map_table.visible = false
+	treasure_hint_table.visible = true
+	treasure_hint_label.text = _build_treasure_hint_text()
+
+
+func _build_treasure_hint_text() -> String:
+	var nearest_town_with_treasure = _get_nearest_town_with_treasure()
+
+	var rarity_text = _get_rarity_text(nearest_town_with_treasure.treasure.resource)
+	if nearest_town_with_treasure.get_visited():
+		return "In %s verkaufen sie eine %s." % [nearest_town_with_treasure.town_name, rarity_text]
+
+	var direction = _get_cardinal_direction(nearest_town_with_treasure.global_position - _town.global_position)
+	return "In einer Stadt im %s verkaufen sie eine %s." % [direction, rarity_text]
+
+
+func _get_nearest_town_with_treasure() -> Town:
+	var nearest_town: Town = null
+	var nearest_distance_squared = INF
+
+	for treasure_town in _towns_with_treasure:
+		var distance_squared = _town.global_position.distance_squared_to(treasure_town.global_position)
+		if distance_squared < nearest_distance_squared:
+			nearest_distance_squared = distance_squared
+			nearest_town = treasure_town
+
+	return nearest_town
+
+
+func _get_cardinal_direction(direction_vector: Vector2) -> String:
+	if direction_vector == Vector2.ZERO:
+		return "north"
+
+	# Convert to compass coordinates where north is up and east is right.
+	var angle_deg = wrapf(rad_to_deg(atan2(-direction_vector.y, direction_vector.x)), 0.0, 360.0)
+	if angle_deg >= 337.5 or angle_deg < 22.5:
+		return "east"
+	if angle_deg < 67.5:
+		return "northeast"
+	if angle_deg < 112.5:
+		return "north"
+	if angle_deg < 157.5:
+		return "northwest"
+	if angle_deg < 202.5:
+		return "west"
+	if angle_deg < 247.5:
+		return "southwest"
+	if angle_deg < 292.5:
+		return "south"
+	return "southeast"
+
+
+func _get_rarity_text(treasure_resource: TreasureResource) -> String:
+	var resource_path = treasure_resource.resource_path
+	if resource_path.ends_with("treasure_very_rare.tres"):
+		return "sehr seltene Schatzkarte"
+	if resource_path.ends_with("treasure_rare.tres"):
+		return "seltene Schatzkarte"
+	return "Schatzkarte"
+
+
+func _show_treasure_price():
 	treasure_map_table.visible = true
+	treasure_hint_table.visible = false
 	treasure_label.text = "Schatzkarte (%d Gold)" % _town.treasure.price
-	
+
 
 func _create_ship_rows() -> void:
 	var ship_resources = _town.get_ship_resources()

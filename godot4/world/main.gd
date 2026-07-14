@@ -180,7 +180,7 @@ func _on_town_entered(town: Town):
 	proc_gen_world.hide()
 	player.hide()
 	remove_chasing_raiders()
-	town_menu.init(town, player, trading_system)
+	town_menu.init(town, player, trading_system, proc_gen_world.get_towns_with_treasure())
 	town_menu.show()
 
 

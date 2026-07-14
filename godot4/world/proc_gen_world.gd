@@ -194,6 +194,10 @@ func get_towns() -> Array[Town]:
 	return typed
 
 
+func get_towns_with_treasure() -> Array[Town]:
+	return get_towns().filter(func(town: Town): return town.has_treasure())
+
+
 func get_goods() -> Array[Good]:
 	var typed: Array[Good] = []
 	typed.assign(goods.get_children())

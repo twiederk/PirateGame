@@ -87,6 +87,12 @@ text = "Schatzkarte für 500 Gold"
 layout_mode = 2
 text = "Kaufen"
 
+[node name="TreasureHintTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=820899614]
+layout_mode = 2
+
+[node name="TreasureHintLabel" type="Label" parent="CenterContainer/VBoxContainer/TreasureHintTable" unique_id=1082997543]
+layout_mode = 2
+
 [node name="TradingItemTable" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1492825442]
 layout_mode = 2
 
