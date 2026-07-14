@@ -102,20 +102,20 @@ func _get_cardinal_direction(direction_vector: Vector2) -> String:
 	# Convert to compass coordinates where north is up and east is right.
 	var angle_deg = wrapf(rad_to_deg(atan2(-direction_vector.y, direction_vector.x)), 0.0, 360.0)
 	if angle_deg >= 337.5 or angle_deg < 22.5:
-		return "east"
+		return "Osten"
 	if angle_deg < 67.5:
-		return "northeast"
+		return "Nordosten"
 	if angle_deg < 112.5:
-		return "north"
+		return "Norden"
 	if angle_deg < 157.5:
-		return "northwest"
+		return "Nordwesten"
 	if angle_deg < 202.5:
-		return "west"
+		return "Westen"
 	if angle_deg < 247.5:
-		return "southwest"
+		return "Südwesten"
 	if angle_deg < 292.5:
-		return "south"
-	return "southeast"
+		return "Süden"
+	return "Südosten"
 
 
 func _get_rarity_text(treasure_resource: TreasureResource) -> String:
