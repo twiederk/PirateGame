@@ -1,5 +1,5 @@
 class_name TownsGenerator
-
+extends Generator
 
 @export var town_percentage: float = 0.05
 
@@ -8,37 +8,42 @@ const TOWN_FARM = preload("res://world/town_farm.tres")
 const TOWN_WOOD_CAMP = preload("res://world/town_wood_camp.tres")
 
 const TOWN_OFFSET: Vector2i = Vector2i(8, 8)
+const DISTANCE_FROM_BORDER = Vector2i(5, 5)
 
 const TownScene = preload("res://world/town.tscn")
 
 
-func generate_towns(proc_gen_world: ProcGenWorld) -> Array[Town]:
+func generate_towns(proc_gen_world: ProcGenWorld) -> void:
 	var width = proc_gen_world.width
-	var sand_arr = proc_gen_world.sand_arr
-	var grass_arr = proc_gen_world.grass_arr
 	var tree_arr = proc_gen_world.tree_arr
 	var towns_root = proc_gen_world.towns
 	
 	var max_cities = int(width * town_percentage)
-	var coast_arr = sand_arr.filter(func(pos): return not (pos in grass_arr) and proc_gen_world.is_coast(pos * ProcGenWorld.TILE_SIZE))
-	var farm_arr = grass_arr.filter(func(pos): return not (pos in tree_arr))
 	
+	# Habors
+	var habor_positions: Array[Vector2i] = _create_habor_positions(proc_gen_world)
 	for i in range(max_cities * 1.0):
+		if habor_positions.is_empty():
+			break
 		var town_name = TownResource.name_dictionary[TownResource.Type.Habor].pick_random()
-		var town = _create_town(TOWN_HABOR, town_name, coast_arr.pick_random())
+		var spawn_position = _get_spawn_position(habor_positions)
+		var town = _create_town(TOWN_HABOR, town_name, spawn_position)
 		towns_root.add_child(town)
-		
+	
+	# Farms
+	var fram_positions: Array[Vector2i] = _create_farm_positions(proc_gen_world)
 	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Farm].pick_random()
-		var town = _create_town(TOWN_FARM, town_name, farm_arr.pick_random())
+		var spawn_position = _get_spawn_position(fram_positions)
+		var town = _create_town(TOWN_FARM, town_name, spawn_position)
 		towns_root.add_child(town)
 
+	# Woodcamps
 	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Woodcamp].pick_random()
-		var town = _create_town(TOWN_WOOD_CAMP, town_name, tree_arr.pick_random())
+		var spawn_position = _get_spawn_position(proc_gen_world.tree_arr)
+		var town = _create_town(TOWN_WOOD_CAMP, town_name, spawn_position)
 		towns_root.add_child(town)
-
-	return proc_gen_world.get_towns()
 
 
 func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i) -> Town:
@@ -48,3 +53,28 @@ func _create_town(town_resource: TownResource, town_name: String, pos: Vector2i)
 	town.name = town_name
 	town.global_position = pos * ProcGenWorld.TILE_SIZE + TOWN_OFFSET
 	return town
+
+
+func _create_habor_positions(proc_gen_world: ProcGenWorld) -> Array[Vector2i]:
+	return proc_gen_world.sand_arr.filter(func(pos): return _is_habor_position(pos, proc_gen_world))
+
+
+func _is_habor_position(pos: Vector2i, proc_gen_world: ProcGenWorld) -> bool:
+	var width = proc_gen_world.width
+	var height = proc_gen_world.height
+	return proc_gen_world.is_coast(pos * ProcGenWorld.TILE_SIZE) and _is_distance_from_border(pos, DISTANCE_FROM_BORDER, width, height)
+
+
+func _create_farm_positions(proc_gen_world: ProcGenWorld) -> Array[Vector2i]:
+	return proc_gen_world.grass_arr.filter(func(pos): return _is_farm_position(pos, proc_gen_world))
+
+
+func _is_farm_position(pos: Vector2i, proc_gen_world: ProcGenWorld) -> bool:
+	var width = proc_gen_world.width
+	var height = proc_gen_world.height
+	return not (pos in proc_gen_world.tree_arr) and not (pos in proc_gen_world.cliff_arr) and _is_distance_from_border(pos, DISTANCE_FROM_BORDER, width, height)
+
+
+func _get_spawn_position(positions: Array[Vector2i]) -> Vector2i:
+	var random_index = randi_range(0, positions.size() - 1)
+	return positions.pop_at(random_index)

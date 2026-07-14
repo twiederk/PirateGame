@@ -4,4 +4,5 @@
 
 [resource]
 script = ExtResource("1_wm75i")
+rare_type = 0
 metadata/_custom_type_script = "uid://bgsg12g0xpha8"

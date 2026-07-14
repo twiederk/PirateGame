@@ -48,8 +48,10 @@ var deep_water_arr: Array[Vector2i] = []
 var shallow_water_arr: Array[Vector2i] = []
 var sand_arr: Array[Vector2i] = []
 var grass_arr: Array[Vector2i] = []
+var farm_arr: Array[Vector2i] =[]
 var cliff_arr: Array[Vector2i] = []
 var tree_arr: Array[Vector2i] = []
+var palm_tree_arr: Array[Vector2i] = []
 
 var spawn_accumulator: float = 0.0
 
@@ -78,32 +80,51 @@ func _ready() -> void:
 
 func generate_world(new_seed: int):
 	seed_value = new_seed
+	_generate_seed()
+	_place_world_tiles()
+	_apply_world_tiles_to_layers()
+
+
+func _place_world_tiles() -> void:
 	var noise_val: float
 	var tree_noise_val: float
-	_generate_seed()
-	
 	for x in range(width):
 		for y in range(height):
 			var curr_pos: Vector2i = Vector2i(x, y)
-			noise_val = noise.get_noise_2d(x,y)
-			tree_noise_val = tree_noise.get_noise_2d(x,y)
-			
+			noise_val = noise.get_noise_2d(x, y)
+			tree_noise_val = tree_noise.get_noise_2d(x, y)
+
 			_place_sand(noise_val, curr_pos)
 			_place_grass(noise_val, curr_pos)
 			_place_cliffs(noise_val, curr_pos)
 			_place_water(noise_val, curr_pos)
 			_place_trees(tree_noise_val, noise_val, curr_pos)
 			_place_palm_trees(tree_noise_val, noise_val, curr_pos)
-			
+
+
+func _apply_world_tiles_to_layers() -> void:
 	sand_and_grass_layer.set_cells_terrain_connect(sand_arr, SAND_IN_WATER_TERRAIN_SET, TERRAIN)
 	sand_and_grass_layer.set_cells_terrain_connect(grass_arr, GRASS_IN_SAND_TERRAIN_SET, TERRAIN)
 	cliff_layer.set_cells_terrain_connect(cliff_arr, CLIFF_TERRAIN_SET, TERRAIN)
+	for curr_pos in deep_water_arr:
+		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
+	for curr_pos in shallow_water_arr:
+		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
+	var field_arr = farm_arr.filter(func(pos): return not pos in tree_arr)
+	for curr_pos in field_arr:
+		farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, GRASS_TILES.pick_random())
+	for curr_pos in tree_arr:
+		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILES.pick_random())
+	for curr_pos in palm_tree_arr:
+		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, PALM_TREE_TILES.pick_random())
+
 
 
 func get_starting_position() -> Vector2i:
-	if grass_arr.is_empty():
+	var starting_positions = grass_arr.filter(func(pos): return not pos in cliff_arr)
+	if starting_positions.is_empty():
 		return Vector2i.ZERO
-	return grass_arr.pick_random() * TILE_SIZE
+	return starting_positions.pick_random() * TILE_SIZE
 
 
 func _place_sand(noise_val: float, curr_pos: Vector2i) -> void:
@@ -115,7 +136,7 @@ func _place_grass(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val > GRASS_LEVEL:
 		grass_arr.append(curr_pos)
 		if noise_val > FIELD_LEVEL:
-			farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, GRASS_TILES.pick_random())
+			farm_arr.append(curr_pos)
 
 
 func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
@@ -125,16 +146,13 @@ func _place_cliffs(noise_val: float, curr_pos: Vector2i) -> void:
 
 func _place_water(noise_val: float, curr_pos: Vector2i) -> void:
 	if noise_val <= DEEP_WATER_LEVEL:
-		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
 		deep_water_arr.append(curr_pos)
 	elif noise_val <= WATER_LEVEL:
-		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
 		shallow_water_arr.append(curr_pos)
 
 func _place_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector2i) -> void:
 	#setting trees where there are no cliffs
 	if (tree_noise_val > TREE_CHANCE) and (noise_val > FIELD_LEVEL) and (noise_val < CLIFF_LEVEL):
-		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILES.pick_random())
 		tree_arr.append(curr_pos)
 
 
@@ -142,7 +160,7 @@ func _place_palm_trees(tree_noise_val: float, noise_val: float, curr_pos: Vector
 	# setting palm trees on sand, between water and grass
 	if (noise_val > WATER_LEVEL) and (noise_val < GRASS_LEVEL):
 		if tree_noise_val > PALM_TREE_CHANCE:
-			environment_layer.set_cell(curr_pos, WORLD_TILE_SET, PALM_TREE_TILES.pick_random())
+			palm_tree_arr.append(curr_pos)
 
 
 func _generate_seed() -> void:
@@ -166,14 +184,18 @@ func is_coast(player_position: Vector2) -> bool:
 		return false
 
 
-func generate_towns() -> Array[Town]:
-	return towns_generator.generate_towns(self)
+func generate_towns() -> void:
+	towns_generator.generate_towns(self)
 
 
 func get_towns() -> Array[Town]:
 	var typed: Array[Town] = []
 	typed.assign(towns.get_children())
 	return typed
+
+
+func get_towns_with_treasure() -> Array[Town]:
+	return get_towns().filter(func(town: Town): return town.has_treasure())
 
 
 func get_goods() -> Array[Good]:
@@ -184,10 +206,7 @@ func get_goods() -> Array[Good]:
 
 func get_raiders() -> Array[Raider]:
 	var typed: Array[Raider] = []
-	var children = raiders.get_children()
-	for child in children:
-		print(str("Name: ", child.name, " Type: ", child.get_class(), " Script: ", child.get_script()))
-	typed.assign(children)
+	typed.assign(raiders.get_children())
 	return typed
 
 

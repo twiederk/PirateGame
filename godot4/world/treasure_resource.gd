@@ -2,9 +2,17 @@ class_name TreasureResource
 extends Resource
 
 
+enum Rareness {
+	COMMON,
+	RARE,
+	VERY_RARE,
+}
+
+
 @export var price_range: Vector2i = Vector2i(10, 50)
 @export var gold_range: Vector2i = Vector2i(5, 10)
 @export var treasure_map_size: Vector2i = Vector2i(100, 100)
+@export var rare_type: Rareness = Rareness.COMMON
 
 
 func get_price() -> int:
