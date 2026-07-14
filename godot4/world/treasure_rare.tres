@@ -7,4 +7,5 @@ script = ExtResource("1_6w234")
 price_range = Vector2i(50, 100)
 gold_range = Vector2i(10, 50)
 treasure_map_size = Vector2i(75, 75)
+rare_type = 1
 metadata/_custom_type_script = "uid://bgsg12g0xpha8"

@@ -96,10 +96,6 @@ func _get_nearest_town_with_treasure() -> Town:
 
 
 func _get_cardinal_direction(direction_vector: Vector2) -> String:
-	if direction_vector == Vector2.ZERO:
-		return "north"
-
-	# Convert to compass coordinates where north is up and east is right.
 	var angle_deg = wrapf(rad_to_deg(atan2(-direction_vector.y, direction_vector.x)), 0.0, 360.0)
 	if angle_deg >= 337.5 or angle_deg < 22.5:
 		return "Osten"
@@ -119,12 +115,13 @@ func _get_cardinal_direction(direction_vector: Vector2) -> String:
 
 
 func _get_rarity_text(treasure_resource: TreasureResource) -> String:
-	var resource_path = treasure_resource.resource_path
-	if resource_path.ends_with("treasure_very_rare.tres"):
-		return "sehr seltene Schatzkarte"
-	if resource_path.ends_with("treasure_rare.tres"):
-		return "seltene Schatzkarte"
-	return "Schatzkarte"
+	match treasure_resource.rare_type:
+		TreasureResource.Rareness.VERY_RARE:
+			return "sehr seltene Schatzkarte"
+		TreasureResource.Rareness.RARE:
+			return "seltene Schatzkarte"
+		_:
+			return "Schatzkarte"
 
 
 func _show_treasure_price():
