@@ -30,3 +30,15 @@ func _is_tile_position_visible(viewport: Viewport, tile_position: Vector2i) -> b
 	var tile_size: Vector2i = ProcGenWorld.TILE_SIZE
 	var tile_world_rect := Rect2(Vector2(tile_position * tile_size), Vector2(tile_size))
 	return visible_rect.intersects(tile_world_rect)
+
+
+func _is_distance_from_border(pos: Vector2i, distance: Vector2, width: int, height: int) -> bool:
+	var min_x := int(ceil(distance.x))
+	var min_y := int(ceil(distance.y))
+	var max_x := width - min_x - 1
+	var max_y := height - min_y - 1
+
+	if max_x < min_x or max_y < min_y:
+		return false
+
+	return pos.x >= min_x and pos.x <= max_x and pos.y >= min_y and pos.y <= max_y

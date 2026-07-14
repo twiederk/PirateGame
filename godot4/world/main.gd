@@ -6,8 +6,6 @@ const ZOOM_OUT: float = 0.8
 const ZOOM_IN: float = 1.2
 const ZOOM_STEP: float = 0.1
 
-var towns: Array[Town]
-
 @onready var proc_gen_world: ProcGenWorld = $ProcGenWorld
 @onready var player: Player = $Player
 @onready var camera: Camera2D = $Player/Camera2D
@@ -29,7 +27,7 @@ func _ready() -> void:
 	var world_seed = _get_seed()
 	proc_gen_world.generate_world(world_seed)
 	fog_sector_manager.initialize(proc_gen_world.width, proc_gen_world.height)
-	towns = proc_gen_world.generate_towns()
+	proc_gen_world.generate_towns()
 	fog_sector_manager.set_base_minimap_image(proc_gen_world.get_minimap_image())
 	_setup_limits_and_borders()
 
@@ -57,7 +55,7 @@ func _physics_process(delta):
 	if PauseManager.is_simulation_paused():
 		return
 	fog_sector_manager.update_fog(ProcGenWorld.TILE_SIZE)
-	trading_system.simulation(delta, towns)
+	trading_system.simulation(delta, proc_gen_world.get_towns())
 	proc_gen_world.simulation(delta, player.position)
 
 
@@ -80,7 +78,7 @@ func _get_seed() -> int:
 
 
 func _connect_signals() -> void:
-	for town in towns:
+	for town in proc_gen_world.get_towns():
 		town.town_entered.connect(_on_town_entered)
 		town.town_entered.connect(player._on_town_entered)
 	player.gold_changed.connect(promotion_system.evaluate)

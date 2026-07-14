@@ -166,8 +166,8 @@ func is_coast(player_position: Vector2) -> bool:
 		return false
 
 
-func generate_towns() -> Array[Town]:
-	return towns_generator.generate_towns(self)
+func generate_towns() -> void:
+	towns_generator.generate_towns(self)
 
 
 func get_towns() -> Array[Town]:

@@ -1,4 +1,5 @@
 class_name TreasuresGenerator
+extends Generator
 
 
 @export var treasure_percentage: float = 0.02
@@ -11,10 +12,7 @@ class_name TreasuresGenerator
 	preload("res://world/treasure_very_rare.tres"),
 ]
 
-const INVALID_TILE_POSITION: Vector2i = Vector2i(-1, -1)
-
 const TreasureScene = preload("res://world/treasure.tscn")
-
 
 
 func generate_treasures(proc_gen_world: ProcGenWorld) -> void:
@@ -61,15 +59,3 @@ func _create_treasure(spawn_position: Vector2i, treasure_resource: TreasureResou
 func _get_town_without_treasure(all_towns: Array[Town]) -> Town:
 	var towns_without_treasure = all_towns.filter(func(town): return not town.has_treasure())
 	return towns_without_treasure.pick_random()
-
-
-func _is_distance_from_border(pos: Vector2i, distance: Vector2, width: int, height: int) -> bool:
-	var min_x := int(ceil(distance.x))
-	var min_y := int(ceil(distance.y))
-	var max_x := width - min_x - 1
-	var max_y := height - min_y - 1
-
-	if max_x < min_x or max_y < min_y:
-		return false
-
-	return pos.x >= min_x and pos.x <= max_x and pos.y >= min_y and pos.y <= max_y
