@@ -41,7 +41,8 @@ func generate_towns(proc_gen_world: ProcGenWorld) -> void:
 	# Woodcamps
 	for i in range(max_cities * 0.5):
 		var town_name = TownResource.name_dictionary[TownResource.Type.Woodcamp].pick_random()
-		var town = _create_town(TOWN_WOOD_CAMP, town_name, tree_arr.pick_random())
+		var spawn_position = _get_spawn_position(proc_gen_world.tree_arr)
+		var town = _create_town(TOWN_WOOD_CAMP, town_name, spawn_position)
 		towns_root.add_child(town)
 
 
