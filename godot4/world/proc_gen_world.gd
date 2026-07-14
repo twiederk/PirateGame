@@ -110,7 +110,8 @@ func _apply_world_tiles_to_layers() -> void:
 		water_layer.set_cell(curr_pos, WORLD_TILE_SET, DEEP_WATER_TILE)
 	for curr_pos in shallow_water_arr:
 		water_layer.set_cell(curr_pos, WORLD_TILE_SET, SHALLOW_WATER_TILE)
-	for curr_pos in farm_arr:
+	var field_arr = farm_arr.filter(func(pos): return not pos in tree_arr)
+	for curr_pos in field_arr:
 		farm_field_layer.set_cell(curr_pos, WORLD_TILE_SET, GRASS_TILES.pick_random())
 	for curr_pos in tree_arr:
 		environment_layer.set_cell(curr_pos, WORLD_TILE_SET, TREE_TILES.pick_random())
